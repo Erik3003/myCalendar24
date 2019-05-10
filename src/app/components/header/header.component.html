@@ -1,0 +1,21 @@
+<mat-toolbar class="mat-primary">
+  <span>MyCalendar</span>
+  <span class="spacer"></span>
+  <a [routerLink]="['/login']">
+    <button mat-icon-button>
+      <mat-icon>group</mat-icon>
+    </button>
+  </a>
+  
+  <a [routerLink]="['/createAppointment']">
+    <button mat-icon-button>
+      <mat-icon>message</mat-icon>
+    </button>
+  </a>
+
+  <a [routerLink]="['/register']">
+    <button mat-icon-button>
+      <mat-icon>person</mat-icon>
+    </button>
+  </a>
+</mat-toolbar>

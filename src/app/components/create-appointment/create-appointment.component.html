@@ -1,0 +1,36 @@
+<app-header></app-header>
+<div class="centerWrapper">
+  <div class="effectWrapper">
+    <div class="formTitle">Termin erstellen</div>
+
+    <form [formGroup]="appointmentForm" (ngSubmit)="appointmentForm.valid && submitAppointment()">
+      <div class="formElement">
+        <mat-form-field>
+          <input id="title"
+                matInput
+                formControlName="title"
+                placeholder="Titel des Termins eingeben"/>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input 
+          matInput 
+          formControlName="date"
+          [matDatepicker]="picker" 
+          placeholder="Datum des Termins eingeben"/>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+          <mat-form-field>
+              <input id="description"
+                    matInput
+                    formControlName="description"
+                    placeholder="Optionale Beschreibung eingeben"/>
+            </mat-form-field>
+            <button mat-button type="submit" class="mat-raised-button mat-primary">Termin erstellen</button>
+            <button mat-button routerLink='' class="divider">Abbrechen</button>
+      </div>
+    </form>
+  </div>
+</div>

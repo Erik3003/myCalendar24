@@ -1,0 +1,29 @@
+<app-header></app-header>
+<div class="centerWrapper">
+  <div class="effectWrapper">
+    <div class="formTitle">Einloggen</div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="loginForm.valid && submitLogin()">
+      <div class="formElement">
+        <mat-form-field>
+            <input id="email"
+                  matInput
+                  formControlName="email"
+                  [(ngModel)]="user.email"
+                  placeholder="Ihre Email eingeben"/>
+          </mat-form-field>
+
+          <mat-form-field>
+              <input id="password"
+                    matInput
+                    formControlName="passwort"
+                    [(ngModel)]="user.password"
+                    placeholder="Ihr Passwort eingeben"
+                    type="password"/>
+            </mat-form-field>
+            <button mat-button type="submit" class="mat-raised-button mat-primary">Login</button>
+            <button mat-button routerLink='/register' class="divider">Registrieren</button>
+      </div>
+    </form>
+  </div>
+</div>
