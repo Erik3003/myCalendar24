@@ -18,21 +18,32 @@ module.exports = {
 async function insert(user) {
   user = await Joi.validate(user, userSchema, { abortEarly: false });
   if(user.password == user.password2) {
-      User.findOne({ username: username }).then(oldUser => {
-        if (oldUser) {
-          console.log('Benutzer existiert bereits');
-        } else {
-          bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(user.password, salt, (err, hash) => {
-              if (err) throw err;
-              user.password = hash;            
+    User.findOne({ username: user.username }).then(oldUser => {
+      if (oldUser) {
+        console.log('username is taken');
+      } else {
+        User.findOne({ email: user.email }).then(oldUser => {
+          if(oldUser) {
+            console.log("E-Mail is taken");
+          } else {
+            bcrypt.genSalt(10, (err, salt) => {
+              bcrypt.hash(user.password, salt, (err, hash) => {
+                if (err) throw err;
+                var newUser = new User({
+                  username: user.username,
+                  email: user.email,
+                  password: hash
+                });         
+              });
             });
-          });
-        }
-      });
-    }
-    
-  return await new User(user).save();
+            
+            return await newUser.save();
+            //return await new User(user).save();
+          }
+        });        
+      }
+    });
+  }  
 }
 
 async function login(user) {
@@ -53,7 +64,6 @@ async function login(user) {
       });
   }
   })(req, res, next);
-  //return await user.find({"username": user});
 }
 
 async function logout(user) {
