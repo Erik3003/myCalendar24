@@ -15,13 +15,13 @@ async function registerUser(req, res) {
 }
 
 async function loginUser(req, res) {
-  let username = req.params.username;
-  let user = await usersCtrl.login(username)
+  //let username = req.params.username;
+  let user = await usersCtrl.login(req, res)
   //res.json(username);
 }
 
 async function logoutUser(req, res) {
-  let username = req.params.username;
-  let user = await usersCtrl.logout(username)
+  //let username = req.params.username;
+  let user = await usersCtrl.logout(req, res)
   //res.json(username);
 }
