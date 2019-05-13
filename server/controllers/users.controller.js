@@ -17,7 +17,8 @@ module.exports = {
 
 async function insert(user) {
   user = await Joi.validate(user, userSchema, { abortEarly: false });
-  var newUser;
+  console.log(user);
+  const newUser;
   if(user.password == user.password2) {
     User.findOne({ username: user.username }).then(oldUser => {
       if (oldUser) {
@@ -34,11 +35,12 @@ async function insert(user) {
                   username: user.username,
                   email: user.email,
                   password: hash
-                });         
+                });       
+                console.log(newUser);
+
+                return await newUser.save();
               });
-            });
-            
-            return await newUser.save();
+            });          
             //return await new User(user).save();
           }
         });        
