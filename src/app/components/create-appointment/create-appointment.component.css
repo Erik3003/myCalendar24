@@ -1,0 +1,13 @@
+.dateTimePair{
+    display: inline;
+}
+.timePicker{
+    margin-left: 2%;
+    width: 80px; 
+}
+.datePicker{
+    width: 120px;
+}
+p{
+    display: inline;   
+}
