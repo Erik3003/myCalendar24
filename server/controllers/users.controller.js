@@ -17,6 +17,7 @@ module.exports = {
 
 async function insert(user) {
   user = await Joi.validate(user, userSchema, { abortEarly: false });
+  var newUser;
   if(user.password == user.password2) {
     User.findOne({ username: user.username }).then(oldUser => {
       if (oldUser) {
@@ -29,7 +30,7 @@ async function insert(user) {
             bcrypt.genSalt(10, (err, salt) => {
               bcrypt.hash(user.password, salt, (err, hash) => {
                 if (err) throw err;
-                var newUser = new User({
+                newUser = new User({
                   username: user.username,
                   email: user.email,
                   password: hash
@@ -46,9 +47,14 @@ async function insert(user) {
   }  
 }
 
-async function login(user) {
-  console.log(user);
-  passport.authenticate('local', function(err, user, info) {
+async function login(req ,res) {
+  console.log(req.body);
+  passport.authenticate('local'), function(req, res) {
+    console.log(req.user.username);
+    res.redirect('/' + req.user.username);
+  }
+
+  /*passport.authenticate('local', function(err, user, info) {
     if (err) { 
       console.log(err); 
     } else if (!user) { 
@@ -63,10 +69,10 @@ async function login(user) {
         }
       });
   }
-  })(req, res, next);
+  })(req, res, next);*/
 }
 
-async function logout(user) {
-  console.log(user);
+async function logout(req, res) {
+  console.log(req.body);
   req.logout();
 }
