@@ -5,32 +5,53 @@
 
     <form [formGroup]="appointmentForm" (ngSubmit)="appointmentForm.valid && submitAppointment()">
       <div class="formElement">
+        <!--Input title-->
         <mat-form-field>
-          <input id="title"
-                matInput
-                formControlName="title"
-                placeholder="Titel des Termins eingeben"/>
+          <input matInput formControlName="title" placeholder="Titel des Termins eingeben" />
         </mat-form-field>
 
-        <mat-form-field>
-          <input 
-          matInput 
-          formControlName="date"
-          [matDatepicker]="picker" 
-          placeholder="Datum des Termins eingeben"/>
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+        <!--Input date and time-->
+        <div class="dateTimePair">
 
-          <mat-form-field>
-              <input id="description"
-                    matInput
-                    formControlName="description"
-                    placeholder="Optionale Beschreibung eingeben"/>
+          <div class="dateTime">
+            <!--Input start date-->
+            <mat-form-field class="datePicker">
+              <input matInput [matDatepicker]="startDatePicker" formControlName="date" placeholder="Startdatum">
+              <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #startDatePicker disabled="false"></mat-datepicker>
             </mat-form-field>
-            <button mat-button type="submit" class="mat-raised-button mat-primary">Termin erstellen</button>
-            <button mat-button routerLink='' class="divider">Abbrechen</button>
+
+            <!--Input start time-->
+            <mat-form-field class="timePicker">
+              <input matInput type="time" formControlName="time" placeholder="Startzeit" />
+            </mat-form-field>
+          </div>
+          <p>bis</p>
+
+          <div class="dateTime2">
+            <!--Input end date-->
+            <mat-form-field class="datePicker">
+              <input matInput [matDatepicker]="endDatePicker" formControlName="enddate" placeholder="Enddatum">
+              <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #endDatePicker disabled="false"></mat-datepicker>
+            </mat-form-field>
+
+            <!--Input end time-->
+            <mat-form-field class="timePicker">
+              <input matInput type="time" formControlName="endtime" placeholder="Endzeit" />
+            </mat-form-field>
+          </div>
+        </div>
+        <!--Input description-->
+        <mat-form-field>
+          <input matInput formControlName="description" placeholder="Optionale Beschreibung eingeben" />
+        </mat-form-field>
+
+        <!--Buttons-->
+        <button mat-button type="submit" class="mat-raised-button mat-primary">Termin erstellen</button>
+        <button mat-button routerLink='' class="divider">Abbrechen</button>
       </div>
     </form>
   </div>
 </div>
+<p id="test"></p>

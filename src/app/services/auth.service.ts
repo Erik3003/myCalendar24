@@ -13,7 +13,7 @@ export class AuthService {
   readonly ROOT_URL_POST = 'http://httpbin.org/post';
 
   registerUser(user: RegisterModel){
-    this.http.post(this.ROOT_URL_POST, user).toPromise().then(data => {console.log(data)});    
+    this.http.post(this.ROOT_URL_POST, user).subscribe(data => {console.log(data)});    
 /*    
     this.http.post(this.ROOT_URL_POST, user).subscribe(data=>{
       if (data.success){
