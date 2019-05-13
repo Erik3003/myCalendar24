@@ -33,6 +33,8 @@ export class LoginComponent implements OnInit {
   }
 
   submitLogin(){
+    this.user.email = this.loginForm.get('email').value;
+    this.user.password = this.loginForm.get('password').value;
     console.log("Logging in...");
     this.authService.authUser(this.user);
   }
