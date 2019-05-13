@@ -42,13 +42,7 @@ async function insert(user) {
 
                 return await newUser.save();
               });
-<<<<<<< HEAD
-            });
-            
-            return newUser.save();
-=======
             });          
->>>>>>> 49ac95765dc3b07fc54174b0fa8b1d9dd3c9bf8e
             //return await new User(user).save();
           }
         });        
