@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AppointmentModel } from '../../../models/appointment.model';
 import { AppointmentService } from '../../services/appointment.service';
-import { Time, NumberSymbol } from '@angular/common';
 
 @Component({
   selector: 'app-create-appointment',
@@ -50,10 +49,6 @@ export class CreateAppointmentComponent implements OnInit {
     this.appointment.date = this.calculateDate(this.appointmentForm.get('date').value,this.appointmentForm.get('time').value);
     this.appointment.enddate = this.calculateDate(this.appointmentForm.get('enddate').value,this.appointmentForm.get('endtime').value);
 
-    //debug output
-    var myElement = document.getElementById("test"); 
-    myElement.textContent = this.calculateDate(this.appointmentForm.get('date').value,this.appointmentForm.get('time').value);
-
     //sending to server
     console.log("creating appointment...");
     this.appointmentService.CreateNewAppointment(this.appointment);
@@ -66,6 +61,10 @@ export class CreateAppointmentComponent implements OnInit {
     let minutes = parseInt(time.toString().substr(3));
     newDate.setTime(date.getTime() + (((hours+2)*60+minutes)*60*1000));
     return newDate.toISOString();
+  }
+
+  getRequest(){
+    this.appointmentService.getApps();
   }
 }
 

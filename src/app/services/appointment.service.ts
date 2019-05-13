@@ -18,4 +18,8 @@ export class AppointmentService {
       }
     });
   }
+  
+  getApps(){
+    this.http.get("http://localhost:3000/api/appointment/get").toPromise().then((data: any)=>{console.log(data)});
+  }
 }
