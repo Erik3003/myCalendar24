@@ -19,7 +19,7 @@ module.exports = {
 async function insert(user) {
   user = await Joi.validate(user, userSchema, { abortEarly: false });
   console.log(user);
-  const newUser;
+  var newUser;
   if(user.password == user.password2) {
     User.findOne({ username: user.username }).then(oldUser => {
       if (oldUser) {
@@ -32,7 +32,6 @@ async function insert(user) {
             bcrypt.genSalt(10, (err, salt) => {
               bcrypt.hash(user.password, salt, (err, hash) => {
                 if (err) throw err;
-                console.log("ICH WAR HIER");
                 newUser = new User({
                   username: user.username,
                   email: user.email,
@@ -40,7 +39,7 @@ async function insert(user) {
                 });       
                 console.log(newUser);
 
-                return await newUser.save();
+                return newUser.save();
               });
             });          
             //return await new User(user).save();
