@@ -14,6 +14,7 @@ module.exports = function(passport) {
       }).then(user => {
         if (!user) {
           return done(null, false, { message: 'Incorrect username' });
+<<<<<<< HEAD
         }
 
         // Match password
@@ -26,6 +27,19 @@ module.exports = function(passport) {
             return done(null, false, { message: 'Incorrect password' });
           }
         });
+=======
+        } else {
+          // Match password
+          bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) throw err;
+            if (isMatch) {
+              return done(null, user);
+            } else {
+              return done(null, false, { message: 'Incorrect password' });
+            }
+          });
+        }        
+>>>>>>> 49ac95765dc3b07fc54174b0fa8b1d9dd3c9bf8e
       });
     })
   );
