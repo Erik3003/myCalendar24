@@ -12,13 +12,14 @@ const userSchema = Joi.object({
 
 module.exports = {
   insert,
-  extract
+  login,
+  logout
 }
 
 async function insert(user) {
   user = await Joi.validate(user, userSchema, { abortEarly: false });
   if(user.password == user.password2) {
-      User.findOne({ username: username }).then(oldUser => {
+      User.findOne({ username: user.username }).then(oldUser => {
         if (oldUser) {
           console.log('Benutzer existiert bereits');
         } else {

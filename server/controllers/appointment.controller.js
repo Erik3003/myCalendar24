@@ -2,7 +2,7 @@ const Joi = require('joi');
 const Appointment = require('../models/appointment.model');
 
 const appointmentSchema = Joi.object({
-  //creator: Joi.string().required(),
+  creator: Joi.string().required(),
   title: Joi.string().required(),
   date: Joi.date().required(),
   enddate: Joi.date(),
