@@ -18,7 +18,7 @@ module.exports = {
 async function insert(user) {
   user = await Joi.validate(user, userSchema, { abortEarly: false });
   console.log(user);
-  const newUser;
+  var newUser;
   if(user.password == user.password2) {
     User.findOne({ username: user.username }).then(oldUser => {
       if (oldUser) {
@@ -49,12 +49,13 @@ async function insert(user) {
   }  
 }
 
-async function login(req ,res) {
-  console.log(req.body);
-  passport.authenticate('local'), function(req, res) {
-    console.log(req.user.username);
-    res.redirect('/' + req.user.username);
-  }
+async function login(req ,res, next) {
+  console.log(req.body.username);
+  passport.authenticate('local', {
+    successRedirect: '/'  + req.user.username,
+    failureRedirect: '/users/login'
+    //console.log(req.user.username);
+  });
 
   /*passport.authenticate('local', function(err, user, info) {
     if (err) { 
