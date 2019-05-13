@@ -12,32 +12,52 @@ const userSchema = Joi.object({
 
 module.exports = {
   insert,
-  extract
+  login,
+  logout
 }
 
 async function insert(user) {
   user = await Joi.validate(user, userSchema, { abortEarly: false });
+  console.log(user);
+  var newUser;
   if(user.password == user.password2) {
-      User.findOne({ username: username }).then(oldUser => {
-        if (oldUser) {
-          console.log('Benutzer existiert bereits');
-        } else {
-          bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(user.password, salt, (err, hash) => {
-              if (err) throw err;
-              user.password = hash;            
-            });
-          });
-        }
-      });
-    }
-    
-  return await new User(user).save();
+    User.findOne({ username: user.username }).then(oldUser => {
+      if (oldUser) {
+        console.log('username is taken');
+      } else {
+        User.findOne({ email: user.email }).then(oldUser => {
+          if(oldUser) {
+            console.log("E-Mail is taken");
+          } else {
+            bcrypt.genSalt(10, (err, salt) => {
+              bcrypt.hash(user.password, salt, (err, hash) => {
+                if (err) throw err;
+                newUser = new User({
+                  username: user.username,
+                  email: user.email,
+                  password: hash
+                });       
+                console.log(newUser);
+
+                return newUser.save();
+              });
+            });          
+            //return await new User(user).save();
+          }
+        });        
+      }
+    });
+  }  
 }
 
-async function login(user) {
-  console.log(user);
-  passport.authenticate('local', function(err, user, info) {
+async function login(req ,res) {
+  console.log(req.body);
+  passport.authenticate('local'), function(req, res) {
+    console.log(req.user.username);
+    res.redirect('/' + req.user.username);
+  }
+
+  /*passport.authenticate('local', function(err, user, info) {
     if (err) { 
       console.log(err); 
     } else if (!user) { 
@@ -52,11 +72,10 @@ async function login(user) {
         }
       });
   }
-  })(req, res, next);
-  //return await user.find({"username": user});
+  })(req, res, next);*/
 }
 
-async function logout(user) {
-  console.log(user);
+async function logout(req, res) {
+  console.log(req.body);
   req.logout();
 }

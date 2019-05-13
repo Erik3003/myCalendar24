@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
     session({
         name: 'myCalendar.sid',
-        //secret: 'secret',
+        secret: 'secret',
         resave: false,
         saveUninitialized: false,
         cookie: {
