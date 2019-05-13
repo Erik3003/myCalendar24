@@ -9,6 +9,7 @@ export class AppointmentService {
 
   constructor(private http: HttpClient) { }
 
+  items=[];
   //readonly ROOT_URL_POST = 'http://httpbin.org/post';
 
   CreateNewAppointment(appointment: AppointmentModel){
@@ -20,6 +21,6 @@ export class AppointmentService {
   }
   
   getApps(){
-    this.http.get("http://localhost:3000/api/appointment/get").toPromise().then((data: any)=>{console.log(data)});
+    this.http.get("http://localhost:3000/api/appointment/get").toPromise().then((data: any)=>{console.log(data);});
   }
 }
