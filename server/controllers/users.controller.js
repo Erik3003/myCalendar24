@@ -31,6 +31,7 @@ async function insert(user) {
             bcrypt.genSalt(10, (err, salt) => {
               bcrypt.hash(user.password, salt, (err, hash) => {
                 if (err) throw err;
+                console.log("ICH WAR HIER");
                 newUser = new User({
                   username: user.username,
                   email: user.email,
@@ -39,7 +40,7 @@ async function insert(user) {
               });
             });
             
-            return await newUser.save();
+            return newUser.save();
             //return await new User(user).save();
           }
         });        

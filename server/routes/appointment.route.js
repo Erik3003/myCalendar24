@@ -6,7 +6,9 @@ const router = express.Router();
 module.exports = router;
 
 router.post('/new', asyncHandler(addAppointment));
-router.get('/get/:creator', asyncHandler(getAppointment));
+//router.get('/get/:creator', asyncHandler(getAppointment));
+router.get('/get', asyncHandler(getAppointment));
+
 
 async function addAppointment(req, res) {
   let appointment = await appointmentCtrl.insert(req.body);
@@ -14,7 +16,7 @@ async function addAppointment(req, res) {
 }
 
 async function getAppointment(req, res) {
-  let creatorID = req.params.creator;
-  let appointments = await appointmentCtrl.extract(creatorID)
+  //let creatorToken = req.params.creator;
+  let appointments = await appointmentCtrl.extract(/*creatorID*/)
   res.json(appointments);
 }
