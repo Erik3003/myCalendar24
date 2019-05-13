@@ -20,16 +20,6 @@ async function insert(user) {
   user = await Joi.validate(user, userSchema, { abortEarly: false });
   var newUser;
   if(user.password == user.password2) {
-<<<<<<< HEAD
-      User.findOne({ username: user.username }).then(oldUser => {
-        if (oldUser) {
-          console.log('Benutzer existiert bereits');
-        } else {
-          bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(user.password, salt, (err, hash) => {
-              if (err) throw err;
-              user.password = hash;            
-=======
     User.findOne({ username: user.username }).then(oldUser => {
       if (oldUser) {
         console.log('username is taken');
@@ -47,7 +37,6 @@ async function insert(user) {
                   password: hash
                 });         
               });
->>>>>>> 2637c7fccf946664462205e89afc803cc36f2a39
             });
             
             return await newUser.save();
