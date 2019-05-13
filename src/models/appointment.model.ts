@@ -1,6 +1,6 @@
 export class AppointmentModel{
     title: String;
-    date: Date;
-    endDate: Date;    
+    date: String;
+    enddate: String;    
     description: String;
 }

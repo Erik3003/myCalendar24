@@ -31,14 +31,14 @@
           <div class="dateTime2">
             <!--Input end date-->
             <mat-form-field class="datePicker">
-              <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" placeholder="Enddatum">
+              <input matInput [matDatepicker]="endDatePicker" formControlName="enddate" placeholder="Enddatum">
               <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #endDatePicker disabled="false"></mat-datepicker>
             </mat-form-field>
 
             <!--Input end time-->
             <mat-form-field class="timePicker">
-              <input matInput type="time" formControlName="time" placeholder="Endzeit" />
+              <input matInput type="time" formControlName="endtime" placeholder="Endzeit" />
             </mat-form-field>
           </div>
         </div>
@@ -54,3 +54,4 @@
     </form>
   </div>
 </div>
+<p id="test"></p>

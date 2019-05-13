@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AppointmentModel } from '../../../models/appointment.model';
 import { AppointmentService } from '../../services/appointment.service';
+import { Time, NumberSymbol } from '@angular/common';
 
 @Component({
   selector: 'app-create-appointment',
@@ -28,23 +29,43 @@ export class CreateAppointmentComponent implements OnInit {
       'date': [this.appointment.date,[
         Validators.required
       ]],
-      'endDate': [this.appointment.endDate,
+      'time': [this.appointment.date,
+        Validators.required
       ],
-      'time': [this.appointment.endDate,
-      ],      
+      'enddate': [this.appointment.enddate,
+        Validators.required
+      ],
+      'endtime': [this.appointment.enddate,
+        Validators.required
+      ],     
       'description': [this.appointment.description,
       ]
     });
   }
 
   submitAppointment(){
+    //get values of form
     this.appointment.title = this.appointmentForm.get('title').value;
     this.appointment.description = this.appointmentForm.get('description').value;
-    this.appointment.date = new Date();
-    this.appointment.endDate = new Date();
+    this.appointment.date = this.calculateDate(this.appointmentForm.get('date').value,this.appointmentForm.get('time').value);
+    this.appointment.enddate = this.calculateDate(this.appointmentForm.get('enddate').value,this.appointmentForm.get('endtime').value);
 
+    //debug output
+    var myElement = document.getElementById("test"); 
+    myElement.textContent = this.calculateDate(this.appointmentForm.get('date').value,this.appointmentForm.get('time').value);
+
+    //sending to server
     console.log("creating appointment...");
     this.appointmentService.CreateNewAppointment(this.appointment);
+  }
+
+  //create isostring of date and time
+  calculateDate(date: Date, time: Number){   
+    let newDate = new Date();
+    let hours = parseInt(time.toString().substr(0,2));
+    let minutes = parseInt(time.toString().substr(3));
+    newDate.setTime(date.getTime() + (((hours+2)*60+minutes)*60*1000));
+    return newDate.toISOString();
   }
 }
 
