@@ -1,0 +1,33 @@
+#sideWrapper{
+    background-color: #3F51B5;
+    height: 100%;
+    width: 100%;
+}
+
+#terminButton{
+    background-color: white;
+    width: 95%;
+    margin: 10% 2.5%;
+}
+
+#kategorieButton{
+    background-color: white;
+    color: black;
+    width:80%;
+    margin: 5% 0;
+}
+
+h3{  
+    text-decoration: underline;
+}
+
+#kategories{
+    margin-left:10%;color: white;
+}
+
+
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: red !important;
+}
+

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppointmentModel } from 'src/models/appointment.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class AppointmentService {
     });
   }
   
-  getApps(){
-    this.http.get("http://localhost:3000/api/appointment/get").toPromise().then((data: any)=>{console.log(data);});
+  getApps(): Observable<AppointmentModel[]>{
+    //this.http.get("http://localhost:3000/api/appointment/get").toPromise().then((data: any)=>{console.log(data);});
+    return this.http.get<AppointmentModel[]>("http://localhost:3000/api/appointment/get");
   }
 }

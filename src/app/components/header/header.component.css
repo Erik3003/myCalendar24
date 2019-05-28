@@ -4,3 +4,7 @@
 a, a:link, a:visited {
     color: #FFFFFF;
   }
+
+#heading{
+    font-size: 150%;
+}
