@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginModel } from '../../../models/login.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
     ) { }
 
   ngOnInit() {
@@ -33,9 +35,13 @@ export class LoginComponent implements OnInit {
   }
 
   submitLogin(){
-    this.user.email = this.loginForm.get('email').value;
+    console.log(this.authService.loggedIn());
+    this.authService.setLoggin();
+    console.log(this.authService.loggedIn());
+    this.router.navigate(['/']);
+    /*this.user.email = this.loginForm.get('email').value;
     this.user.password = this.loginForm.get('password').value;
     console.log("Logging in...");
-    this.authService.authUser(this.user);
+    this.authService.authUser(this.user);*/
   }
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AppointmentModel } from '../../../models/appointment.model';
 import { AppointmentService } from '../../services/appointment.service';
-import { Time, NumberSymbol } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-appointment',
@@ -13,10 +13,12 @@ export class CreateAppointmentComponent implements OnInit {
 
   appointmentForm: FormGroup;
   appointment: AppointmentModel = new AppointmentModel();
+  date = new FormControl(new Date());
 
   constructor(
     private formBuilder: FormBuilder,
-    private appointmentService: AppointmentService
+    private appointmentService: AppointmentService,
+    private router: Router
     ) { }
 
   ngOnInit() {
@@ -53,6 +55,7 @@ export class CreateAppointmentComponent implements OnInit {
     //sending to server
     console.log("creating appointment...");
     this.appointmentService.CreateNewAppointment(this.appointment);
+    this.router.navigate(['/']);
   }
 
   //create isostring of date and time

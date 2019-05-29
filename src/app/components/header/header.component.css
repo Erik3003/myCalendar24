@@ -7,4 +7,13 @@ a, a:link, a:visited {
 
 #heading{
     font-size: 150%;
+    margin-left: -10%;
+}
+
+#logginBut{
+    width: 100px;
+    background-color: red;
+}
+#regBut{
+    background: red;
 }

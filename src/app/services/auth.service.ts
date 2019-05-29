@@ -10,6 +10,8 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+  isLoggedIn: boolean = false;
+
   readonly ROOT_URL_POST = 'http://httpbin.org/post';
 
   registerUser(user: RegisterModel){
@@ -28,5 +30,13 @@ export class AuthService {
 
   authUser(user: LoginModel){
     this.http.get('http://echo.jsontest.com/key/value/one/two').toPromise().then(data =>{console.log(data)});
+  }
+
+  loggedIn():boolean{
+    return this.isLoggedIn;
+  }
+
+  setLoggin(){
+    this.isLoggedIn = true;
   }
 }
