@@ -17,6 +17,7 @@ export class AppointmentService {
     this.http.post("http://localhost:3000/api/appointment/new", appointment).toPromise().then((data: any) =>{
       if (data.Success){
         console.log("Termin erfolreich erstellt");
+        console.log(data);
       }
     });
   }

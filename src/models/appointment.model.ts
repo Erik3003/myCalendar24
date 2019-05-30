@@ -3,4 +3,5 @@ export class AppointmentModel{
     date: String;
     enddate: String;    
     description: String;
+    //public: boolean;
 }

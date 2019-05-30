@@ -6,13 +6,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule, MatIconModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule } from "@angular/material";
-import { FullCalendarModule } from '@fullcalendar/angular'
+import {MAT_DATE_LOCALE} from '@angular/material';
 
 import { HeaderComponent } from './components/header/header.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { CreateAppointmentComponent } from './components/create-appointment/create-appointment.component';
-import { CalendarComponent } from './components/calendar/calendar.component';
 import { SelfcalendarComponent } from './components/selfcalendar/selfcalendar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 
@@ -25,7 +24,6 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     RegisterComponent,
     LoginComponent,
     CreateAppointmentComponent,
-    CalendarComponent,
     SelfcalendarComponent,
     SidebarComponent
   ],
@@ -42,9 +40,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     MatCheckboxModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    FullCalendarModule
   ],
-  providers: [],
+  providers: [{provide: MAT_DATE_LOCALE, useValue: 'de-DE'}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
