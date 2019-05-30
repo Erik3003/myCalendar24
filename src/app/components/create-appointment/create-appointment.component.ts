@@ -13,7 +13,6 @@ export class CreateAppointmentComponent implements OnInit {
 
   appointmentForm: FormGroup;
   appointment: AppointmentModel = new AppointmentModel();
-  date = new FormControl(new Date());
 
   constructor(
     private formBuilder: FormBuilder,
@@ -23,24 +22,24 @@ export class CreateAppointmentComponent implements OnInit {
 
   ngOnInit() {
     this.appointmentForm = this.formBuilder.group({
-      'title': [this.appointment.title,[
+      title: [this.appointment.title,[
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(30)
       ]],
-      'date': [this.appointment.date,[
+      date: ['',[
         Validators.required
       ]],
-      'time': [this.appointment.date,
+      time: ['',
         Validators.required
       ],
-      'enddate': [this.appointment.enddate,
+      enddate: ['',
         Validators.required
       ],
-      'endtime': [this.appointment.enddate,
+      endtime: ['',
         Validators.required
       ],     
-      'description': [this.appointment.description,
+      description: ['',
       ]
     });
   }

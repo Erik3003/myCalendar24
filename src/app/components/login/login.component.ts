@@ -1,3 +1,8 @@
+/*
+ * This component displays the login form.
+ * It consists functions for validating the users input and sends valid input to the authentification service.
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { LoginModel } from '../../../models/login.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -18,15 +23,16 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router
-    ) { }
+  ) { }
 
+  //creating login form
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      'email': [this.user.email,[
+      email: ['', [
         Validators.required,
         Validators.email
       ]],
-      'passwort': [this.user.password,[
+      password: ['', [
         Validators.required,
         Validators.minLength(8),
         Validators.maxLength(30)
@@ -34,7 +40,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  submitLogin(){
+  //getting the inputs and calling service for authentification
+  submitLogin() {
     console.log(this.authService.loggedIn());
     this.authService.setLoggin();
     console.log(this.authService.loggedIn());
@@ -43,5 +50,14 @@ export class LoginComponent implements OnInit {
     this.user.password = this.loginForm.get('password').value;
     console.log("Logging in...");
     this.authService.authUser(this.user);*/
+  }
+
+  //getter for validating  inputs in html
+  get email() {
+    return this.loginForm.get('email');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
   }
 }

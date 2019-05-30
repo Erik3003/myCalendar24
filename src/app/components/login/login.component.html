@@ -3,24 +3,30 @@
   <div class="effectWrapper">
     <div class="formTitle">Einloggen</div>
 
+    <!--Form element-->
     <form [formGroup]="loginForm" (ngSubmit)="loginForm.valid && submitLogin()">
       <div class="formElement">
-        <mat-form-field>
-            <input id="email"
-                  matInput
-                  formControlName="email"
-                  placeholder="Ihre Email eingeben"/>
-          </mat-form-field>
 
-          <mat-form-field>
-              <input id="password"
-                    matInput
-                    formControlName="passwort"
-                    placeholder="Ihr Passwort eingeben"
-                    type="password"/>
-            </mat-form-field>
-            <button mat-button type="submit" class="mat-raised-button mat-primary">Login</button>
-            <button mat-button routerLink='/register' class="divider">Registrieren</button>
+        <!--Input email-->
+        <mat-form-field>
+          <input id="email" matInput formControlName="email" placeholder="Ihre Email eingeben" />
+          <mat-error *ngIf='email.invalid && email.touched'>
+            Die angegebene Email-Adresse ist ungültig.
+          </mat-error>
+        </mat-form-field>
+
+        <!--Input password-->
+        <mat-form-field>
+          <input id="password" matInput formControlName="password" placeholder="Ihr Passwort eingeben"
+            type="password" />
+          <mat-error *ngIf='password.invalid && password.touched'>
+            Das Passwort ist ungültig.
+          </mat-error>
+        </mat-form-field>
+
+        <!--Buttons-->
+        <button mat-button type="submit" class="mat-raised-button mat-primary">Login</button>
+        <button mat-button routerLink='/register' class="divider">Registrieren</button>
       </div>
     </form>
   </div>

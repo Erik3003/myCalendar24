@@ -12,6 +12,8 @@
 
         <!--Input date and time-->
         <div class="dateTimePair">
+
+          <!--Input start date and time-->
           <div class="dateTime">
             <!--Input start date-->
             <mat-form-field class="datePicker">
@@ -27,10 +29,11 @@
           </div>
           <p>bis</p>
 
+           <!--Input end date and time-->
           <div class="dateTime2">
             <!--Input end date-->
             <mat-form-field class="datePicker">
-              <input matInput [matDatepicker]="endDatePicker" formControlName="enddate" placeholder="Enddatum" >
+              <input matInput [matDatepicker]="endDatePicker" formControlName="enddate" placeholder="Enddatum">
               <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #endDatePicker disabled="false"></mat-datepicker>
             </mat-form-field>
@@ -41,6 +44,7 @@
             </mat-form-field>
           </div>
         </div>
+        
         <!--Input description-->
         <mat-form-field>
           <input matInput formControlName="description" placeholder="Optionale Beschreibung eingeben" />

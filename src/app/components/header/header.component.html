@@ -1,5 +1,6 @@
 <mat-toolbar class="mat-primary">
-  <!--heading-->
+
+  <!--heading with link to home-->
   <a [routerLink]="['/']">
     <button mat-button id="heading">
       MyCalendar
@@ -10,11 +11,11 @@
   <!--button for group appointments-->
   <a [routerLink]="['/login']">
     <button mat-icon-button *ngIf="isLoggedIn">
-      <mat-icon>group</mat-icon >
+      <mat-icon>group</mat-icon>
     </button>
   </a>
-  
-  <!--button for invitations to appointments-->
+
+  <!--button for appointment invitations-->
   <a [routerLink]="['/createAppointment']">
     <button mat-icon-button *ngIf="isLoggedIn">
       <mat-icon>message</mat-icon>

@@ -3,31 +3,57 @@
   <div class="effectWrapper">
     <div class="formTitle">Registrieren</div>
 
+    <!--Form element-->
     <form [formGroup]="registerForm" (ngSubmit)="registerForm.valid && submitRegister()">
       <div class="formElement">
+        <!--Input name-->
         <mat-form-field>
-          <input id="name"
-                matInput
-                formControlName="name"
-                placeholder="Ihren Namen eingeben"/>
+          <input matInput formControlName="name" placeholder="Ihren Namen eingeben" />
+          <mat-hint align="end">
+            Der Name muss 3-30 Zeichen lang sein.
+          </mat-hint>
+          <mat-error *ngIf='name.errors?.minlength && name.touched'>
+            Der Name muss mindestes 3 Zeichen lang sein.
+          </mat-error>
+          <mat-error *ngIf='name.errors?.maxlength && name.touched'>
+            Der Name darf maximal 30 Zeichen lang sein.
+          </mat-error>
         </mat-form-field>
 
+        <!--Input email-->
         <mat-form-field>
-            <input id="email"
-                  matInput
-                  formControlName="email"
-                  placeholder="Ihre Email eingeben"/>
-          </mat-form-field>
+          <input matInput formControlName="email" placeholder="Ihre Email eingeben" />
+          <mat-error *ngIf='email.invalid && email.touched'>
+            Die angegebene Email-Adresse ist ungültig.
+          </mat-error>
+        </mat-form-field>
 
-          <mat-form-field>
-              <input id="password"
-                    matInput
-                    formControlName="passwort"
-                    placeholder="Ihr Passwort eingeben"
-                    type="password"/>
-            </mat-form-field>
-            <button mat-button type="submit" class="mat-raised-button mat-primary">Registrieren</button>
-            <button mat-button routerLink='/login' class="divider">Einloggen</button>
+        <!--Input password-->
+        <mat-form-field>
+          <input matInput formControlName="password" placeholder="Ihr Passwort eingeben" type="password" />
+          <mat-hint align="end">
+            Das Passwort muss 8-30 Zeichen lang sein.
+          </mat-hint>
+          <mat-error *ngIf='password.errors?.minlength && password.touched'>
+            Das Passwort muss mindestes 8 Zeichen lang sein.
+          </mat-error>
+          <mat-error *ngIf='password.errors?.maxlength && password.touched'>
+            Das Passwort darf maximal 30 Zeichen lang sein.
+          </mat-error>
+        </mat-form-field>
+
+        <!--Input confirm password-->
+        <mat-form-field>
+          <input matInput placeholder="Passwort wiederholen" formControlName="confirmPassword" type="password"
+            [errorStateMatcher]="matcher">
+          <mat-error *ngIf="registerForm.hasError('notSame')">
+            Passwörter stimmen nicht überein.
+          </mat-error>
+        </mat-form-field>
+
+        <!--Buttons-->
+        <button mat-button type="submit" class="mat-raised-button mat-primary">Registrieren</button>
+        <button mat-button routerLink='/login' class="divider">Einloggen</button>
       </div>
     </form>
   </div>
