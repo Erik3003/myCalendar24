@@ -1,0 +1,22 @@
+h2{
+    text-decoration: underline;
+}
+h4{
+    margin-bottom: -10px;
+}
+#kategorieColor{
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    float: left;
+    margin-top:5px;
+    margin-right: 5px;
+}
+.effectWrapper{
+    padding: 10px;
+}
+#buttons{
+    clear: both;
+    width: 100%;
+    text-align: end;
+}

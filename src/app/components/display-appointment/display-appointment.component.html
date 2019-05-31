@@ -1,0 +1,26 @@
+<div class="effectWrapper">
+    <h2 mat-dialog-title>{{data.event.title}}</h2>
+    <mat-dialog-content>
+      <p>am  {{startDay}}.{{startMonth}}.{{startYear}} um {{startHours}}:{{startMinutes}} Uhr </p>
+      <p>bis {{endDay}}.{{endMonth}}.{{endYear}} um {{endHours}}:{{endMinutes}} Uhr </p>
+      <h4>Beschreibung:</h4>
+      <p>{{data.event.description}}</p>
+      <h4>Kategorie:</h4><br>
+      <div id="kategorieColor"></div>
+      <div>
+        Privat
+      </div>  
+    </mat-dialog-content>
+
+    <div id="buttons">
+      <button mat-icon-button>
+          <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button>
+          <mat-icon>email</mat-icon>
+      </button>
+      <button mat-icon-button color="warn">
+          <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+</div>

@@ -5,6 +5,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { CreateAppointmentComponent } from './components/create-appointment/create-appointment.component';
 import { SelfcalendarComponent } from './components/selfcalendar/selfcalendar.component';
+import { DisplayAppointmentComponent } from './components/display-appointment/display-appointment.component';
 
 const routes: Routes = [
   {path:'', component: SelfcalendarComponent},

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from 'src/app/services/appointment.service';
+import { MatDialog, MatDialogConfig } from '@angular/material';
+import { DisplayAppointmentComponent } from '../display-appointment/display-appointment.component';
 
 @Component({
 	selector: 'app-selfcalendar',
@@ -20,7 +22,7 @@ export class SelfcalendarComponent implements OnInit {
 	events=[];
 	appClicked: boolean;
 
-	constructor(private service: AppointmentService) { }
+	constructor(private service: AppointmentService, private dialog: MatDialog) { }
 
 	ngOnInit() {
 		this.today = new Date();
@@ -173,7 +175,7 @@ export class SelfcalendarComponent implements OnInit {
 	createAppointmentElement(eventIndex, dayId){
 		//creating div for the appointment
 		let div = document.createElement("div");
-		div.setAttribute("id", this.events[eventIndex]._id);
+		div.setAttribute("id", eventIndex+100);
 		div.style.backgroundColor = "green";
 		div.style.width = "95%";
 		div.style.height = "20px";
@@ -186,12 +188,21 @@ export class SelfcalendarComponent implements OnInit {
 		cell.appendChild(div);
 	}
 
+	//open information of appointment
 	appointmentClicked(ele){
 		this.appClicked= true;
 		let id=ele.getAttribute("id");
+		id-=100;
 		console.log("hi"+id);
+
+		this.dialog.open(DisplayAppointmentComponent, {
+			data: {
+				event: this.events[id],
+			}
+		});
 	}
 
+	//Open daily view
 	cellClicked(ele){
 		if(!this.appClicked){
 			let id=ele.getAttribute("id");
