@@ -20,7 +20,7 @@ async function insert(appointment) {
   return await new Appointment(appointment).save();
 }
 
-async function extract(/*user*/) {
+async function extract(username) {
   //console.log(user);
-  return await Appointment.find(/*{"creator": user}*/);
+  return await Appointment.find();
 }
