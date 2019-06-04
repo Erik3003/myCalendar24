@@ -16,10 +16,14 @@ const AppointmentSchema = new mongoose.Schema({
     },
     enddate: {
       type: Date,
-      required: false
+      required: true
     },
     description: {
         type: String,
+        required: false
+    },
+    public: {
+        type: Boolean,
         required: false
     }
   }, {

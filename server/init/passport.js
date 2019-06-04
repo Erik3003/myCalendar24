@@ -41,6 +41,7 @@ const jwtLogin = new JwtStrategy({
   }
   user = user.toObject();
   delete user.password;
+  delete user.appointments;
   done(null, user);
 });
 
