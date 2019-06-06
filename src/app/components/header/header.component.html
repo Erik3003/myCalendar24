@@ -1,21 +1,45 @@
 <mat-toolbar class="mat-primary">
-  <span>MyCalendar</span>
+
+  <!--heading with link to home-->
+  <a [routerLink]="['/']">
+    <button mat-button id="heading">
+      MyCalendar
+    </button>
+  </a>
   <span class="spacer"></span>
+
+  <!--button for group appointments-->
   <a [routerLink]="['/login']">
-    <button mat-icon-button>
+    <button mat-icon-button *ngIf="isLoggedIn">
       <mat-icon>group</mat-icon>
     </button>
   </a>
-  
+
+  <!--button for appointment invitations-->
   <a [routerLink]="['/createAppointment']">
-    <button mat-icon-button>
+    <button mat-icon-button *ngIf="isLoggedIn">
       <mat-icon>message</mat-icon>
     </button>
   </a>
 
+  <!--button for profile-->
   <a [routerLink]="['/register']">
-    <button mat-icon-button>
+    <button mat-icon-button *ngIf="isLoggedIn">
       <mat-icon>person</mat-icon>
+    </button>
+  </a>
+
+  <!--button signing up-->
+  <a [routerLink]="['/register']">
+    <button mat-button *ngIf="!isLoggedIn">
+      Registrieren
+    </button>
+  </a>
+
+  <!--button for logging in-->
+  <a [routerLink]="['/login']">
+    <button mat-button *ngIf="!isLoggedIn">
+      Einloggen
     </button>
   </a>
 </mat-toolbar>

@@ -1,9 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import '~@fullcalendar/core/main.css';
+@import '~@fullcalendar/daygrid/main.css';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+/*general css for all forms*/
 .centerWrapper {
     margin: auto;
     width: 50%;
@@ -19,7 +22,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   .formTitle {
     color: rgba(0, 0, 0, .54);
     background: rgba(0, 0, 0, .03);
-    padding: 8px 20px;
+    padding: 8px 5px;
     font-weight: bold;
   }
   
@@ -27,12 +30,18 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     display: flex;
     flex-direction: column;
   }
- 
+  
   .divider {
     margin-top: 10px !important; 
   }
 
-  @media only screen and (max-width: 600px) {
+  /*buttons of calendar*/
+  .fc button{
+    background-color: #3F51B5;
+  }
+
+  /*resizing for smal devices*/
+  @media only screen and (max-width: 900px) {
     .centerWrapper {
       width: 95%;
     }

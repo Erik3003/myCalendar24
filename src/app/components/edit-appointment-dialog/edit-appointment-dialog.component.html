@@ -1,8 +1,7 @@
-<app-header></app-header>
-<div class="centerWrapper">
-  <div class="effectWrapper">
-    <div class="formTitle">Termin erstellen</div>
+<div class="effectWrapper">
+  <h2 mat-dialog-title>{{appointment.title}}</h2>
 
+  <mat-dialog-content>
     <form [formGroup]="appointmentForm" (ngSubmit)="appointmentForm.valid && submitAppointment()">
       <div class="formElement">
         <!--Input title-->
@@ -26,34 +25,38 @@
           <div class="dateTime">
             <!--Input start date-->
             <mat-form-field class="datePicker">
-              <input matInput [matDatepicker]="startDatePicker" formControlName="date" placeholder="Startdatum" (dateChange)="changeStartDate()">
+              <input matInput [matDatepicker]="startDatePicker" formControlName="date" placeholder="Startdatum"
+                (dateChange)="changeStartDate()">
               <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #startDatePicker disabled="false"></mat-datepicker>
             </mat-form-field>
 
             <!--Input start time-->
             <mat-form-field class="timePicker">
-              <input matInput type="time" formControlName="time" placeholder="Startzeit" (input)="changeTime()" step="900"/>
+              <input matInput type="time" formControlName="time" placeholder="Startzeit" (input)="changeTime()"
+                step="900" />
             </mat-form-field>
           </div>
           <p>bis</p>
 
-           <!--Input end date and time-->
+          <!--Input end date and time-->
           <div class="dateTime2">
             <!--Input end date-->
             <mat-form-field class="datePicker">
-              <input matInput [matDatepicker]="endDatePicker" formControlName="enddate" placeholder="Enddatum" [value]="date.value" [min]="selectedStartDate" (dateChange)="changeEndDate()">
+              <input matInput [matDatepicker]="endDatePicker" formControlName="enddate" placeholder="Enddatum"
+                [min]="startDate" (dateChange)="changeEndDate()">
               <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #endDatePicker disabled="false"></mat-datepicker>
             </mat-form-field>
 
             <!--Input end time-->
             <mat-form-field class="timePicker">
-              <input matInput type="time" formControlName="endtime" placeholder="Endzeit" [value]="time.value" max="23:00" [min]="minTime" step="900"/>
+              <input matInput type="time" formControlName="endtime" placeholder="Endzeit" max="23:45" [min]="minTime"
+                step="900" />
             </mat-form-field>
           </div>
         </div>
-        
+
         <!--Input description-->
         <mat-form-field>
           <input matInput formControlName="description" placeholder="Optionale Beschreibung eingeben" />
@@ -66,9 +69,11 @@
         </mat-hint>
 
         <!--Buttons-->
-        <button mat-button type="submit" class="mat-raised-button mat-primary">Termin erstellen</button>
-        <button mat-button routerLink='' class="divider">Abbrechen</button>
+        <button mat-button type="submit" class="mat-raised-button mat-primary">Speichern</button>
       </div>
     </form>
-  </div>
+    <div class="formElement">
+      <button mat-button (click)="onCancel()" class="divider">Abbrechen</button>
+    </div>
+  </mat-dialog-content>
 </div>
