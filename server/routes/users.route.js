@@ -1,27 +1,29 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
 const usersCtrl = require('../controllers/users.controller');
+const passport = require('passport');
 
 const router = express.Router();
 module.exports = router;
 
-router.post('/register', asyncHandler(registerUser));
-router.post('/login', asyncHandler(loginUser));
+router.post('/register', asyncHandler(registerUser), loginUser);
+router.post('/login', passport.authenticate('local', { session: false }), loginUser);
 router.post('/logout', asyncHandler(logoutUser))
 
-async function registerUser(req, res) {
+async function registerUser(req, res, next) {
   let user = await usersCtrl.insert(req.body);
-  res.json({ user, "Success": "true" });
+  user = user.toObject();
+  delete user.password;
+  req.user = user;
+  next()
 }
 
 async function loginUser(req, res) {
-  //let username = req.params.username;
-  let user = await usersCtrl.login(req, res)
-  //res.json(username);
+  let user = req.user;
+  let token = usersCtrl.generateToken(user);
+  res.json({ user, token });
 }
 
 async function logoutUser(req, res) {
-  //let username = req.params.username;
-  let user = await usersCtrl.logout(req, res)
-  //res.json(username);
+  req.logout();
 }
