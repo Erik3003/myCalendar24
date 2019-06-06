@@ -1,0 +1,79 @@
+<div class="effectWrapper">
+  <h2 mat-dialog-title>{{appointment.title}}</h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="appointmentForm" (ngSubmit)="appointmentForm.valid && submitAppointment()">
+      <div class="formElement">
+        <!--Input title-->
+        <mat-form-field>
+          <input matInput formControlName="title" placeholder="Titel des Termins eingeben" />
+          <mat-hint align="end">
+            Der Titel muss 3-30 Zeichen lang sein.
+          </mat-hint>
+          <mat-error *ngIf='title.errors?.minlength && title.touched'>
+            Der Titel muss mindestes 3 Zeichen lang sein.
+          </mat-error>
+          <mat-error *ngIf='title.errors?.maxlength && title.touched'>
+            Der Titel darf maximal 30 Zeichen lang sein.
+          </mat-error>
+        </mat-form-field>
+
+        <!--Input date and time-->
+        <div class="dateTimePair">
+
+          <!--Input start date and time-->
+          <div class="dateTime">
+            <!--Input start date-->
+            <mat-form-field class="datePicker">
+              <input matInput [matDatepicker]="startDatePicker" formControlName="date" placeholder="Startdatum"
+                (dateChange)="changeStartDate()">
+              <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #startDatePicker disabled="false"></mat-datepicker>
+            </mat-form-field>
+
+            <!--Input start time-->
+            <mat-form-field class="timePicker">
+              <input matInput type="time" formControlName="time" placeholder="Startzeit" (input)="changeTime()"
+                step="900" />
+            </mat-form-field>
+          </div>
+          <p>bis</p>
+
+          <!--Input end date and time-->
+          <div class="dateTime2">
+            <!--Input end date-->
+            <mat-form-field class="datePicker">
+              <input matInput [matDatepicker]="endDatePicker" formControlName="enddate" placeholder="Enddatum"
+                [min]="startDate" (dateChange)="changeEndDate()">
+              <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #endDatePicker disabled="false"></mat-datepicker>
+            </mat-form-field>
+
+            <!--Input end time-->
+            <mat-form-field class="timePicker">
+              <input matInput type="time" formControlName="endtime" placeholder="Endzeit" max="23:45" [min]="minTime"
+                step="900" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!--Input description-->
+        <mat-form-field>
+          <input matInput formControlName="description" placeholder="Optionale Beschreibung eingeben" />
+        </mat-form-field>
+
+        <!--Checkbox public appointment-->
+        <mat-checkbox formControlName="public" color="primary">Termin veröffentlichen</mat-checkbox>
+        <mat-hint>
+          Diese Option macht den Termin für <b>alle</b> Nutzer der Anwendung sichbar.
+        </mat-hint>
+
+        <!--Buttons-->
+        <button mat-button type="submit" class="mat-raised-button mat-primary">Speichern</button>
+      </div>
+    </form>
+    <div class="formElement">
+      <button mat-button (click)="onCancel()" class="divider">Abbrechen</button>
+    </div>
+  </mat-dialog-content>
+</div>

@@ -15,7 +15,7 @@ export class AuthService {
   readonly ROOT_URL_POST = 'http://httpbin.org/post';
 
   registerUser(user: RegisterModel){
-    this.http.post(this.ROOT_URL_POST, user).subscribe(data => {console.log(data)});    
+    return this.http.post("http://localhost:3000/api/user/register", user);    
 /*    
     this.http.post(this.ROOT_URL_POST, user).subscribe(data=>{
       if (data.success){

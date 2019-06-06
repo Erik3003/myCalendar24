@@ -89,17 +89,20 @@ export class SelfcalendarComponent implements OnInit {
 					break;
 				}
 
-				//creating cells with data
+				//creating cells with date
 				else {
 					let cell = document.createElement("td");
 					let cellText = document.createTextNode(date.toString());
 					cell.setAttribute("id", date.toString());
 					cell.classList.add("dateCell");
 					cell.addEventListener("click", (event) => this.cellClicked(cell));
+
+					//adding style for todays date
 					if (date === this.today.getDate() && year === this.today.getFullYear() && month === this.today.getMonth()) {
-						cell.classList.add("bg-info");
 						cell.style.backgroundColor = "lightblue";
 					}
+
+					//style of cell
 					cell.style.borderStyle = "solid";
 					cell.style.verticalAlign = "top";
 					cell.style.textAlign = "center";
@@ -122,7 +125,8 @@ export class SelfcalendarComponent implements OnInit {
 					date++;
 				}
 			}
-			tbl.appendChild(row); // appending each row into calendar body.
+			//appending row to calendar body
+			tbl.appendChild(row); 
 		}
 	}
 

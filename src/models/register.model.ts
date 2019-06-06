@@ -1,5 +1,5 @@
 export class RegisterModel{
-    name: String;
+    username: String;
     email: String;
     password: String;
 }

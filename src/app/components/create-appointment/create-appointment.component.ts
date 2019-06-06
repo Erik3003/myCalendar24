@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AppointmentModel } from '../../../models/appointment.model';
 import { AppointmentService } from '../../services/appointment.service';
 import { Router } from '@angular/router';
@@ -55,7 +55,7 @@ export class CreateAppointmentComponent implements OnInit {
         Validators.maxLength(30)
       ]],
       date: [this.today, [
-        Validators.required
+        Validators.required,
       ]],
       time: [this.selectedTime,
       Validators.required

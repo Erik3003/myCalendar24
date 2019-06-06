@@ -9,7 +9,8 @@
 	float: right;
 	width: 80%;
 	height: 100%;
-	background-color: whitesmoke;
+    background-color: whitesmoke;
+    text-align: center;
 }
 
 #monthAndYear{
@@ -25,6 +26,20 @@ button{
 
 #calendar{
 	width: 100%;
-	height: 100%;
+    height: 100%;
 }
 
+thead, tbody{
+	display: inline-block;
+}
+
+thead{
+    width: 10%;
+}
+
+tbody{
+    height: 100%;
+    width: 50%;
+    background-color: lightblue;
+    margin-left: -0.3%;
+}

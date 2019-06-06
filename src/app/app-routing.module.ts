@@ -5,10 +5,10 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { CreateAppointmentComponent } from './components/create-appointment/create-appointment.component';
 import { SelfcalendarComponent } from './components/selfcalendar/selfcalendar.component';
-import { DisplayAppointmentComponent } from './components/display-appointment/display-appointment.component';
+import { DayCalendarComponent } from './components/day-calendar/day-calendar.component';
 
 const routes: Routes = [
-  {path:'', component: SelfcalendarComponent},
+  {path:'', component: DayCalendarComponent},
   {path:'register', component: RegisterComponent},
   {path:'login', component: LoginComponent},
   {path:'createAppointment', component: CreateAppointmentComponent},

@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule, MatIconModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule, MatDialogModule } from "@angular/material";
+import { MatToolbarModule, MatIconModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule, MatDialogModule, MAT_DATE_FORMATS } from "@angular/material";
 import {MAT_DATE_LOCALE} from '@angular/material';
 
 import { HeaderComponent } from './components/header/header.component';
@@ -15,6 +15,8 @@ import { CreateAppointmentComponent } from './components/create-appointment/crea
 import { SelfcalendarComponent } from './components/selfcalendar/selfcalendar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { DisplayAppointmentComponent } from './components/display-appointment/display-appointment.component';
+import { EditAppointmentDialogComponent } from './components/edit-appointment-dialog/edit-appointment-dialog.component';
+import { DayCalendarComponent } from './components/day-calendar/day-calendar.component';
 
 
 
@@ -27,7 +29,9 @@ import { DisplayAppointmentComponent } from './components/display-appointment/di
     CreateAppointmentComponent,
     SelfcalendarComponent,
     SidebarComponent,
-    DisplayAppointmentComponent
+    DisplayAppointmentComponent,
+    EditAppointmentDialogComponent,
+    DayCalendarComponent
   ],
   imports: [
     BrowserModule,
@@ -46,6 +50,6 @@ import { DisplayAppointmentComponent } from './components/display-appointment/di
   ],
   providers: [{provide: MAT_DATE_LOCALE, useValue: 'de-DE'}],
   bootstrap: [AppComponent],
-  entryComponents:[DisplayAppointmentComponent]
+  entryComponents:[DisplayAppointmentComponent, EditAppointmentDialogComponent]
 })
 export class AppModule { }

@@ -1,5 +1,10 @@
+/*
+ * This component displays the details of an appointment after clicking on it.
+ */
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { Router } from '@angular/router';
+import { EditAppointmentDialogComponent } from '../edit-appointment-dialog/edit-appointment-dialog.component';
 
 @Component({
   selector: 'app-display-appointment',
@@ -8,6 +13,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 })
 export class DisplayAppointmentComponent implements OnInit {
 
+  //variables to display the date in a customized format
   endYear;
   endMonth;
   endDay;
@@ -20,22 +26,44 @@ export class DisplayAppointmentComponent implements OnInit {
   startHours;
   startMinutes;
 
-  constructor(public dialogRef: MatDialogRef<DisplayAppointmentComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:any) {
-      this.endYear = data.event.enddate.substr(0,4);
-      this.endMonth = data.event.enddate.substr(5,2);
-      this.endDay = data.event.enddate.substr(8,2);
-      this.endHours = data.event.enddate.substr(11,2);
-      this.endMinutes = data.event.enddate.substr(14,2);
-      this.startYear = data.event.date.substr(0,4);
-      this.startMonth = data.event.date.substr(5,2);
-      this.startDay = data.event.date.substr(8,2);
-      this.startHours = data.event.date.substr(11,2);
-      this.startMinutes = data.event.date.substr(14,2);
+  appointment;
+
+  constructor(
+    private router: Router,
+    private dialog: MatDialog,
+    public dialogRef: MatDialogRef<DisplayAppointmentComponent>,
+    @Inject(MAT_DIALOG_DATA) public data:any
+    ) {
+      this.appointment = data.event;
+      //getting the date components out of the appointment data
+      this.endYear = this.appointment.enddate.substr(0,4);
+      this.endMonth = this.appointment.enddate.substr(5,2);
+      this.endDay = this.appointment.enddate.substr(8,2);
+      this.endHours = this.appointment.enddate.substr(11,2);
+      this.endMinutes = this.appointment.enddate.substr(14,2);
+      this.startYear = this.appointment.date.substr(0,4);
+      this.startMonth = this.appointment.date.substr(5,2);
+      this.startDay = this.appointment.date.substr(8,2);
+      this.startHours = this.appointment.date.substr(11,2);
+      this.startMinutes = this.appointment.date.substr(14,2);
      }
 
   ngOnInit() {
   }
 
-  
+  onEdit(){
+    this.dialogRef.close();
+
+    this.dialog.open(EditAppointmentDialogComponent, {
+			data: {
+				event: this.appointment,
+			}
+		});
+    //open new component to edit window
+
+  }
+
+  onDelete(){
+    //call appointment service delete request
+  }
 }
