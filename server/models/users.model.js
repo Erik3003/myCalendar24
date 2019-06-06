@@ -18,6 +18,10 @@ const UserSchema = new mongoose.Schema({
   appointments: [{
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Appointment',
+  }],
+  invites: [{
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Appointment',
   }]
 }, {
   versionKey: false

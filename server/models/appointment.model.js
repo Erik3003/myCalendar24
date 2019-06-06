@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 
 const AppointmentSchema = new mongoose.Schema({
     creator: {
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User',
-        required: true
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'User',
+      required: true
     },
     title: {
       type: String,
@@ -25,6 +25,11 @@ const AppointmentSchema = new mongoose.Schema({
     public: {
         type: Boolean,
         required: false
+    },
+    category: {
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'Category',
+      required: false
     }
   }, {
     versionKey: false
