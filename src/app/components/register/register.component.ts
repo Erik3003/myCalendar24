@@ -55,19 +55,8 @@ export class RegisterComponent implements OnInit {
     this.user.password = this.registerForm.get('password').value;
 
     console.log("registering...");
-    this.authService.registerUser(this.user).subscribe(
-      res => {
-        console.log("erfolreich")
-        console.log(res);
-        
-        //setTimeout(() => this.showSucessMessage = false, 4000);
-        //this.resetForm(form);
-      },
-      err =>{
-
-      });
-    //this.router.navigate(['/login']);
-    }
+    this.authService.registerUser(this.user);
+  }
 
   //check if the entered passwords matches
   checkPassword(group: FormGroup) {

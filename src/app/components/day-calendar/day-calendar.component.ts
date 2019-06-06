@@ -77,10 +77,8 @@ export class DayCalendarComponent implements OnInit {
   appendData(){
     let div = document.createElement("div");
     let height = this.cellHeight*3;
-    let marginBottom = height - this.cellHeight;
     div.style.height = height.toString()+"px";
     div.style.backgroundColor = "yellow";
-    div.style.marginBottom = "-"+marginBottom.toString()+"px";
     let cell = document.getElementById("12");
     cell.appendChild(div);
   }

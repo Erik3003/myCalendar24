@@ -66,7 +66,7 @@ export class CreateAppointmentComponent implements OnInit {
       endtime: ['',
         Validators.required
       ],
-      description: ['',
+      description: [' ',
       ],
       public:[false,
       ]

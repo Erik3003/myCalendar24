@@ -9,9 +9,12 @@
 
         <!--Input email-->
         <mat-form-field>
-          <input id="email" matInput formControlName="email" placeholder="Ihre Email eingeben" />
-          <mat-error *ngIf='email.invalid && email.touched'>
-            Die angegebene Email-Adresse ist ungültig.
+          <input id="name" matInput formControlName="name" placeholder="Ihren Usernamen eingeben" />
+          <mat-error *ngIf='name.errors?.minlength && name.touched'>
+            Der Name muss mindestes 3 Zeichen lang sein.
+          </mat-error>
+          <mat-error *ngIf='name.errors?.maxlength && name.touched'>
+            Der Name darf maximal 30 Zeichen lang sein.
           </mat-error>
         </mat-form-field>
 
