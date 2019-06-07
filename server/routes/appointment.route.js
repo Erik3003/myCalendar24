@@ -13,6 +13,9 @@ router.get('/get', asyncHandler(getAppointments));
 router.post('/update', asyncHandler(updateAppointment));
 router.post('/remove', asyncHandler(removeAppointment));
 router.post('/add', asyncHandler(addAppointment));
+router.post('/invite', asyncHandler(sendInvite));
+router.post('/accept', asyncHandler(acceptInvite));
+router.get('/invites', asyncHandler(getInvites));
 
 
 async function createAppointment(req, res) {
@@ -53,4 +56,29 @@ async function addAppointment(req, res) {
   }
 
   res.json(appointment);
+}
+
+async function getInvites(req, res) {
+  invites = appointmentCtrl.invites(req.user);
+  res.json(invites);
+}
+
+async function sendInvite(req, res) {
+  invite = appointmentCtrl.invite(req.user, req.body.invite, req.body.target);
+
+  if (appointment.Status != null) {
+    return res.status(appointment.Status).send("Error code: " + appointment.Status);
+  }
+
+  res.json(invite);
+}
+
+async function acceptInvite(req, res) {
+  invite = appointmentCtrl.accept(req.user, req.body);
+
+  if (appointment.Status != null) {
+    return res.status(appointment.Status).send("Error code: " + appointment.Status);
+  }
+
+  res.json(invite);
 }

@@ -94,6 +94,7 @@ async function remove(appointment, user) {
   if (!isCreator(appointment, user)) {
     if (hasAppointment(appointment, user)) {
       user.appointments.splice(user.appointments.indexOf(appointment._id), 1);
+      await userCtrl.saveUser(user);
       return { Success: true }
     }
     return { Status:401 };
@@ -146,20 +147,24 @@ async function public() {
 }
 
 async function invite(user, appointment, target) {
-  if(await isCreator(appointment, user)){
-    inviteTarget = await getUser(target);
-    return await target.invite.push(appointment._id);
+  isUserCreator = await isCreator(appointment, user);
+  if(isUserCreator){
+    target = await getUser(target);
+    target.invites.push(appointment._id);
+    return target.save();
   }
   return { Status:401 };
 }
 
 async function accept(user, invite) {
   user = await userCtrl.getUser(user);
-  if(await isInvited(invite, user)){
+  isUserInvited = isInvited(invite, user);
+  if(isUserInvited){
     if (invite.accept) {
       user.appointments.push(invite._id);
     }
     user.invites.splice(user.invites.indexOf(invite._id), 1);
+    await user.save();
     return { Success: true, Accepted: invite.accept };
   }
   return { Status:401 };
@@ -167,5 +172,5 @@ async function accept(user, invite) {
 
 async function invites(user) {
   user = await userCtrl.getUser(user);
-  return await user.invites;
+  return user.invites;
 }
