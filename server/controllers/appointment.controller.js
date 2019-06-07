@@ -88,7 +88,7 @@ async function remove(appointment, user) {
     return { Status:404 };
   }
 
-  if (!isCreator(appointment, user)){
+  if (!isCreator(appointment, user)) {
     if (hasAppointment(appointment, user)) {
       user.appointments.splice(user.appointments.indexOf(appointment._id), 1);
       return { Success: true }
