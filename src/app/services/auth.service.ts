@@ -14,37 +14,20 @@ export class AuthService {
 
   token: string;
 
-  readonly ROOT_URL_POST = 'http://httpbin.org/post';
+  readonly ROOT_URL = 'http://localhost:3000/api/user';
 
   registerUser(user: RegisterModel){
-    this.http.post("http://localhost:3000/api/user/register", user).subscribe( (data: any) => {
-      if (data.token != null){
-        this.isLoggedIn = true;
-        this.token = data.token;
-        console.log("erfolgreich registriert");      
-      }else{
-        console.log("registrierung fehlgeschlagen");
-      }
-    },
-    error => {
-      console.log("fehler", error)
-    }
-    );    
+    return this.http.post(this.ROOT_URL+"/register", user);
+       
   }
 
-  loginUser(user: LoginModel):boolean{
-    this.http.post("http://localhost:3000/api/user/login", user).subscribe( (data: any) => {
-      if (data.token != null){
-        this.isLoggedIn = true;
-        this.token = data.token;
-        console.log("service erfolgreich eingeloggt: "+this.isLoggedIn); 
-      }else{
-        console.log("service login fehlgeschlagen");
-      }   
-    console.log("service eingeloggt: "+this.isLoggedIn);  
-    });
-    console.log("return");
-    return true;  
+  loginUser(user: LoginModel){
+    return this.http.post(this.ROOT_URL+"/login", user);
+  }
+
+  logoutUser(){
+    this.isLoggedIn = false;
+    this.token = "";
   }
 
   loggedIn():boolean{
@@ -54,4 +37,10 @@ export class AuthService {
   getToken():string{
     return this.token;
   }
+
+  setToken(token:string){
+    this.token = token;
+    this.isLoggedIn = true;
+  }
+
 }

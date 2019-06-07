@@ -8,6 +8,7 @@ import { LoginModel } from '../../../models/login.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ export class LoginComponent implements OnInit {
 
   user: LoginModel = new LoginModel;
   loginForm: FormGroup;
+  isLogginError:boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,14 +48,14 @@ export class LoginComponent implements OnInit {
     console.log("comp eingeloggt"+this.authService.loggedIn());
     this.user.username = this.loginForm.get('name').value;
     this.user.password = this.loginForm.get('password').value;
-    console.log("comp Logging in...");
-    let logedIn = this.authService.loginUser(this.user);
-    if(logedIn){
-      console.log("comp eingeloggt"+this.authService.loggedIn());
+    
+    this.authService.loginUser(this.user).subscribe( (data:any) =>{
+      this.authService.setToken(data.token);
       this.router.navigate(['/calendar']);
-    }
-    console.log("comp service beendet");
-       
+    },
+    (err: HttpErrorResponse) => {
+      this.isLogginError = true;     
+    });
   }
 
   //getter for validating  inputs in html

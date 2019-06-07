@@ -1,9 +1,13 @@
 <app-header></app-header>
 <div class="centerWrapper">
+
+  <!--Error message-->
+  <div *ngIf="isRegisterError" class="errorMessage centerWrapper">Benutzername oder Email bereits vergeben!</div>
+  
+  <!--Form element-->
   <div class="effectWrapper">
     <div class="formTitle">Registrieren</div>
 
-    <!--Form element-->
     <form [formGroup]="registerForm" (ngSubmit)="registerForm.valid && submitRegister()">
       <div class="formElement">
         <!--Input name-->

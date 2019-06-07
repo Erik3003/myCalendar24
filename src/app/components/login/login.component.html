@@ -1,9 +1,12 @@
 <app-header></app-header>
 <div class="centerWrapper">
+
+  <!--Error message-->
+  <div *ngIf="isLogginError" class="errorMessage centerWrapper">Benutzername oder Passwort falsch!</div>
+
+  <!--Form element-->
   <div class="effectWrapper">
     <div class="formTitle">Einloggen</div>
-
-    <!--Form element-->
     <form [formGroup]="loginForm" (ngSubmit)="loginForm.valid && submitLogin()">
       <div class="formElement">
 

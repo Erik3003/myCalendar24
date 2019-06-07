@@ -35,6 +35,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     margin-top: 10px !important; 
   }
 
+  .errorMessage {
+    width: 90%;
+    text-align: center;
+    color: #D8000C;
+    background-color: #FFD2D2;
+  }
+
   /*buttons of calendar*/
   .fc button{
     background-color: #3F51B5;
