@@ -7,6 +7,7 @@ const appointmentSchema = Joi.object({
   title: Joi.string().required(),
   date: Joi.date().required(),
   enddate: Joi.date().required(),
+  category: Joi.string().required(),
   description: Joi.string(),
   _id: Joi.string(),
   public: Joi.bool()
@@ -88,6 +89,8 @@ async function remove(appointment, user) {
     return { Status:404 };
   }
 
+  console.log("APPOINTMENT:" + appointment);
+
   if (!isCreator(appointment, user)) {
     if (hasAppointment(appointment, user)) {
       user.appointments.splice(user.appointments.indexOf(appointment._id), 1);
@@ -103,13 +106,18 @@ async function remove(appointment, user) {
 
 async function removeFromUsers(appointment) {
   users = await userCtrl.getUsers(appointment);
-  users.forEach(user => {
-    user.appointments.splice(user.appointments.indexOf(appointment._id), 1);
+  console.log("USERS:  " + users);
+  users.forEach(async function(user) {
+    console.log("USER:" + user);
+    index = user.appointments.indexOf(appointment._id);
+   console.log("INDEX:  " + index);
+    user.appointments.splice(index, 1);
+    await userCtrl.saveUser(user);
   });
 }
 
 function isCreator(appointment, user) {
-  return user._id == getAppointment(appointment).creator.toString();
+  return user._id.toString() == appointment.creator.toString();
 }
 
 function isInvited(appointment, user) {
@@ -121,6 +129,7 @@ function hasAppointment(appointment, user) {
 }
 
 async function getAppointment(appointment) {
+  console.log("APPOINTMEMT ID:   " + appointment._id)
   return await Appointment.findById(appointment._id);
 }
 

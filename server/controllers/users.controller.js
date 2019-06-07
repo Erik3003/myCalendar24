@@ -14,7 +14,8 @@ module.exports = {
   insert,
   generateToken,
   getUser,
-  getUsers
+  getUsers,
+  saveUser
 }
 
 async function insert(user) {
@@ -35,4 +36,8 @@ async function getUser(user) {
 
 async function getUsers(appointment) {
   return await User.find({ appointments: appointment._id });
+}
+
+async function saveUser(user) {
+  await User(user).save();
 }
