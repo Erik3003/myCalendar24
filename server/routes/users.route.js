@@ -14,6 +14,8 @@ async function registerUser(req, res, next) {
   let user = await usersCtrl.insert(req.body);
   user = user.toObject();
   delete user.password;
+  delete user.appointments;
+  delete user.invites;
   req.user = user;
   next()
 }
