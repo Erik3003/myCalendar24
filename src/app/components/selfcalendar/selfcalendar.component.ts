@@ -31,13 +31,12 @@ export class SelfcalendarComponent implements OnInit {
 		this.monthAndYear = document.getElementById("monthAndYear");
 		this.initCalendar(this.currentMonth, this.currentYear);
 		this.getAppointments();
-		console.log(this.events);
-		this.appendAppointmentsToCell();
+		setTimeout(()=>this.appendAppointmentsToCell(),100);		
 	}
 
 	//TEST BUTTON FUNKTIONEN########################################################################################
-	loadData(){		
-		console.log(this.events);
+	loadData(){				
+		console.log(this.events);		
 	}
 
 	appendData(){
@@ -47,16 +46,22 @@ export class SelfcalendarComponent implements OnInit {
 
 	//loading the next month
 	nextMonth() {
+		this.events = [];
 		this.currentYear = (this.currentMonth === 11) ? this.currentYear + 1 : this.currentYear;
 		this.currentMonth = (this.currentMonth + 1) % 12;
 		this.initCalendar(this.currentMonth, this.currentYear);
+		this.getAppointments();
+		setTimeout(()=>this.appendAppointmentsToCell(),100);
 	}
 
 	//loading previous month
-	previousMonth() {		
+	previousMonth() {	
+		this.events = [];	
 		this.currentYear = (this.currentMonth === 0) ? this.currentYear - 1 : this.currentYear;
 		this.currentMonth = (this.currentMonth === 0) ? 11 : this.currentMonth - 1;
 		this.initCalendar(this.currentMonth, this.currentYear);
+		this.getAppointments();
+		setTimeout(()=>this.appendAppointmentsToCell(),100);
 	}
 
 	//create empty calender for the selected month
@@ -107,20 +112,9 @@ export class SelfcalendarComponent implements OnInit {
 					cell.style.verticalAlign = "top";
 					cell.style.textAlign = "center";
 					cell.style.height = "15%";
+					cell.style.width = "14%";
 					cell.appendChild(cellText);
 					
-					//test div(termin)#########################################################################################
-					let div = document.createElement("div");
-					div.setAttribute("id", "123");
-					div.style.backgroundColor = "red";
-					div.style.width = "95%";
-					div.style.height = "30px";
-					div.addEventListener("click", (event) => this.appointmentClicked(div));
-					let divText = document.createTextNode("TestTermin");
-					div.appendChild(divText);
-					cell.appendChild(div);
-					//############################################################################################################
-
 					row.appendChild(cell);
 					date++;
 				}
@@ -132,7 +126,7 @@ export class SelfcalendarComponent implements OnInit {
 
 	//requesting service for events 
 	getAppointments(){
-		this.service.getApps().subscribe(data => this.events= data);
+		this.service.fetchAppointments(this.currentMonth,this.currentYear).subscribe(data => this.events= data);
 	}
 
 	//calculating which events belong to which cell
@@ -184,6 +178,7 @@ export class SelfcalendarComponent implements OnInit {
 		div.style.width = "95%";
 		div.style.height = "20px";
 		div.style.margin = "1% 2.5%";
+		div.style.overflow = "hidden";
 		div.addEventListener("click", (event) => this.appointmentClicked(div));
 		let divText = document.createTextNode(this.events[eventIndex].title);
 		div.appendChild(divText);
@@ -197,7 +192,7 @@ export class SelfcalendarComponent implements OnInit {
 		this.appClicked= true;
 		let id=ele.getAttribute("id");
 		id-=100;
-		console.log("hi"+id);
+		console.log(id);
 
 		this.dialog.open(DisplayAppointmentComponent, {
 			data: {
@@ -210,7 +205,7 @@ export class SelfcalendarComponent implements OnInit {
 	cellClicked(ele){
 		if(!this.appClicked){
 			let id=ele.getAttribute("id");
-			console.log("hi"+id);
+			console.log(id);
 		}else{
 			this.appClicked = false;
 		}

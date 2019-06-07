@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { MyErrorStateMatcher } from 'src/app/class/my-error-state-matcher';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -20,6 +21,7 @@ export class RegisterComponent implements OnInit {
   user: RegisterModel = new RegisterModel();
   registerForm: FormGroup;
   matcher = new MyErrorStateMatcher();
+  isRegisterError: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -54,20 +56,14 @@ export class RegisterComponent implements OnInit {
     this.user.email = this.registerForm.get('email').value;
     this.user.password = this.registerForm.get('password').value;
 
-    console.log("registering...");
-    this.authService.registerUser(this.user).subscribe(
-      res => {
-        console.log("erfolreich")
-        console.log(res);
-        
-        //setTimeout(() => this.showSucessMessage = false, 4000);
-        //this.resetForm(form);
-      },
-      err =>{
-
-      });
-    //this.router.navigate(['/login']);
-    }
+    this.authService.registerUser(this.user).subscribe( (data:any) =>{
+      this.authService.setToken(data.token);
+      this.router.navigate(['/calendar']);
+    },
+    (err: HttpErrorResponse) => {
+      this.isRegisterError = true;     
+    });
+  }
 
   //check if the entered passwords matches
   checkPassword(group: FormGroup) {

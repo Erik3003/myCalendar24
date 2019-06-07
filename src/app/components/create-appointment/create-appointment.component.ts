@@ -104,7 +104,7 @@ export class CreateAppointmentComponent implements OnInit {
     //calling service to send data to server
     console.log("creating appointment...");
     this.appointmentService.CreateNewAppointment(this.appointment);
-    this.router.navigate(['/']);
+    this.router.navigate(['/calendar']);
   }
 
   //create isostring of date and time

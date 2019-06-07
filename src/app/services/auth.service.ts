@@ -12,31 +12,35 @@ export class AuthService {
 
   isLoggedIn: boolean = false;
 
-  readonly ROOT_URL_POST = 'http://httpbin.org/post';
+  token: string;
+
+  readonly ROOT_URL = 'http://localhost:3000/api/user';
 
   registerUser(user: RegisterModel){
-    return this.http.post("http://localhost:3000/api/user/register", user);    
-/*    
-    this.http.post(this.ROOT_URL_POST, user).subscribe(data=>{
-      if (data.success){
-        console.log("register successful");
-        //navigate to login, display message
-      }else{
-        console.log("failed to register");
-      }
-    });
-*/
+    return this.http.post(this.ROOT_URL+"/register", user);
+       
   }
 
-  authUser(user: LoginModel){
-    this.http.get('http://echo.jsontest.com/key/value/one/two').toPromise().then(data =>{console.log(data)});
+  loginUser(user: LoginModel){
+    return this.http.post(this.ROOT_URL+"/login", user);
+  }
+
+  logoutUser(){
+    this.isLoggedIn = false;
+    this.token = "";
   }
 
   loggedIn():boolean{
     return this.isLoggedIn;
   }
 
-  setLoggin(){
+  getToken():string{
+    return this.token;
+  }
+
+  setToken(token:string){
+    this.token = token;
     this.isLoggedIn = true;
   }
+
 }
