@@ -29,7 +29,7 @@ const AppointmentSchema = new mongoose.Schema({
     category: {
       type: mongoose.Schema.Types.ObjectId, 
       ref: 'Category',
-      required: false
+      required: true
     }
   }, {
     versionKey: false

@@ -125,8 +125,8 @@ async function getAppointment(appointment) {
 }
 
 async function hasAnyAppointmentCategory(category) {
-  console.log(await Appointment.findOne({category:category._id}));
-  if (await Appointment.findOne({category:category._id})._id != null) {
+  appointment = await Appointment.findOne({category:category._id});
+  if (appointment != null) {
     return true;
   }
   return false;
