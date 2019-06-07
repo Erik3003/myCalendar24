@@ -10,6 +10,8 @@ import { AuthService } from '../../services/auth.service';
 import { MyErrorStateMatcher } from 'src/app/class/my-error-state-matcher';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { CategoryService } from 'src/app/services/category.service';
+import { CategoryModel } from 'src/models/category.model';
 
 @Component({
   selector: 'app-register',
@@ -26,6 +28,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private categoryService: CategoryService,
     private router: Router
   ) { }
 
@@ -58,6 +61,15 @@ export class RegisterComponent implements OnInit {
 
     this.authService.registerUser(this.user).subscribe( (data:any) =>{
       this.authService.setToken(data.token);
+      //adding default categories
+      let defaultCategory = new CategoryModel();
+      defaultCategory.title = "Privat";
+      defaultCategory.color = "yellow";
+      this.categoryService.createCategory(defaultCategory).subscribe();
+      defaultCategory.title = "Beruf";
+      defaultCategory.color = "lightgreen";
+      this.categoryService.createCategory(defaultCategory).subscribe();
+
       this.router.navigate(['/calendar']);
     },
     (err: HttpErrorResponse) => {

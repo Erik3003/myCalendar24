@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CategoryService } from 'src/app/services/category.service';
+import { CategoryModel } from 'src/models/category.model';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() { }
+  categories: CategoryModel[] = [];
 
-  ngOnInit() {
+  constructor(private catService:CategoryService) { 
+      this.catService.fetchCategories().subscribe((data:any) => {
+        this.categories= data.category;
+      });
   }
 
+
+  ngOnInit() {
+    
+  }
 }

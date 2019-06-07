@@ -3,24 +3,22 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppointmentModel } from 'src/models/appointment.model';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
-import { RemoveAppModel } from 'src/models/removeApp.model';
-import { KategorieModel } from 'src/models/kategorie.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppointmentService {
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
-
   appointments: AppointmentModel[];
-  kategories: KategorieModel[];
+  
   readonly ROOT_URL = 'http://localhost:3000/api/appointment';
+
+  constructor(private http: HttpClient, private authService: AuthService) { 
+  } 
 
   CreateNewAppointment(appointment: AppointmentModel){
     let headers = new HttpHeaders();
     headers = headers.append("Authorization", "bearer "+this.authService.getToken());
-    console.log(headers);
 
     return this.http.post(this.ROOT_URL + "/new", appointment, {headers:headers});
   }
@@ -39,19 +37,13 @@ export class AppointmentService {
   }
 
   removeApp(id:string){
-    let appointment = new RemoveAppModel();
+    let appointment = new AppointmentModel();
     appointment._id = id;
+    console.log(appointment);
     let headers = new HttpHeaders();
     headers = headers.append("Authorization", "bearer "+this.authService.getToken());
     
-    this.http.post(this.ROOT_URL + "/remove", appointment, {headers:headers});
-  }
-
-  fetchKategories(){
-    let headers = new HttpHeaders();
-    headers = headers.append("Authorization", "bearer "+this.authService.getToken());
-
-    return this.http.get(this.ROOT_URL + "/getKategories", {headers:headers});
+    return this.http.post(this.ROOT_URL + "/remove", appointment, {headers:headers});
   }
 
 //getter and setter ----------------------------------------------------------------------------------------------
@@ -62,13 +54,5 @@ export class AppointmentService {
 
   getAppointments():AppointmentModel[]{
     return this.appointments
-  }
-
-  setKategories(kategories: KategorieModel[]){
-    this.kategories = kategories;
-  }
-
-  getKategories():KategorieModel[]{
-    return this.kategories;
   }
 }

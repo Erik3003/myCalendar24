@@ -15,17 +15,17 @@ import { AppointmentService } from 'src/app/services/appointment.service';
 export class DisplayAppointmentComponent implements OnInit {
 
   //variables to display the date in a customized format
-  endYear;
-  endMonth;
-  endDay;
-  endHours;
-  endMinutes;
+  endYear: string;
+  endMonth: string;
+  endDay: string;
+  endHours: string;
+  endMinutes: string;
 
-  startYear;
-  startMonth;
-  startDay;
-  startHours;
-  startMinutes;
+  startYear: string;
+  startMonth: string;
+  startDay: string;
+  startHours: string;
+  startMinutes: string;
 
   appointment;
 
@@ -64,10 +64,12 @@ export class DisplayAppointmentComponent implements OnInit {
     //open new component to edit window
 
   }
-
-  onRemove(){
-    //call appointment service delete request
+  //call appointment service delete request
+  onRemove(){    
     console.log("deleting");
-    this.appointmentService.removeApp(this.appointment._id);
+    this.appointmentService.removeApp(this.appointment._id).subscribe((data: any)=>{
+      this.router.navigate(['/calendar']);
+      this.dialogRef.close();
+    });
   }
 }

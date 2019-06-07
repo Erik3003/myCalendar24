@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from 'src/app/services/appointment.service';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { DisplayAppointmentComponent } from '../display-appointment/display-appointment.component';
+import { CategoryService } from 'src/app/services/category.service';
+import { CategoryModel } from 'src/models/category.model';
 
 @Component({
 	selector: 'app-selfcalendar',
@@ -22,7 +24,8 @@ export class SelfcalendarComponent implements OnInit {
 	events=[];
 	appClicked: boolean;
 
-	constructor(private service: AppointmentService, private dialog: MatDialog) { }
+
+	constructor(private service: AppointmentService, private catService: CategoryService,private dialog: MatDialog) { }
 
 	ngOnInit() {
 		this.today = new Date();
@@ -35,12 +38,20 @@ export class SelfcalendarComponent implements OnInit {
 	}
 
 	//TEST BUTTON FUNKTIONEN########################################################################################
-	loadData(){				
-		console.log(this.events);		
+	appendData(){				
+		let category = new CategoryModel();
+		category.color = "green";	
+		category.title = "newCat2";
+		this.catService.createCategory(category).subscribe((data:any)=>{
+			console.log(data);
+		});
 	}
 
-	appendData(){
-		this.appendAppointmentsToCell();
+	loadData(){
+		this.catService.fetchCategories().subscribe((data: any)=>{
+			console.log(data);
+		});
+			
 	}
 	//###############################################################################################################
 

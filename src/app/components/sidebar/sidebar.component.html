@@ -1,11 +1,10 @@
 <div id="sideWrapper">
     <button mat-button id="terminButton" routerLink='/createAppointment'>Termin erstellen</button>
     <hr>
-    <div id="kategories">
+    <div id="categories">
       <h3>Kategorien:</h3>
-      <mat-checkbox id="checkbox" checked="true">Privat</mat-checkbox><br>
-      <mat-checkbox>Beruflich</mat-checkbox><br>
-      <mat-checkbox>Geburtstage</mat-checkbox><br>
-      <button mat-button id="kategorieButton">Kategorie erstellen</button>
+      <div id="checkboxesWrapper"></div>
+      <mat-checkbox class="checkboxes" *ngFor="let category of categories" checked="true" id="{{category._id}}">{{category.title}}</mat-checkbox>
+      <button mat-button id="categoryButton" (click)="loadCat()">Kategorie erstellen</button>
     </div>
 </div>
