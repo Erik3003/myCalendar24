@@ -8,7 +8,7 @@ module.exports = router;
 
 router.post('/register', asyncHandler(registerUser), loginUser);
 router.post('/login', passport.authenticate('local', { session: false }), loginUser);
-router.post('/logout', asyncHandler(logoutUser))
+router.post('/logout', asyncHandler(logoutUser));
 
 async function registerUser(req, res, next) {
   let user = await usersCtrl.insert(req.body);

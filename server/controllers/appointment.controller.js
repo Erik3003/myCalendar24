@@ -32,7 +32,6 @@ async function insert(appointment, user) {
   appointment.creator = user._id.toString();
   appointment = await Joi.validate(appointment, appointmentSchema, { abortEarly: false });
   appointment = await new Appointment(appointment).save();
-  console.log(user);
   user = await userCtrl.getUser(user);
   user.appointments.push(appointment._id);
   user.save();
@@ -89,7 +88,6 @@ async function remove(appointment, user) {
     return { Status:404 };
   }
 
-  console.log("APPOINTMENT:" + appointment);
 
   if (!isCreator(appointment, user)) {
     if (hasAppointment(appointment, user)) {
@@ -100,18 +98,14 @@ async function remove(appointment, user) {
     return { Status:401 };
   }
   
-  console.log(appointment._id);
   await removeFromUsers(appointment);
   return await Appointment.deleteOne({_id: appointment._id});
 }
 
 async function removeFromUsers(appointment) {
   users = await userCtrl.getUsers(appointment);
-  console.log("USERS:  " + users);
   users.forEach(async function(user) {
-    console.log("USER:" + user);
     index = user.appointments.indexOf(appointment._id);
-   console.log("INDEX:  " + index);
     user.appointments.splice(index, 1);
     await userCtrl.saveUser(user);
   });
@@ -147,11 +141,34 @@ async function public() {
 }
 
 async function invite(user, appointment, target) {
+  appointment = await getAppointment(appointment);
+  user = await userCtrl.getUser(user);
+  if(appointment == null || user == null) {
+    return { Status: 401 };
+  }
+
+
   isUserCreator = await isCreator(appointment, user);
-  if(isUserCreator){
-    target = await getUser(target);
+  if(isUserCreator) {
+    target = await userCtrl.getUser(target);
+
+    if (target == null) {
+      return { Status: 400}
+    }
+
+    isAlreadyInvited = isInvited(appointment, target);
+    if(isAlreadyInvited) {
+      return { Status: 400 }
+    }
+
+    hasAppointmentAlready = hasAppointment(appointment, target);
+    if(hasAppointmentAlready) {
+      return { Status: 400 }
+    }
+
     target.invites.push(appointment._id);
-    return target.save();
+    return await target.save();
+    //return { Success: true };
   }
   return { Status:401 };
 }

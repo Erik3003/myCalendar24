@@ -59,25 +59,26 @@ async function addAppointment(req, res) {
 }
 
 async function getInvites(req, res) {
-  invites = appointmentCtrl.invites(req.user);
-  res.json(invites);
+  invites = await appointmentCtrl.invites(req.user);
+
+  res.json({ invites: invites });
 }
 
 async function sendInvite(req, res) {
-  invite = appointmentCtrl.invite(req.user, req.body.invite, req.body.target);
+  invite = await appointmentCtrl.invite(req.user, req.body.appointment, req.body.target);
 
-  if (appointment.Status != null) {
-    return res.status(appointment.Status).send("Error code: " + appointment.Status);
+  if (invite.Status != null) {
+    return res.status(invite.Status).send("Error code: " + invite.Status);
   }
 
   res.json(invite);
 }
 
 async function acceptInvite(req, res) {
-  invite = appointmentCtrl.accept(req.user, req.body);
+  invite = await appointmentCtrl.accept(req.user, req.body);
 
-  if (appointment.Status != null) {
-    return res.status(appointment.Status).send("Error code: " + appointment.Status);
+  if (invite.Status != null) {
+    return res.status(invite.Status).send("Error code: " + invite.Status);
   }
 
   res.json(invite);
