@@ -176,13 +176,20 @@ async function invite(user, appointment, target) {
 async function accept(user, invite) {
   user = await userCtrl.getUser(user);
   isUserInvited = isInvited(invite, user);
+  successful = true;
   if(isUserInvited){
+
     if (invite.accept) {
-      user.appointments.push(invite._id);
+      appointment = await getAppointment(invite);
+      successful = false;
+      if (appointment != null) {
+        user.appointments.push(invite._id);
+        successful = true;
+      }
     }
     user.invites.splice(user.invites.indexOf(invite._id), 1);
     await user.save();
-    return { Success: true, Accepted: invite.accept };
+    return { Success: successful, Accepted: invite.accept };
   }
   return { Status:401 };
 }
