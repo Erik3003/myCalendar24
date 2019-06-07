@@ -15,7 +15,8 @@ module.exports = {
   generateToken,
   getUser,
   getUsers,
-  saveUser
+  saveUser,
+  getUserByName
 }
 
 async function insert(user) {
@@ -40,4 +41,8 @@ async function getUsers(appointment) {
 
 async function saveUser(user) {
   await User(user).save();
+}
+
+async function getUserByName(user) {
+  return await User.findOne({ username: user.username });
 }

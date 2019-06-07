@@ -150,7 +150,7 @@ async function invite(user, appointment, target) {
 
   isUserCreator = await isCreator(appointment, user);
   if(isUserCreator) {
-    target = await userCtrl.getUser(target);
+    target = await userCtrl.getUserByName(target);
 
     if (target == null) {
       return { Status: 400}
