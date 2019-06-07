@@ -13,7 +13,9 @@ const categorySchema = Joi.object({
 module.exports = {
   insert,
   remove,
-  get
+  get,
+  update,
+  isCreator
 }
 
 async function insert(category, user) {
@@ -32,10 +34,29 @@ async function remove(category, user) {
   return { Status:403 }
 }
 
+async function update(category, user) {
+  category.creator = user._id;
+  category = await Joi.validate(category, categorySchema, { abortEarly: false });
+  oldCategory = await getCategory(category);
+
+  if (category == null){
+    return { Status:404 };
+  }
+  if (!isCreator(category, user)){
+    return { Status:401 };
+  }
+
+  return await oldCategory.replaceOne(category);
+}
+
 async function get(user) {
   return await Category.find({creator:user._id});
 }
 
 async function getCategory(category) {
   return await Category.findById(category._id);
+}
+
+function isCreator(category, user) {
+  return user._id.toString() == getCategory(category).creator.toString();
 }

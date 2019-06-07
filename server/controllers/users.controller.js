@@ -13,7 +13,8 @@ const userSchema = Joi.object({
 module.exports = {
   insert,
   generateToken,
-  getUser
+  getUser,
+  getUsers
 }
 
 async function insert(user) {
@@ -30,4 +31,8 @@ function generateToken(user) {
 
 async function getUser(user) {
   return await User.findById(user._id);
+}
+
+async function getUsers(appointment) {
+  return await User.find({ appointments: appointment._id });
 }

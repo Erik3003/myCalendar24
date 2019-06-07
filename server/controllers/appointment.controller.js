@@ -87,13 +87,25 @@ async function remove(appointment, user) {
   if (appointment == null){
     return { Status:404 };
   }
+
   if (!isCreator(appointment, user)){
+    if (hasAppointment(appointment, user)) {
+      user.appointments.splice(user.appointments.indexOf(appointment._id), 1);
+      return { Success: true }
+    }
     return { Status:401 };
   }
   
   console.log(appointment._id);
-  user.appointments.splice(user.appointments.indexOf(appointment._id), 1);
+  await removeFromUsers(appointment);
   return await Appointment.deleteOne({_id: appointment._id});
+}
+
+async function removeFromUsers(appointment) {
+  users = await userCtrl.getUsers(appointment);
+  users.forEach(user => {
+    user.appointments.splice(user.appointments.indexOf(appointment._id), 1);
+  });
 }
 
 function isCreator(appointment, user) {
@@ -102,6 +114,10 @@ function isCreator(appointment, user) {
 
 function isInvited(appointment, user) {
   return user.invites.includes(appointment._id);
+}
+
+function hasAppointment(appointment, user) {
+  return user.appointments.includes(appointment._id);
 }
 
 async function getAppointment(appointment) {
