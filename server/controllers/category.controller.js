@@ -42,11 +42,11 @@ async function update(category, user) {
   category.creator = user._id.toString();
   category = await Joi.validate(category, categorySchema, { abortEarly: false });
   oldCategory = await getCategory(category);
-
-  if (category == null){
-    return { Status:404 };
+  if (oldCategory == null){
+    return { Status:401 };
   }
-  if (!await isCreator(category, user)){
+  isUserCreator = await isCreator(category, user);
+  if (!isUserCreator){
     return { Status:401 };
   }
 
