@@ -28,9 +28,10 @@ export class LoginComponent implements OnInit {
   //creating login form
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      email: ['', [
+      name: ['', [
         Validators.required,
-        Validators.email
+        Validators.minLength(3),
+        Validators.maxLength(30)
       ]],
       password: ['', [
         Validators.required,
@@ -42,19 +43,22 @@ export class LoginComponent implements OnInit {
 
   //getting the inputs and calling service for authentification
   submitLogin() {
-    console.log(this.authService.loggedIn());
-    this.authService.setLoggin();
-    console.log(this.authService.loggedIn());
-    this.router.navigate(['/']);
-    /*this.user.email = this.loginForm.get('email').value;
+    console.log("comp eingeloggt"+this.authService.loggedIn());
+    this.user.username = this.loginForm.get('name').value;
     this.user.password = this.loginForm.get('password').value;
-    console.log("Logging in...");
-    this.authService.authUser(this.user);*/
+    console.log("comp Logging in...");
+    let logedIn = this.authService.loginUser(this.user);
+    if(logedIn){
+      console.log("comp eingeloggt"+this.authService.loggedIn());
+      this.router.navigate(['/calendar']);
+    }
+    console.log("comp service beendet");
+       
   }
 
   //getter for validating  inputs in html
-  get email() {
-    return this.loginForm.get('email');
+  get name() {
+    return this.loginForm.get('name');
   }
 
   get password() {

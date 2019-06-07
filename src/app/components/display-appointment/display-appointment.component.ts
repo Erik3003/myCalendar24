@@ -5,6 +5,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { EditAppointmentDialogComponent } from '../edit-appointment-dialog/edit-appointment-dialog.component';
+import { AppointmentService } from 'src/app/services/appointment.service';
 
 @Component({
   selector: 'app-display-appointment',
@@ -30,6 +31,7 @@ export class DisplayAppointmentComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private appointmentService: AppointmentService,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<DisplayAppointmentComponent>,
     @Inject(MAT_DIALOG_DATA) public data:any
@@ -63,7 +65,9 @@ export class DisplayAppointmentComponent implements OnInit {
 
   }
 
-  onDelete(){
+  onRemove(){
     //call appointment service delete request
+    console.log("deleting");
+    this.appointmentService.removeApp(this.appointment._id);
   }
 }

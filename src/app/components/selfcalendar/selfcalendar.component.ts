@@ -36,8 +36,9 @@ export class SelfcalendarComponent implements OnInit {
 	}
 
 	//TEST BUTTON FUNKTIONEN########################################################################################
-	loadData(){		
-		console.log(this.events);
+	loadData(){				
+		this.getAppointments();
+		console.log(this.events);		
 	}
 
 	appendData(){
@@ -47,13 +48,15 @@ export class SelfcalendarComponent implements OnInit {
 
 	//loading the next month
 	nextMonth() {
+		this.events = [];
 		this.currentYear = (this.currentMonth === 11) ? this.currentYear + 1 : this.currentYear;
 		this.currentMonth = (this.currentMonth + 1) % 12;
 		this.initCalendar(this.currentMonth, this.currentYear);
 	}
 
 	//loading previous month
-	previousMonth() {		
+	previousMonth() {	
+		this.events = [];	
 		this.currentYear = (this.currentMonth === 0) ? this.currentYear - 1 : this.currentYear;
 		this.currentMonth = (this.currentMonth === 0) ? 11 : this.currentMonth - 1;
 		this.initCalendar(this.currentMonth, this.currentYear);
@@ -132,7 +135,7 @@ export class SelfcalendarComponent implements OnInit {
 
 	//requesting service for events 
 	getAppointments(){
-		this.service.getApps().subscribe(data => this.events= data);
+		this.service.getApps(this.currentMonth,this.currentYear).subscribe(data => this.events= data);
 	}
 
 	//calculating which events belong to which cell

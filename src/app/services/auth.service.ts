@@ -12,31 +12,46 @@ export class AuthService {
 
   isLoggedIn: boolean = false;
 
+  token: string;
+
   readonly ROOT_URL_POST = 'http://httpbin.org/post';
 
   registerUser(user: RegisterModel){
-    return this.http.post("http://localhost:3000/api/user/register", user);    
-/*    
-    this.http.post(this.ROOT_URL_POST, user).subscribe(data=>{
-      if (data.success){
-        console.log("register successful");
-        //navigate to login, display message
+    this.http.post("http://localhost:3000/api/user/register", user).subscribe( (data: any) => {
+      if (data.token != null){
+        this.isLoggedIn = true;
+        this.token = data.token;
+        console.log("erfolgreich registriert");      
       }else{
-        console.log("failed to register");
+        console.log("registrierung fehlgeschlagen");
       }
-    });
-*/
+    },
+    error => {
+      console.log("fehler", error)
+    }
+    );    
   }
 
-  authUser(user: LoginModel){
-    this.http.get('http://echo.jsontest.com/key/value/one/two').toPromise().then(data =>{console.log(data)});
+  loginUser(user: LoginModel):boolean{
+    this.http.post("http://localhost:3000/api/user/login", user).subscribe( (data: any) => {
+      if (data.token != null){
+        this.isLoggedIn = true;
+        this.token = data.token;
+        console.log("service erfolgreich eingeloggt: "+this.isLoggedIn); 
+      }else{
+        console.log("service login fehlgeschlagen");
+      }   
+    console.log("service eingeloggt: "+this.isLoggedIn);  
+    });
+    console.log("return");
+    return true;  
   }
 
   loggedIn():boolean{
     return this.isLoggedIn;
   }
 
-  setLoggin(){
-    this.isLoggedIn = true;
+  getToken():string{
+    return this.token;
   }
 }
