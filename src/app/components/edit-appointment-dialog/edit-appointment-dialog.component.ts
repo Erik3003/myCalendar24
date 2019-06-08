@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AppointmentService } from 'src/app/services/appointment.service';
 
+
 @Component({
   selector: 'app-edit-appointment-dialog',
   templateUrl: './edit-appointment-dialog.component.html',
@@ -13,6 +14,8 @@ export class EditAppointmentDialogComponent implements OnInit {
 
   appointmentForm: FormGroup;
   appointment;
+  category;
+  categories = [];
 
   //variables to display the date in a customized format
   startDate;
@@ -33,6 +36,8 @@ export class EditAppointmentDialogComponent implements OnInit {
   ) {
     //get data of the appointment to display them in form
     this.appointment = data.event;
+    this.category = data.category;
+    this.categories = data.categories;
     this.startDate = this.appointment.date;
     this.endDate = this.appointment.enddate;
 
@@ -59,6 +64,9 @@ export class EditAppointmentDialogComponent implements OnInit {
       ],
       endtime: [this.endTime,
       Validators.required
+      ],
+      category: [this.category._id,
+        Validators.required
       ],
       description: [this.appointment.description,
       ],
@@ -89,7 +97,23 @@ export class EditAppointmentDialogComponent implements OnInit {
 
   //save changes of appointment by calling appointment service
   submitAppointment() {
-    console.log("speichern");
+    this.appointment.title = this.appointmentForm.get('title').value;
+    this.appointment.description = this.appointmentForm.get('description').value;
+    this.appointment.public = this.appointmentForm.get('public').value;
+    this.appointment.category = this.appointmentForm.get("category").value;
+    this.appointment.date = this.calculateDate(this.appointmentForm.get('date').value, this.appointmentForm.get('time').value);
+    this.appointment.enddate = this.calculateDate(this.appointmentForm.get('enddate').value, this.appointmentForm.get('endtime').value);
+
+    this.appointmentService.updateApp(this.appointment).subscribe(data=>console.log(data));
+  }
+
+  //create isostring of date and time
+  calculateDate(date: Date, time: Number) {
+    let newDate = new Date();
+    let hours = parseInt(time.toString().substr(0, 2));
+    let minutes = parseInt(time.toString().substr(3));
+    newDate.setTime(date.getTime() + (((hours + 2) * 60 + minutes) * 60 * 1000));
+    return newDate.toISOString();
   }
 
   //close pop up dialog

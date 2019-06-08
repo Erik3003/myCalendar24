@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoryService } from 'src/app/services/category.service';
 import { CategoryModel } from 'src/models/category.model';
-import { CreateCategoryComponent } from '../create-category/create-category.component';
+import { CreateCategoryComponent } from '../create-category-dialog/create-category.component';
 import { MatDialog } from '@angular/material';
 
 @Component({
@@ -22,14 +22,17 @@ export class SidebarComponent implements OnInit {
 
   }
 
-  //load categorie
+  //load categorie and create array for choices
   async initCategories() {
     const data = await this.catService.fetchCategories().toPromise();
     this.categories = data;
-
+    
     for (let i = 0; i < this.categories.length; i++) {
       this.checked[i] = true;
     }
+
+    this.catService.setChoosen(this.checked);
+    this.catService.setCategories(this.categories);
   }
 
   //open dialog to create new category
@@ -37,8 +40,10 @@ export class SidebarComponent implements OnInit {
     this.dialog.open(CreateCategoryComponent);
   }
 
-  onChange(id: string, index: number) {
-    this.checked[index] = this.checked[index];
-
+  //update if a checkbox changed
+  onChange(index: number) {
+    this.checked[index] = !this.checked[index];
+    console.log(this.categories[index]._id+" is "+this.checked[index]);
+    this.catService.setChoosen(this.checked);
   }
 }

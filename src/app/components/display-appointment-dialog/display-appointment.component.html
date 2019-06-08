@@ -6,9 +6,9 @@
       <h4>Beschreibung:</h4>
       <p>{{appointment.description}}</p>
       <h4>Kategorie:</h4><br>
-      <div id="kategorieColor"></div>
+      <div id="kategorieColor" [ngStyle]="{'background-color': category.color}"></div>
       <div>
-        Privat
+        {{category.title}}
       </div>  
     </mat-dialog-content>
 

@@ -4,7 +4,7 @@
     <div id="categories">
       <h3>Kategorien:</h3>
       <div id="checkboxesWrapper"></div>
-      <mat-checkbox class="checkboxes" *ngFor="let category of categories; index as i" checked="{{checked[i]}}" id="{{category._id}}" (change)="onChange(category._id)">{{category.title}}</mat-checkbox>
+      <mat-checkbox class="checkboxes" *ngFor="let category of categories; index as i" checked="{{checked[i]}}" id="{{category._id}}" (change)="onChange(i)">{{category.title}}</mat-checkbox>
       <button mat-button id="categoryButton" (click)="onCreateCategory()">Kategorie erstellen</button>
     </div>
 </div>

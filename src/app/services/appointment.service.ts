@@ -46,6 +46,12 @@ export class AppointmentService {
     return this.http.post(this.ROOT_URL + "/remove", appointment, {headers:headers});
   }
 
+  updateApp(appointment: AppointmentModel){
+    let headers = new HttpHeaders();
+    headers = headers.append("Authorization", "bearer "+this.authService.getToken());
+    return this.http.post(this.ROOT_URL + "/update", appointment, {headers:headers});
+  }
+
 //getter and setter ----------------------------------------------------------------------------------------------
 
   setAppointments(appointments: AppointmentModel[]){

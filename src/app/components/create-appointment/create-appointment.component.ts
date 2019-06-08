@@ -49,7 +49,7 @@ export class CreateAppointmentComponent implements OnInit {
 
     //fetch categories
     this.catService.fetchCategories().subscribe((data:any) => {
-      this.categories= data.category;
+      this.categories= data;
     });
     
   }

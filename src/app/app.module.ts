@@ -14,10 +14,10 @@ import { LoginComponent } from './components/login/login.component';
 import { CreateAppointmentComponent } from './components/create-appointment/create-appointment.component';
 import { SelfcalendarComponent } from './components/selfcalendar/selfcalendar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { DisplayAppointmentComponent } from './components/display-appointment/display-appointment.component';
+import { DisplayAppointmentComponent } from './components/display-appointment-dialog/display-appointment.component';
 import { EditAppointmentDialogComponent } from './components/edit-appointment-dialog/edit-appointment-dialog.component';
 import { DayCalendarComponent } from './components/day-calendar/day-calendar.component';
-import { CreateCategoryComponent } from './components/create-category/create-category.component';
+import { CreateCategoryComponent } from './components/create-category-dialog/create-category.component';
 import { DeleteAppointmentComponent } from './components/delete-appointment/delete-appointment.component';
 
 

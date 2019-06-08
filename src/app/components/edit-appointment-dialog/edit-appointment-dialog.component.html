@@ -57,6 +57,16 @@
           </div>
         </div>
 
+        <!--Input categorie-->
+        <mat-form-field id="selector">
+          <mat-label>Kategorie</mat-label>
+          <mat-select formControlName="category">
+            <mat-option *ngFor="let category of categories" [value]="category._id">
+              {{category.title}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
         <!--Input description-->
         <mat-form-field>
           <input matInput formControlName="description" placeholder="Optionale Beschreibung eingeben" />

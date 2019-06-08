@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output } from '@angular/core';
 import { CategoryModel } from 'src/models/category.model';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,60 +10,65 @@ import { Observable, Subject } from 'rxjs';
 export class CategoryService {
 
   categories: CategoryModel[] = [];
+  choosen: boolean[] = [];
   readonly ROOT_URL = 'http://localhost:3000/api/category';
+  messageSource = new BehaviorSubject('default message');
+  currentMessage = this.messageSource.asObservable();
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  public _subject = new Subject<object>();
-  public event = this._subject.asObservable();
+  //title color
+  createCategory(category: CategoryModel) {
+    let headers = new HttpHeaders();
+    headers = headers.append("Authorization", "bearer " + this.authService.getToken());
 
-  public publish(data:any){
-    this._subject.next(data);
+    return this.http.post(this.ROOT_URL + "/new", category, { headers: headers });
   }
 
-  //title color
-  createCategory(category:CategoryModel){
-    let headers = new HttpHeaders();
-    headers = headers.append("Authorization", "bearer "+this.authService.getToken());
-
-    return this.http.post(this.ROOT_URL + "/new",category, {headers:headers});
-  }  
-
   //complete
-  fetchCategories():Observable<CategoryModel[]>{
+  fetchCategories(): Observable<CategoryModel[]> {
     let headers = new HttpHeaders();
-    headers = headers.append("Authorization", "bearer "+this.authService.getToken());
+    headers = headers.append("Authorization", "bearer " + this.authService.getToken());
 
-    return this.http.get<CategoryModel[]>(this.ROOT_URL + "/get", {headers:headers});
+    return this.http.get<CategoryModel[]>(this.ROOT_URL + "/get", { headers: headers });
   }
 
   //_id
-  deleteCategory(){
+  deleteCategory() {
     let headers = this.createRequestHeaders();
 
-    return this.http.post(this.ROOT_URL + "/remove", {headers:headers});
+    return this.http.post(this.ROOT_URL + "/remove", { headers: headers });
   }
 
   //title color _id
-  updateCategory(category:CategoryModel){
+  updateCategory(category: CategoryModel) {
     let headers = this.createRequestHeaders();
 
-    return this.http.post(this.ROOT_URL + "/remove",category, {headers:headers});
+    return this.http.post(this.ROOT_URL + "/remove", category, { headers: headers });
   }
 
-  createRequestHeaders():HttpHeaders{
+  createRequestHeaders(): HttpHeaders {
     let headers = new HttpHeaders();
-    headers = headers.append("Authorization", "bearer "+this.authService.getToken());
+    headers = headers.append("Authorization", "bearer " + this.authService.getToken());
     return headers;
   }
 
-  setCategories(categories: CategoryModel[]){
+  setCategories(categories: CategoryModel[]) {
     this.categories = categories;
   }
 
-  getCategories(): CategoryModel[]{
-    console.log(this.categories.length);
-    
+  getCategories(): CategoryModel[] {
     return this.categories;
+  }
+
+  setChoosen(choosen: boolean[]) {
+    console.log("aus");
+    
+      this.choosen=choosen;
+      this.messageSource.next("changed");
+  }
+
+  getChoosen(): boolean[] {
+    return this.choosen;
   }
 }

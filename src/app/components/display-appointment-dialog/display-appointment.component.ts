@@ -6,7 +6,9 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { EditAppointmentDialogComponent } from '../edit-appointment-dialog/edit-appointment-dialog.component';
 import { AppointmentService } from 'src/app/services/appointment.service';
-import { CreateCategoryComponent } from '../create-category/create-category.component';
+import { CreateCategoryComponent } from '../create-category-dialog/create-category.component';
+import { CategoryService } from 'src/app/services/category.service';
+import { CategoryModel } from 'src/models/category.model';
 
 @Component({
   selector: 'app-display-appointment',
@@ -28,11 +30,15 @@ export class DisplayAppointmentComponent implements OnInit {
   startHours: string;
   startMinutes: string;
 
+  categories: CategoryModel[] = [];
+  category: CategoryModel;
+
   appointment;
 
   constructor(
     private router: Router,
     private appointmentService: AppointmentService,
+    private catService: CategoryService,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<DisplayAppointmentComponent>,
     @Inject(MAT_DIALOG_DATA) public data:any
@@ -49,9 +55,18 @@ export class DisplayAppointmentComponent implements OnInit {
       this.startDay = this.appointment.date.substr(8,2);
       this.startHours = this.appointment.date.substr(11,2);
       this.startMinutes = this.appointment.date.substr(14,2);
+
+      //get category
+      this.categories = this.catService.getCategories();
+      for(let i = 0; i < this.categories.length;i++){
+        if(this.categories[i]._id == this.appointment.category){
+          this.category = this.categories[i];
+        }
+      }
      }
 
   ngOnInit() {
+    
   }
 
   onEdit(){
@@ -59,7 +74,9 @@ export class DisplayAppointmentComponent implements OnInit {
 
     this.dialog.open(EditAppointmentDialogComponent, {
 			data: {
-				event: this.appointment,
+        event: this.appointment,
+        category: this.category,
+        categories: this.categories
 			}
 		});
     //open new component to edit window
