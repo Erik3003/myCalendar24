@@ -200,23 +200,22 @@ export class SelfcalendarComponent implements OnInit {
 		for (let i = 0; i < this.categories.length; i++) {		
 			if (this.categories[i]._id === this.events[eventIndex].category && this.checkedCategories[i]) {
 				color = this.categories[i].color;
-
-				//creating div for the appointment
-				let div = document.createElement("div");
-				div.setAttribute("id", eventIndex + 100);
-				div.style.backgroundColor = color;
-				div.style.width = "95%";
-				div.style.height = "20px";
-				div.style.margin = "1% 2.5%";
-				div.style.overflow = "hidden";
-				div.addEventListener("click", (event) => this.appointmentClicked(div));
-				let divText = document.createTextNode(this.events[eventIndex].title);
-				div.appendChild(divText);
-				//append div for appointment to cell of the day
-				let cell = document.getElementById(dayId.toString());
-				cell.appendChild(div);
 			}
 		}
+		//creating div for the appointment
+		let div = document.createElement("div");
+		div.setAttribute("id", eventIndex + 100);
+		div.style.backgroundColor = color;
+		div.style.width = "95%";
+		div.style.height = "20px";
+		div.style.margin = "1% 2.5%";
+		div.style.overflow = "hidden";
+		div.addEventListener("click", (event) => this.appointmentClicked(div));
+		let divText = document.createTextNode(this.events[eventIndex].title);
+		div.appendChild(divText);
+		//append div for appointment to cell of the day
+		let cell = document.getElementById(dayId.toString());
+		cell.appendChild(div);
 	}
 
 	//open information of appointment

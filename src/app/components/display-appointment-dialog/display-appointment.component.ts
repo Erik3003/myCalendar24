@@ -6,10 +6,10 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { EditAppointmentDialogComponent } from '../edit-appointment-dialog/edit-appointment-dialog.component';
 import { AppointmentService } from 'src/app/services/appointment.service';
-import { CreateCategoryComponent } from '../create-category-dialog/create-category.component';
 import { CategoryService } from 'src/app/services/category.service';
 import { CategoryModel } from 'src/models/category.model';
 import { InviteFormDialogComponent } from '../invite-form-dialog/invite-form-dialog.component';
+import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-display-appointment',
@@ -94,9 +94,10 @@ export class DisplayAppointmentComponent implements OnInit {
 
   //call appointment service delete request
   onRemove(){    
-    this.dialog.open(CreateCategoryComponent, {
+    this.dialog.open(DeleteDialogComponent, {
 			data: {
-				event: this.appointment,
+        appId: this.appointment._id,
+        dialog: this.dialogRef,
 			}
 		});
   }

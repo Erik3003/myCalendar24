@@ -8,16 +8,16 @@
     </div>
 
     <!--List of invites-->
-    <div class="effectWrapper" *ngFor="let invite of invites; index as i">
+    <div class="effectWrapper" *ngFor="let invite of invites; index as i" [id]="i">
       <h4>{{invite.title}}</h4>
       <p>10.12.2019 um 12:00 Uhr bis 10.12.2019 um 12:00 Uhr</p>
       <p id="descriptionHeading">Beschreibung:</p>
       <p>Hier steht die beschreibung</p>
       <div id="buttons">
-        <button mat-icon-button (click)="onAccept()">
+        <button mat-icon-button (click)="onAnswer(i, true)">
             <mat-icon>check_circle_outline</mat-icon>
         </button>
-        <button mat-icon-button color="warn" (click)="onDinie()">
+        <button mat-icon-button color="warn" (click)="onAnswer(i, false)">
             <mat-icon>highlight_off</mat-icon>
         </button>
       </div>

@@ -21,6 +21,7 @@ import { CreateCategoryComponent } from './components/create-category-dialog/cre
 import { DeleteAppointmentComponent } from './components/delete-appointment/delete-appointment.component';
 import { InvitesDialogComponent } from './components/invites-dialog/invites-dialog.component';
 import { InviteFormDialogComponent } from './components/invite-form-dialog/invite-form-dialog.component';
+import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 
 
 
@@ -39,7 +40,8 @@ import { InviteFormDialogComponent } from './components/invite-form-dialog/invit
     CreateCategoryComponent,
     DeleteAppointmentComponent,
     InvitesDialogComponent,
-    InviteFormDialogComponent
+    InviteFormDialogComponent,
+    DeleteDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +68,8 @@ import { InviteFormDialogComponent } from './components/invite-form-dialog/invit
     CreateCategoryComponent,
     DeleteAppointmentComponent,
     InvitesDialogComponent,
-    InviteFormDialogComponent
+    InviteFormDialogComponent,
+    DeleteDialogComponent
   ]
 })
 export class AppModule { }
