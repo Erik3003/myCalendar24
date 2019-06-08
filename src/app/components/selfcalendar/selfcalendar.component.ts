@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from 'src/app/services/appointment.service';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog} from '@angular/material';
 import { DisplayAppointmentComponent } from '../display-appointment/display-appointment.component';
 import { CategoryService } from 'src/app/services/category.service';
-import { CategoryModel } from 'src/models/category.model';
 
 @Component({
 	selector: 'app-selfcalendar',
@@ -22,36 +21,33 @@ export class SelfcalendarComponent implements OnInit {
 	monthAndYear;
 	//array of appointments
 	events=[];
+	categories=[];
 	appClicked: boolean;
 
 
-	constructor(private service: AppointmentService, private catService: CategoryService,private dialog: MatDialog) { }
+	constructor(
+		private service: AppointmentService, 
+		private catService: CategoryService,
+		private dialog: MatDialog
+		) { }
 
 	ngOnInit() {
+		console.log("init");
 		this.today = new Date();
 		this.currentMonth = this.today.getMonth();
 		this.currentYear = this.today.getFullYear();
 		this.monthAndYear = document.getElementById("monthAndYear");
 		this.initCalendar(this.currentMonth, this.currentYear);
-		this.getAppointments();
-		setTimeout(()=>this.appendAppointmentsToCell(),100);		
+		this.getAppointments();				
 	}
 
 	//TEST BUTTON FUNKTIONEN########################################################################################
 	appendData(){				
-		let category = new CategoryModel();
-		category.color = "green";	
-		category.title = "newCat2";
-		this.catService.createCategory(category).subscribe((data:any)=>{
-			console.log(data);
-		});
+		
 	}
 
 	loadData(){
-		this.catService.fetchCategories().subscribe((data: any)=>{
-			console.log(data);
-		});
-			
+		console.log(this.categories);			
 	}
 	//###############################################################################################################
 
@@ -62,7 +58,6 @@ export class SelfcalendarComponent implements OnInit {
 		this.currentMonth = (this.currentMonth + 1) % 12;
 		this.initCalendar(this.currentMonth, this.currentYear);
 		this.getAppointments();
-		setTimeout(()=>this.appendAppointmentsToCell(),100);
 	}
 
 	//loading previous month
@@ -72,7 +67,6 @@ export class SelfcalendarComponent implements OnInit {
 		this.currentMonth = (this.currentMonth === 0) ? 11 : this.currentMonth - 1;
 		this.initCalendar(this.currentMonth, this.currentYear);
 		this.getAppointments();
-		setTimeout(()=>this.appendAppointmentsToCell(),100);
 	}
 
 	//create empty calender for the selected month
@@ -138,6 +132,10 @@ export class SelfcalendarComponent implements OnInit {
 	//requesting service for events 
 	getAppointments(){
 		this.service.fetchAppointments(this.currentMonth,this.currentYear).subscribe(data => this.events= data);
+		this.catService.fetchCategories().subscribe((data:any)=>{
+			this.categories = data.category;
+		});
+		setTimeout(()=>this.appendAppointmentsToCell(),300);
 	}
 
 	//calculating which events belong to which cell
@@ -174,18 +172,24 @@ export class SelfcalendarComponent implements OnInit {
 				for (let j = 0; j <= nrOfDays; j++){
 					this.createAppointmentElement(i,dayStart+j);
 				}
-			}else{
-				//delete appointment##############################################
 			}
 		}
 	}
 
 	//creating div element for an appointment and add it to the given cell
 	createAppointmentElement(eventIndex, dayId){
+		//fetching correct category color
+		let color = 'gray';
+		for(let i = 0; i<this.categories.length; i++){
+			
+			if(this.categories[i]._id === this.events[eventIndex].category){
+				color = this.categories[i].color;
+			}
+		}
 		//creating div for the appointment
 		let div = document.createElement("div");
-		div.setAttribute("id", eventIndex+100);
-		div.style.backgroundColor = "green";
+		div.setAttribute("id", eventIndex+100);		
+		div.style.backgroundColor = color;
 		div.style.width = "95%";
 		div.style.height = "20px";
 		div.style.margin = "1% 2.5%";
@@ -210,6 +214,15 @@ export class SelfcalendarComponent implements OnInit {
 				event: this.events[id],
 			}
 		});
+
+		/*this.dialog.afterAllClosed.subscribe(() =>{
+			//this.removeAll();
+			this.events = [];
+			this.initCalendar(this.currentMonth, this.currentYear);
+			this.getAppointments();
+			console.log("close");
+			console.log(this.events);			
+		});*/
 	}
 
 	//Open daily view

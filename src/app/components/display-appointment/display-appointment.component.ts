@@ -6,6 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { EditAppointmentDialogComponent } from '../edit-appointment-dialog/edit-appointment-dialog.component';
 import { AppointmentService } from 'src/app/services/appointment.service';
+import { CreateCategoryComponent } from '../create-category/create-category.component';
 
 @Component({
   selector: 'app-display-appointment',
@@ -67,9 +68,10 @@ export class DisplayAppointmentComponent implements OnInit {
   //call appointment service delete request
   onRemove(){    
     console.log("deleting");
-    this.appointmentService.removeApp(this.appointment._id).subscribe((data: any)=>{
-      this.router.navigate(['/calendar']);
-      this.dialogRef.close();
-    });
+    this.dialog.open(CreateCategoryComponent, {
+			data: {
+				event: this.appointment,
+			}
+		});
   }
 }

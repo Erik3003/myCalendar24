@@ -64,7 +64,7 @@ export class RegisterComponent implements OnInit {
       //adding default categories
       let defaultCategory = new CategoryModel();
       defaultCategory.title = "Privat";
-      defaultCategory.color = "yellow";
+      defaultCategory.color = "lightblue";
       this.categoryService.createCategory(defaultCategory).subscribe();
       defaultCategory.title = "Beruf";
       defaultCategory.color = "lightgreen";

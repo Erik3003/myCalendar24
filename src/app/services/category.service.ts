@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CategoryModel } from 'src/models/category.model';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,13 @@ export class CategoryService {
   readonly ROOT_URL = 'http://localhost:3000/api/category';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
+
+  public _subject = new Subject<object>();
+  public event = this._subject.asObservable();
+
+  public publish(data:any){
+    this._subject.next(data);
+  }
 
   //title color
   createCategory(category:CategoryModel){
