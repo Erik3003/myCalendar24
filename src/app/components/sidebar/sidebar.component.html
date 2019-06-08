@@ -5,6 +5,6 @@
       <h3>Kategorien:</h3>
       <div id="checkboxesWrapper"></div>
       <mat-checkbox class="checkboxes" *ngFor="let category of categories; index as i" checked="{{checked[i]}}" id="{{category._id}}" (change)="onChange(category._id)">{{category.title}}</mat-checkbox>
-      <button mat-button id="categoryButton" (click)="createCategory()">Kategorie erstellen</button>
+      <button mat-button id="categoryButton" (click)="onCreateCategory()">Kategorie erstellen</button>
     </div>
 </div>

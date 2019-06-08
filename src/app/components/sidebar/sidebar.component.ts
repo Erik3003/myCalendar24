@@ -14,27 +14,31 @@ export class SidebarComponent implements OnInit {
   categories: CategoryModel[] = [];
   checked: boolean[] = [];
 
-  constructor(private catService:CategoryService, private dialog: MatDialog) { 
-      this.catService.fetchCategories().subscribe((data:any) => {
-        this.categories= data.category;
-      });
-      setTimeout(()=>{
-        for(let i = 0; i< this.categories.length; i++){
-          this.checked[i] = true;
-        }
-      },200);
+  constructor(private catService: CategoryService, private dialog: MatDialog) {
+    this.initCategories();
   }
-
 
   ngOnInit() {
-    
+
   }
 
-  createCategory(){
+  //load categorie
+  async initCategories() {
+    const data = await this.catService.fetchCategories().toPromise();
+    this.categories = data;
+
+    for (let i = 0; i < this.categories.length; i++) {
+      this.checked[i] = true;
+    }
+  }
+
+  //open dialog to create new category
+  onCreateCategory() {
     this.dialog.open(CreateCategoryComponent);
   }
 
-  onChange(id: string, index: number){
+  onChange(id: string, index: number) {
     this.checked[index] = this.checked[index];
+
   }
 }

@@ -32,7 +32,6 @@ export class SelfcalendarComponent implements OnInit {
 		) { }
 
 	ngOnInit() {
-		console.log("init");
 		this.today = new Date();
 		this.currentMonth = this.today.getMonth();
 		this.currentYear = this.today.getFullYear();
@@ -47,7 +46,7 @@ export class SelfcalendarComponent implements OnInit {
 	}
 
 	loadData(){
-		console.log(this.categories);			
+		console.log(this.events);			
 	}
 	//###############################################################################################################
 
@@ -130,12 +129,20 @@ export class SelfcalendarComponent implements OnInit {
 	}
 
 	//requesting service for events 
-	getAppointments(){
-		this.service.fetchAppointments(this.currentMonth,this.currentYear).subscribe(data => this.events= data);
-		this.catService.fetchCategories().subscribe((data:any)=>{
+	async getAppointments(){
+		const data = await this.service.fetchAppointments(this.currentMonth,this.currentYear).toPromise();
+		this.events = data;
+		console.log(this.events);
+		
+		const catData = await this.catService.fetchCategories().toPromise();
+		this.categories = catData;
+		console.log(this.categories);
+
+		this.appendAppointmentsToCell();
+		/*this.catService.fetchCategories().subscribe((data:any)=>{
 			this.categories = data.category;
-		});
-		setTimeout(()=>this.appendAppointmentsToCell(),300);
+		});*/
+		//setTimeout(()=>this.appendAppointmentsToCell(),200);
 	}
 
 	//calculating which events belong to which cell
