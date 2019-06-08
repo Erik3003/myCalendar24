@@ -61,7 +61,7 @@ async function addAppointment(req, res) {
 async function getInvites(req, res) {
   invites = await appointmentCtrl.invites(req.user);
 
-  res.json({ invites: invites });
+  res.json( invites );
 }
 
 async function sendInvite(req, res) {
