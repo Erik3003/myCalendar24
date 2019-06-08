@@ -8,7 +8,7 @@ import { SelfcalendarComponent } from './components/selfcalendar/selfcalendar.co
 import { DayCalendarComponent } from './components/day-calendar/day-calendar.component';
 
 const routes: Routes = [
-  {path:'', component: RegisterComponent},
+  {path:'', component: LoginComponent},
   {path:'register', component: RegisterComponent},
   {path:'login', component: LoginComponent},
   {path:'createAppointment', component: CreateAppointmentComponent},

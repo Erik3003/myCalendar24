@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +25,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private catService: CategoryService,
     private router: Router
   ) { }
 
@@ -45,7 +47,6 @@ export class LoginComponent implements OnInit {
 
   //getting the inputs and calling service for authentification
   submitLogin() {
-    console.log("comp eingeloggt"+this.authService.loggedIn());
     this.user.username = this.loginForm.get('name').value;
     this.user.password = this.loginForm.get('password').value;
     
