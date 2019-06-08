@@ -21,6 +21,10 @@ const localLogin = new LocalStrategy({ usernameField: 'username' }, (username, p
       bcrypt.compare(password, user.password, (err, isMatch) => {
         if (err) throw err;
         if (isMatch) {
+          user = user.toObject();
+          delete user.password;
+          delete user.appointments;
+          delete user.invites;
           return done(null, user);
         } else {
           return done(null, false, { message: 'Incorrect password' });

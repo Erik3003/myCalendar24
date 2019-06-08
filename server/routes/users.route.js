@@ -9,6 +9,10 @@ module.exports = router;
 router.post('/register', asyncHandler(registerUser), loginUser);
 router.post('/login', passport.authenticate('local', { session: false }), loginUser);
 router.post('/logout', asyncHandler(logoutUser));
+router.post('/username', asyncHandler(getUsername));
+
+router.use(passport.authenticate('jwt', { session: false }));
+router.get('/current', getCurrent);
 
 async function registerUser(req, res, next) {
   let user = await usersCtrl.insert(req.body);
@@ -20,7 +24,7 @@ async function registerUser(req, res, next) {
   next()
 }
 
-async function loginUser(req, res) {
+function loginUser(req, res) {
   let user = req.user;
   let token = usersCtrl.generateToken(user);
   res.json({ user, token });
@@ -28,4 +32,13 @@ async function loginUser(req, res) {
 
 async function logoutUser(req, res) {
   req.logout();
+}
+
+async function getUsername(req, res) {
+  let user = await usersCtrl.getUser(req.body);
+  res.json({ username: user.username });
+}
+
+function getCurrent(req, res) {
+  res.json(req.user);
 }

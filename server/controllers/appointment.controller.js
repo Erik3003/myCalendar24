@@ -25,7 +25,9 @@ module.exports = {
   invite,
   invites,
   accept,
-  hasAnyAppointmentCategory
+  hasAnyAppointmentCategory,
+  all,
+  public
 }
 
 async function insert(appointment, user) {
@@ -56,7 +58,6 @@ async function update(appointment, user) {
 async function extract(date, user) {
   user = await userCtrl.getUser(user);
   appointments = user.appointments;
-  console.log(date);
 
   startDate = new Date(date);
   startDate.setDate(0);
@@ -196,5 +197,17 @@ async function accept(user, invite) {
 
 async function invites(user) {
   user = await userCtrl.getUser(user);
-  return user.invites;
+  appointments = await Appointment.find({ _id: user.invites });
+  return appointments;
+}
+
+async function all(user) {
+  user = await userCtrl.getUser(user);
+  appointments = await Appointment.find({ _id: user.appointments });
+  return appointments;
+}
+
+async function public() {
+  appointments = await Appointment.find({ public: true });
+  return appointments;
 }

@@ -12,6 +12,7 @@ router.post('/new', asyncHandler(newCategory));
 router.post('/update', asyncHandler(updateCategory));
 router.post('/remove', asyncHandler(removeCategory));
 router.get('/get', asyncHandler(getCategories));
+router.post('/one', asyncHandler(getCategory));
 
 async function newCategory(req, res) {
   let category = await categoryCtrl.insert(req.body, req.user);
@@ -20,6 +21,16 @@ async function newCategory(req, res) {
 
 async function getCategories(req, res) {
   let category = await categoryCtrl.get(req.user);
+
+  if (category.Status != null) {
+    return res.status(category.Status).send("Error code: " + category.Status);
+  }
+
+  res.json(category);
+}
+
+async function getCategory(req, res) {
+  let category = await categoryCtrl.getCategory(req.body);
 
   if (category.Status != null) {
     return res.status(category.Status).send("Error code: " + category.Status);
