@@ -18,8 +18,8 @@ export class EditAppointmentDialogComponent implements OnInit {
   categories = [];
 
   //variables to display the date in a customized format
-  startDate;
-  startTime;
+  startDate:Date;
+  startTime:Date;
   endDate;
   endTime;
 
@@ -38,8 +38,11 @@ export class EditAppointmentDialogComponent implements OnInit {
     this.appointment = data.event;
     this.category = data.category;
     this.categories = data.categories;
-    this.startDate = this.appointment.date;
-    this.endDate = this.appointment.enddate;
+
+    this.startDate = new Date(this.appointment.date);
+    this.endDate = new Date(this.appointment.enddate);
+    this.startDate.setTime(this.startDate.getTime() - (2*60*60*1000));
+    this.endDate.setTime(this.endDate.getTime() - (2*60*60*1000));
 
     this.startTime = this.appointment.date.substr(11, 5);
     this.endTime = this.appointment.enddate.substr(11, 5);

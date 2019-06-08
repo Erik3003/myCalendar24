@@ -19,6 +19,7 @@ import { EditAppointmentDialogComponent } from './components/edit-appointment-di
 import { DayCalendarComponent } from './components/day-calendar/day-calendar.component';
 import { CreateCategoryComponent } from './components/create-category-dialog/create-category.component';
 import { DeleteAppointmentComponent } from './components/delete-appointment/delete-appointment.component';
+import { InvitesDialogComponent } from './components/invites-dialog/invites-dialog.component';
 
 
 
@@ -35,7 +36,8 @@ import { DeleteAppointmentComponent } from './components/delete-appointment/dele
     EditAppointmentDialogComponent,
     DayCalendarComponent,
     CreateCategoryComponent,
-    DeleteAppointmentComponent
+    DeleteAppointmentComponent,
+    InvitesDialogComponent
   ],
   imports: [
     BrowserModule,
