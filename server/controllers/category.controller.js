@@ -16,7 +16,8 @@ module.exports = {
   remove,
   get,
   update,
-  isCreator
+  isCreator,
+  getCategory
 }
 
 async function insert(category, user) {

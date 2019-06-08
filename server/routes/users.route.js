@@ -11,6 +11,9 @@ router.post('/login', passport.authenticate('local', { session: false }), loginU
 router.post('/logout', asyncHandler(logoutUser));
 router.post('/username', asyncHandler(getUsername));
 
+router.use(passport.authenticate('jwt', { session: false }));
+router.get('/current', getCurrent);
+
 async function registerUser(req, res, next) {
   let user = await usersCtrl.insert(req.body);
   user = user.toObject();
@@ -21,12 +24,9 @@ async function registerUser(req, res, next) {
   next()
 }
 
-async function loginUser(req, res) {
+function loginUser(req, res) {
   let user = req.user;
   let token = usersCtrl.generateToken(user);
-  delete user.password;
-  delete user.appointments;
-  delete user.invites;
   res.json({ user, token });
 }
 
@@ -37,4 +37,8 @@ async function logoutUser(req, res) {
 async function getUsername(req, res) {
   let user = await usersCtrl.getUser(req.body);
   res.json({ username: user.username });
+}
+
+function getCurrent(req, res) {
+  res.json(req.user);
 }

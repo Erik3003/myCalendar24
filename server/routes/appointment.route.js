@@ -6,7 +6,7 @@ const passport = require('passport');
 const router = express.Router();
 module.exports = router;
 
-router.use(passport.authenticate('jwt', { session: false }))
+router.use(passport.authenticate('jwt', { session: false }));
 
 router.post('/new', asyncHandler(createAppointment));
 router.get('/get', asyncHandler(getAppointments));
