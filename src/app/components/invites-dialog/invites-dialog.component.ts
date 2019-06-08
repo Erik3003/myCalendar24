@@ -1,3 +1,8 @@
+/*
+ * This component displays a list of appointment invitations for the user.
+ * The list is represented as a pop up dialog after clicken the icon.
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from 'src/app/services/appointment.service';
 import { AppointmentModel } from 'src/models/appointment.model';
@@ -9,7 +14,8 @@ import { AppointmentModel } from 'src/models/appointment.model';
 })
 export class InvitesDialogComponent implements OnInit {
 
-  invites= [];
+  invites : AppointmentModel[]= [];
+  hasInvites: boolean;
 
   constructor(
     private appService: AppointmentService
@@ -20,10 +26,13 @@ export class InvitesDialogComponent implements OnInit {
   ngOnInit() {
   }
 
+  //fetch invites from server
   async getInvites(){
     const data = await this.appService.fetchInvites().toPromise();
     this.invites = data;
-    console.log(this.invites);
+    if(this.invites.length == 0){
+      this.hasInvites = true;
+    }
   }
 
 }

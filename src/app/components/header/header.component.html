@@ -16,7 +16,12 @@
   </a>
 
   <!--button for appointment invitations-->
-  <button mat-icon-button *ngIf="isLoggedIn" (click)="onInvitesClick()">
+  <button mat-icon-button *ngIf="isLoggedIn && !hasInvites" (click)="onInvitesClick()">
+    <mat-icon>message</mat-icon>
+  </button>
+
+   <!--button for appointment invitations-->
+   <button mat-icon-button *ngIf="isLoggedIn && hasInvites" (click)="onInvitesClick()" color="warn">
     <mat-icon>message</mat-icon>
   </button>
 

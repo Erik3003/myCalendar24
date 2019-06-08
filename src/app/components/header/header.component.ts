@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { MatDialog } from '@angular/material';
 import { InvitesDialogComponent } from '../invites-dialog/invites-dialog.component';
+import { AppointmentService } from 'src/app/services/appointment.service';
 
 @Component({
   selector: 'app-header',
@@ -15,18 +16,35 @@ import { InvitesDialogComponent } from '../invites-dialog/invites-dialog.compone
 })
 export class HeaderComponent implements OnInit {
 
-  isLoggedIn:boolean;
+  isLoggedIn: boolean;
+  hasInvites: boolean;
 
   constructor(
-    private authService : AuthService,
+    private authService: AuthService,
+    private appointmentService: AppointmentService,
     private dialog: MatDialog
-    ) { }
-
-  ngOnInit() {
+  ) {
     this.isLoggedIn = this.authService.loggedIn();
+    this.getInvites();
   }
 
-  onInvitesClick(){   
+  ngOnInit() {
+
+  }
+
+  //fetch if user has any invites
+  async getInvites() {
+    if (this.isLoggedIn) {
+      const data = await this.appointmentService.fetchInvites().toPromise();
+      let invites = data;
+      if (invites.length != 0) {
+        this.hasInvites = true;
+      }
+    }
+  }
+
+  //open invite list
+  onInvitesClick() {
     this.dialog.open(InvitesDialogComponent);
   }
 }

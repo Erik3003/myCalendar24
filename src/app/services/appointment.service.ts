@@ -10,6 +10,7 @@ import { AuthService } from './auth.service';
 export class AppointmentService {
 
   appointments: AppointmentModel[];
+  hasInvites: boolean;
   
   readonly ROOT_URL = 'http://localhost:3000/api/appointment';
 
@@ -62,15 +63,5 @@ export class AppointmentService {
     let headers = new HttpHeaders();
     headers = headers.append("Authorization", "bearer "+this.authService.getToken());
     return this.http.get<AppointmentModel[]>(this.ROOT_URL + "/invites",{headers:headers});
-  }
-
-//getter and setter ----------------------------------------------------------------------------------------------
-
-  setAppointments(appointments: AppointmentModel[]){
-    this.appointments = appointments;
-  }
-
-  getAppointments():AppointmentModel[]{
-    return this.appointments
   }
 }
