@@ -65,7 +65,8 @@ import { InviteFormDialogComponent } from './components/invite-form-dialog/invit
     EditAppointmentDialogComponent,
     CreateCategoryComponent,
     DeleteAppointmentComponent,
-    InvitesDialogComponent
+    InvitesDialogComponent,
+    InviteFormDialogComponent
   ]
 })
 export class AppModule { }
