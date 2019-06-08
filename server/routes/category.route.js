@@ -25,7 +25,7 @@ async function getCategories(req, res) {
     return res.status(category.Status).send("Error code: " + category.Status);
   }
 
-  res.json({ category });
+  res.json(category);
 }
 
 async function removeCategory(req, res) {
