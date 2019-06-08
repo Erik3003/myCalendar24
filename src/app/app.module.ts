@@ -20,6 +20,7 @@ import { DayCalendarComponent } from './components/day-calendar/day-calendar.com
 import { CreateCategoryComponent } from './components/create-category-dialog/create-category.component';
 import { DeleteAppointmentComponent } from './components/delete-appointment/delete-appointment.component';
 import { InvitesDialogComponent } from './components/invites-dialog/invites-dialog.component';
+import { InviteFormDialogComponent } from './components/invite-form-dialog/invite-form-dialog.component';
 
 
 
@@ -37,7 +38,8 @@ import { InvitesDialogComponent } from './components/invites-dialog/invites-dial
     DayCalendarComponent,
     CreateCategoryComponent,
     DeleteAppointmentComponent,
-    InvitesDialogComponent
+    InvitesDialogComponent,
+    InviteFormDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -58,6 +60,12 @@ import { InvitesDialogComponent } from './components/invites-dialog/invites-dial
   ],
   providers: [{provide: MAT_DATE_LOCALE, useValue: 'de-DE'}],
   bootstrap: [AppComponent],
-  entryComponents:[DisplayAppointmentComponent, EditAppointmentDialogComponent,CreateCategoryComponent,DeleteAppointmentComponent]
+  entryComponents:[
+    DisplayAppointmentComponent, 
+    EditAppointmentDialogComponent,
+    CreateCategoryComponent,
+    DeleteAppointmentComponent,
+    InvitesDialogComponent
+  ]
 })
 export class AppModule { }

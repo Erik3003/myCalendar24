@@ -1,21 +1,26 @@
-<!--<div class="effectWrapper">
+<div class="effectWrapper">
   <h2 mat-dialog-title>Einladungen:</h2>
   <mat-dialog-content>
-    <div calss="invites" *ngFor="let invite of invites">
-      <h4>{invite.title}</h4>
+
+    <!--Message of no invites-->
+    <div class="effectWrapper" *ngIf="invites">
+      <h3>Sie haben keine unbeantworteten Einladungen.</h3>
+    </div>
+
+    <!--List of invites-->
+    <div class="effectWrapper" *ngFor="let invite of invites; index as i">
+      <h4>{{invite.title}}</h4>
+      <p>10.12.2019 um 12:00 Uhr bis 10.12.2019 um 12:00 Uhr</p>
+      <p id="descriptionHeading">Beschreibung:</p>
+      <p>Hier steht die beschreibung</p>
+      <div id="buttons">
+        <button mat-icon-button (click)="onAccept()">
+            <mat-icon>check_circle_outline</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="onDinie()">
+            <mat-icon>highlight_off</mat-icon>
+        </button>
+      </div>
     </div> 
   </mat-dialog-content>
-
-  <div id="buttons">
-    <button mat-icon-button (click)="onEdit()">
-        <mat-icon>edit</mat-icon>
-    </button>
-    <button mat-icon-button>
-        <mat-icon>email</mat-icon>
-    </button>
-    <button mat-icon-button color="warn" (click)="onRemove()">
-        <mat-icon>delete</mat-icon>
-    </button>
-  </div>
 </div>
--->

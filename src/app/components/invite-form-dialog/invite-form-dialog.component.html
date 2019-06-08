@@ -1,0 +1,35 @@
+<div class="effectWrapper">
+    <h2 mat-dialog-title>Freunde einladen</h2>
+    <mat-dialog-content>
+        <form [formGroup]="categoryForm" (ngSubmit)="categoryForm.valid && onCommit()">
+
+            <!--Input name-->
+            <mat-form-field>
+                <input matInput formControlName="title" placeholder="Kategoriename" />
+                <mat-hint align="end">
+                    Der Name muss 3-15 Zeichen lang sein.
+                </mat-hint>
+                <mat-error *ngIf='title.errors?.minlength && title.touched'>
+                    Der Name muss mindestes 3 Zeichen lang sein.
+                </mat-error>
+                <mat-error *ngIf='title.errors?.maxlength && title.touched'>
+                    Der Name darf maximal 15 Zeichen lang sein.
+                </mat-error>
+            </mat-form-field>
+
+            <!--Input color-->
+            <mat-form-field>
+                <mat-label>Farbe</mat-label>
+                <mat-select formControlName="color">
+                    <mat-option *ngFor="let color of colors" [value]="color">
+                        {{color}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!--Buttons-->
+            <button mat-button type="submit" class="mat-raised-button mat-primary">Erstellen</button>
+            <button mat-button color="warn" (click)="onClose()">Abbrechen</button>
+        </form>
+    </mat-dialog-content>
+</div>

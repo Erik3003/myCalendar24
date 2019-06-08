@@ -43,10 +43,20 @@ export class EditAppointmentDialogComponent implements OnInit {
     this.endDate = new Date(this.appointment.enddate);
     this.startDate.setTime(this.startDate.getTime() - (2*60*60*1000));
     this.endDate.setTime(this.endDate.getTime() - (2*60*60*1000));
+    this.startDate.setHours(0);
+    this.startDate.setMinutes(0);
+    this.endDate.setHours(0);
+    this.endDate.setMinutes(0);
+
 
     this.startTime = this.appointment.date.substr(11, 5);
     this.endTime = this.appointment.enddate.substr(11, 5);
-    this.minTime = this.startTime;
+    if(this.startDate.getTime == this.endDate.getTime()){
+      console.log("gleicher tag");     
+      this.minTime = this.startTime;
+    }else{
+      this.minTime = "00:00";
+    }
   }
   //creating form with given values of the appointment
   ngOnInit() {
@@ -106,7 +116,6 @@ export class EditAppointmentDialogComponent implements OnInit {
     this.appointment.category = this.appointmentForm.get("category").value;
     this.appointment.date = this.calculateDate(this.appointmentForm.get('date').value, this.appointmentForm.get('time').value);
     this.appointment.enddate = this.calculateDate(this.appointmentForm.get('enddate').value, this.appointmentForm.get('endtime').value);
-
     this.appointmentService.updateApp(this.appointment).subscribe(data=>console.log(data));
   }
 

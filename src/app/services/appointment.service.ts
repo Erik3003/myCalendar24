@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppointmentModel } from 'src/models/appointment.model';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { InviteModel } from 'src/models/invite.model';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +51,18 @@ export class AppointmentService {
     let headers = new HttpHeaders();
     headers = headers.append("Authorization", "bearer "+this.authService.getToken());
     return this.http.post(this.ROOT_URL + "/update", appointment, {headers:headers});
+  }
+
+  sendInvite(invite: InviteModel){
+    let headers = new HttpHeaders();
+    headers = headers.append("Authorization", "bearer "+this.authService.getToken());
+    return this.http.post(this.ROOT_URL + "/invite", invite, {headers:headers});
+  }
+
+  fetchInvites(): Observable<AppointmentModel[]>{
+    let headers = new HttpHeaders();
+    headers = headers.append("Authorization", "bearer "+this.authService.getToken());
+    return this.http.get<AppointmentModel[]>(this.ROOT_URL + "/invites",{headers:headers});
   }
 
 //getter and setter ----------------------------------------------------------------------------------------------

@@ -5,6 +5,8 @@
 
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { MatDialog } from '@angular/material';
+import { InvitesDialogComponent } from '../invites-dialog/invites-dialog.component';
 
 @Component({
   selector: 'app-header',
@@ -15,10 +17,16 @@ export class HeaderComponent implements OnInit {
 
   isLoggedIn:boolean;
 
-  constructor(private authService : AuthService) { }
+  constructor(
+    private authService : AuthService,
+    private dialog: MatDialog
+    ) { }
 
   ngOnInit() {
     this.isLoggedIn = this.authService.loggedIn();
   }
 
+  onInvitesClick(){   
+    this.dialog.open(InvitesDialogComponent);
+  }
 }

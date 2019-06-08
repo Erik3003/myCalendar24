@@ -9,6 +9,7 @@ import { AppointmentService } from 'src/app/services/appointment.service';
 import { CreateCategoryComponent } from '../create-category-dialog/create-category.component';
 import { CategoryService } from 'src/app/services/category.service';
 import { CategoryModel } from 'src/models/category.model';
+import { InviteFormDialogComponent } from '../invite-form-dialog/invite-form-dialog.component';
 
 @Component({
   selector: 'app-display-appointment',
@@ -82,9 +83,17 @@ export class DisplayAppointmentComponent implements OnInit {
     //open new component to edit window
 
   }
+
+  onInvite(){
+    this.dialog.open(InviteFormDialogComponent, {
+			data: {
+				appId: this.appointment._id,
+			}
+		});
+  }
+
   //call appointment service delete request
   onRemove(){    
-    console.log("deleting");
     this.dialog.open(CreateCategoryComponent, {
 			data: {
 				event: this.appointment,

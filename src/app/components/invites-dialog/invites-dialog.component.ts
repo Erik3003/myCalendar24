@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AppointmentService } from 'src/app/services/appointment.service';
+import { AppointmentModel } from 'src/models/appointment.model';
 
 @Component({
   selector: 'app-invites-dialog',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InvitesDialogComponent implements OnInit {
 
-  constructor() { }
+  invites= [];
+
+  constructor(
+    private appService: AppointmentService
+  ) { 
+    this.getInvites();
+  }
 
   ngOnInit() {
+  }
+
+  async getInvites(){
+    const data = await this.appService.fetchInvites().toPromise();
+    this.invites = data;
+    console.log(this.invites);
   }
 
 }

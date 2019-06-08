@@ -16,11 +16,9 @@
   </a>
 
   <!--button for appointment invitations-->
-  <a [routerLink]="['/createAppointment']">
-    <button mat-icon-button *ngIf="isLoggedIn">
-      <mat-icon>message</mat-icon>
-    </button>
-  </a>
+  <button mat-icon-button *ngIf="isLoggedIn" (click)="onInvitesClick()">
+    <mat-icon>message</mat-icon>
+  </button>
 
   <!--button for profile-->
   <a [routerLink]="['/register']">
