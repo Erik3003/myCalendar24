@@ -10,12 +10,14 @@ router.use(passport.authenticate('jwt', { session: false }))
 
 router.post('/new', asyncHandler(createAppointment));
 router.get('/get', asyncHandler(getAppointments));
+router.get('/all', asyncHandler(getAllAppointments));
 router.post('/update', asyncHandler(updateAppointment));
 router.post('/remove', asyncHandler(removeAppointment));
 router.post('/add', asyncHandler(addAppointment));
 router.post('/invite', asyncHandler(sendInvite));
 router.post('/accept', asyncHandler(acceptInvite));
 router.get('/invites', asyncHandler(getInvites));
+router.get('/public', asyncHandler(getPublic));
 
 
 async function createAppointment(req, res) {
@@ -25,6 +27,16 @@ async function createAppointment(req, res) {
 
 async function getAppointments(req, res) {
   let appointments = await appointmentCtrl.extract(req.header('dateParams'), req.user);
+  res.json(appointments);
+}
+
+async function getAllAppointments(req, res) {
+  let appointments = await appointmentCtrl.all(req.user);
+  res.json(appointments);
+}
+
+async function getPublic(req, res) {
+  let appointments = await appointmentCtrl.public();
   res.json(appointments);
 }
 
