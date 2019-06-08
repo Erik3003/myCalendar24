@@ -39,7 +39,7 @@ async function insert(appointment, user) {
 }
 
 async function update(appointment, user) {
-  appointment.creator = user._id;
+  appointment.creator = user._id.toString();
   appointment = await Joi.validate(appointment, appointmentSchema, { abortEarly: false });
   oldAppointment = await getAppointment(appointment);
 
