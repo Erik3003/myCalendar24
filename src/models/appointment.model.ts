@@ -1,7 +1,9 @@
 export class AppointmentModel{
+    _id: String;
     title: String;
     date: String;
     enddate: String;    
     description: String;
-    //public: boolean;
+    category: String;
+    public: boolean;
 }

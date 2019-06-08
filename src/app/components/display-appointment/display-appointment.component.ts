@@ -6,6 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { EditAppointmentDialogComponent } from '../edit-appointment-dialog/edit-appointment-dialog.component';
 import { AppointmentService } from 'src/app/services/appointment.service';
+import { CreateCategoryComponent } from '../create-category/create-category.component';
 
 @Component({
   selector: 'app-display-appointment',
@@ -15,17 +16,17 @@ import { AppointmentService } from 'src/app/services/appointment.service';
 export class DisplayAppointmentComponent implements OnInit {
 
   //variables to display the date in a customized format
-  endYear;
-  endMonth;
-  endDay;
-  endHours;
-  endMinutes;
+  endYear: string;
+  endMonth: string;
+  endDay: string;
+  endHours: string;
+  endMinutes: string;
 
-  startYear;
-  startMonth;
-  startDay;
-  startHours;
-  startMinutes;
+  startYear: string;
+  startMonth: string;
+  startDay: string;
+  startHours: string;
+  startMinutes: string;
 
   appointment;
 
@@ -64,10 +65,13 @@ export class DisplayAppointmentComponent implements OnInit {
     //open new component to edit window
 
   }
-
-  onRemove(){
-    //call appointment service delete request
+  //call appointment service delete request
+  onRemove(){    
     console.log("deleting");
-    this.appointmentService.removeApp(this.appointment._id);
+    this.dialog.open(CreateCategoryComponent, {
+			data: {
+				event: this.appointment,
+			}
+		});
   }
 }

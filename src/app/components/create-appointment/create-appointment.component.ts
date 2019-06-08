@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AppointmentModel } from '../../../models/appointment.model';
 import { AppointmentService } from '../../services/appointment.service';
 import { Router } from '@angular/router';
+import { CategoryService } from 'src/app/services/category.service';
+import { CategoryModel } from 'src/models/category.model';
 
 @Component({
   selector: 'app-create-appointment',
@@ -13,15 +15,17 @@ export class CreateAppointmentComponent implements OnInit {
 
   appointmentForm: FormGroup;
   appointment: AppointmentModel = new AppointmentModel();
-  today;
+  categories: CategoryModel[] =[];
+  today: Date;
   selectedStartDate;
   selectedEndDate;
-  selectedTime;
-  minTime;
+  selectedTime: string;
+  minTime: string;
 
   constructor(
     private formBuilder: FormBuilder,
     private appointmentService: AppointmentService,
+    private catService: CategoryService,
     private router: Router
   ) {
     //setting current date as html-input default value
@@ -43,6 +47,10 @@ export class CreateAppointmentComponent implements OnInit {
     this.today.setMilliseconds(0);
     this.selectedStartDate = this.today;
 
+    //fetch categories
+    this.catService.fetchCategories().subscribe((data:any) => {
+      this.categories= data.category;
+    });
     
   }
 
@@ -66,7 +74,10 @@ export class CreateAppointmentComponent implements OnInit {
       endtime: ['',
         Validators.required
       ],
-      description: ['',
+      category: ['',
+        Validators.required
+      ],
+      description: [' ',
       ],
       public:[false,
       ]
@@ -97,14 +108,19 @@ export class CreateAppointmentComponent implements OnInit {
     //get values of form
     this.appointment.title = this.appointmentForm.get('title').value;
     this.appointment.description = this.appointmentForm.get('description').value;
-    //this.appointment.public = this.appointmentForm.get('public').value;
+    this.appointment.public = this.appointmentForm.get('public').value;
+    this.appointment.category = this.appointmentForm.get("category").value;
     this.appointment.date = this.calculateDate(this.appointmentForm.get('date').value, this.appointmentForm.get('time').value);
     this.appointment.enddate = this.calculateDate(this.appointmentForm.get('enddate').value, this.appointmentForm.get('endtime').value);
 
     //calling service to send data to server
     console.log("creating appointment...");
-    this.appointmentService.CreateNewAppointment(this.appointment);
-    this.router.navigate(['/calendar']);
+    console.log(this.appointment);
+    
+    this.appointmentService.CreateNewAppointment(this.appointment).subscribe(data => {
+      console.log(data);
+      this.router.navigate(['/calendar']);
+    });    
   }
 
   //create isostring of date and time

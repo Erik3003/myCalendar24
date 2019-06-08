@@ -10,7 +10,7 @@
     margin: 10% 2.5%;
 }
 
-#kategorieButton{
+#categoryButton{
     background-color: white;
     color: black;
     width:80%;
@@ -21,8 +21,12 @@ h3{
     text-decoration: underline;
 }
 
-#kategories{
+#categories{
     margin-left:10%;color: white;
+}
+
+.checkboxes {
+    display: block;
 }
 
 
