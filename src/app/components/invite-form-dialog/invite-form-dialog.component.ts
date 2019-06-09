@@ -7,6 +7,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { AppointmentService } from 'src/app/services/appointment.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-invite-form-dialog',
@@ -17,6 +18,7 @@ export class InviteFormDialogComponent implements OnInit {
 
   inviteForm: FormGroup;
   userID: string;
+  nameError: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,8 +48,15 @@ export class InviteFormDialogComponent implements OnInit {
     };
 
     //errorhandling#################################################
-    this.appointmentService.sendInvite(invite).subscribe(data => console.log(data));
-    this.onClose();
+    this.appointmentService.sendInvite(invite).subscribe(data => {
+      this.onClose();
+    },
+      (err: HttpErrorResponse) => {
+        if(err.status == 400){
+          this.nameError=true;         
+        }
+      });
+    
   }
 
   onClose() {

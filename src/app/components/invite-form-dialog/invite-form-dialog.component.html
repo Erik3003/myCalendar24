@@ -1,6 +1,10 @@
 <div class="effectWrapper">
     <h2 mat-dialog-title>Freunde einladen</h2>
     <mat-dialog-content>
+
+        <!--Error message-->
+        <div *ngIf="nameError" class="errorMessage centerWrapper">Benutzer ungültig oder bereits eingeladen!</div>
+
         <form [formGroup]="inviteForm" (ngSubmit)="inviteForm.valid && onSubmit()">
 
             <!--Input name-->

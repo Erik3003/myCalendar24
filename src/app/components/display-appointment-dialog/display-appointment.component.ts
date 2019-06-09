@@ -88,7 +88,8 @@ export class DisplayAppointmentComponent implements OnInit {
     this.dialog.open(InviteFormDialogComponent, {
 			data: {
 				appId: this.appointment._id,
-			}
+      },
+      width: "300px",
 		});
   }
 

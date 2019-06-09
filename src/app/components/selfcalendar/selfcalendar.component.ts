@@ -3,6 +3,7 @@ import { AppointmentService } from 'src/app/services/appointment.service';
 import { MatDialog } from '@angular/material';
 import { DisplayAppointmentComponent } from '../display-appointment-dialog/display-appointment.component';
 import { CategoryService } from 'src/app/services/category.service';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-selfcalendar',
@@ -24,13 +25,19 @@ export class SelfcalendarComponent implements OnInit {
 	categories = [];
 	appClicked: boolean;
 	checkedCategories: boolean[] = [];
+	categorySub:Subscription;
+	appointmentSub:Subscription;
 
 
 	constructor(
-		private service: AppointmentService,
+		private appointmentService: AppointmentService,
 		private catService: CategoryService,
 		private dialog: MatDialog
-	) { }
+	) {
+
+	}
+
+	
 
 	ngOnInit() {
 		this.today = new Date();
@@ -39,15 +46,36 @@ export class SelfcalendarComponent implements OnInit {
 		this.monthAndYear = document.getElementById("monthAndYear");
 
 		//fetching if a choosen category changed
-		this.catService.currentMessage.subscribe(message => {
-			if (message == "changed") {
-				console.log("changed");
-				
+		let counter =0;
+		this.categorySub = this.catService.currentMessage.subscribe(message => {
+			if (message == "choosen changed") {
+				//disabling first fetch
+				if(counter==1){
+					counter++;
+				}else{
+				console.log("cat changed");
+				counter++;
+
 				this.checkedCategories = this.catService.getChoosen();
-				this.categories = this.catService.getCategories();				
+				this.categories = this.catService.getCategories();
+				this.getAppointments();
+			}
+			}
+		});
+
+		//fetching if a appointments changed
+		this.appointmentSub = this.appointmentService.currentMessage.subscribe(message => {
+			if (message == "changed") {
+				console.log("app changed");
 				this.getAppointments();
 			}
 		});
+	}
+	
+	//Unsubscribe on destroy component
+	ngOnDestroy(){
+		this.categorySub.unsubscribe();
+		this.appointmentSub.unsubscribe();
 	}
 
 	//TEST BUTTON FUNKTIONEN########################################################################################
@@ -79,7 +107,7 @@ export class SelfcalendarComponent implements OnInit {
 	//create empty calender for the selected month
 	initCalendar(month, year) {
 		console.log("calender erstellt");
-		
+
 		let firstDayOfMonth = (new Date(year, month)).getDay();
 		this.daysInMonth = 32 - new Date(year, month, 32).getDate();
 
@@ -141,16 +169,16 @@ export class SelfcalendarComponent implements OnInit {
 	async getAppointments() {
 		this.initCalendar(this.currentMonth, this.currentYear);
 		this.events = [];
-		const data = await this.service.fetchAppointments(this.currentMonth, this.currentYear).toPromise();
+		const data = await this.appointmentService.fetchAppointments(this.currentMonth, this.currentYear).toPromise();
 		this.events = data;
-		console.log("apps geladen "+this.events);
+		console.log("apps geladen ");
 
 		const catData = await this.catService.fetchCategories().toPromise();
 		this.categories = catData;
-		console.log("cat geladen "+this.categories);
+		console.log("cat geladen ");
 
 		console.log("appending...");
-		
+
 		this.appendAppointmentsToCell();
 	}
 
@@ -197,9 +225,13 @@ export class SelfcalendarComponent implements OnInit {
 		let color = 'gray';
 
 		//check for category and if it is selected
-		for (let i = 0; i < this.categories.length; i++) {		
-			if (this.categories[i]._id === this.events[eventIndex].category && this.checkedCategories[i]) {
-				color = this.categories[i].color;
+		for (let i = 0; i < this.categories.length; i++) {
+			if (this.categories[i]._id === this.events[eventIndex].category ) {
+				if(this.checkedCategories[i]){
+					color = this.categories[i].color;
+				}else{
+					return;
+				}
 			}
 		}
 		//creating div for the appointment
