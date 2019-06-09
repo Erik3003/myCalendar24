@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const Appointment = require('../models/appointment.model');
-const userCtrl = require("./users.controller")
+const userCtrl = require("./users.controller");
+const categoryCtrl = require("./category.controller");
 
 const appointmentSchema = Joi.object({
   creator: Joi.string().required(),
@@ -27,14 +28,29 @@ module.exports = {
   accept,
   hasAnyAppointmentCategory,
   all,
-  public
+  public,
+  extractPublic,
+  extractDay
 }
 
 async function insert(appointment, user) {
   appointment.creator = user._id.toString();
   appointment = await Joi.validate(appointment, appointmentSchema, { abortEarly: false });
-  appointment = await new Appointment(appointment).save();
+
+  category = await categoryCtrl.getAppointmentCategory(appointment);
   user = await userCtrl.getUser(user);
+
+  if (category == null) {
+    return { Status: 401 };
+  }
+
+  isUserCategoryCreator = await categoryCtrl.isCreator(category, user);
+  if (!isUserCategoryCreator) {
+    return { Status: 401 };
+  }
+
+  appointment = await new Appointment(appointment).save();
+  
   user.appointments.push(appointment._id);
   user.save();
   return appointment;
@@ -44,12 +60,25 @@ async function update(appointment, user) {
   appointment.creator = user._id.toString();
   appointment = await Joi.validate(appointment, appointmentSchema, { abortEarly: false });
   oldAppointment = await getAppointment(appointment);
+  category = await categoryCtrl.getAppointmentCategory(appointment);
+  user = await userCtrl.getUser(user);
 
   if (appointment == null){
     return { Status:404 };
   }
-  if (!isCreator(appointment, user)){
+
+  isUserCreator = isCreator(oldAppointment, user);
+  if (!isUserCreator){
     return { Status:401 };
+  }
+
+  if (category == null) {
+    return { Status: 401 };
+  }
+
+  isUserCategoryCreator = await categoryCtrl.isCreator(category, user);
+  if (!isUserCategoryCreator) {
+    return { Status: 401 };
   }
 
   return await oldAppointment.replaceOne(appointment);
@@ -69,16 +98,51 @@ async function extract(date, user) {
   endDate.setMonth(startDate.getMonth() + 2);
   endDate.setDate(0);
 
-  console.log(startDate + "  " + endDate);
-
   return await Appointment.find({ _id: { $in: appointments }, date: { $lt: endDate }, enddate: { $gt: startDate } });
+}
+
+async function extractDay(date, user) {
+  user = await userCtrl.getUser(user);
+  appointments = user.appointments;
+
+  startDate = new Date(date);
+  startDate.setHours(0);
+  startDate.setMinutes(0);
+  startDate.setSeconds(0);
+  startDate.setMilliseconds(0);
+  endDate = new Date(startDate.toString());
+  startDate.setHours(23);
+  startDate.setMinutes(59);
+  startDate.setSeconds(59);
+  startDate.setMilliseconds(999);
+
+  return await Appointment.find({ _id: { $in: appointments }, date: { $lte: endDate }, enddate: { $gte: startDate } });
+}
+
+async function extractPublic(startdate, enddate, user) {
+  user = await userCtrl.getUser(user);
+
+  startDate = new Date(startdate);
+  endDate = new Date(enddate);
+
+  return await Appointment.find({ public: true, date: { $lte: endDate }, enddate: { $gte: startDate }, _id: { $nin: user.appointments } });
 }
 
 async function add(appointment, user) {
   user = await userCtrl.getUser(user);
-  appointments = user.appointments;
+  appointment = await getAppointment(appointment);
+
+  if (appointment == null || appointment.public != true) {
+    return { Status: 401 };
+  }
+  hasAppointmentAlready = hasAppointment(appointment, user);
+  if (hasAppointmentAlready) {
+    return { Status: 401 };
+  }
+
   user.appointments.push(appointment._id);
-  return await user.save();
+  await userCtrl.saveUser(user);
+  return { Success: true };
 }
 
 async function remove(appointment, user) {
@@ -125,7 +189,6 @@ function hasAppointment(appointment, user) {
 }
 
 async function getAppointment(appointment) {
-  console.log("APPOINTMEMT ID:   " + appointment._id)
   return await Appointment.findById(appointment._id);
 }
 
@@ -137,8 +200,10 @@ async function hasAnyAppointmentCategory(category) {
   return false;
 }
 
-async function public() {
-  return await Appointment.find({public:true});
+async function public(user) {
+  user = await userCtrl.getUser(user);
+
+  return await Appointment.find({ public: true, _id: { $nin: user.appointments } });
 }
 
 async function invite(user, appointment, target) {
@@ -204,10 +269,5 @@ async function invites(user) {
 async function all(user) {
   user = await userCtrl.getUser(user);
   appointments = await Appointment.find({ _id: user.appointments });
-  return appointments;
-}
-
-async function public() {
-  appointments = await Appointment.find({ public: true });
   return appointments;
 }

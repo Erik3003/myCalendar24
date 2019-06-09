@@ -17,7 +17,8 @@ module.exports = {
   get,
   update,
   isCreator,
-  getCategory
+  getCategory,
+  getAppointmentCategory
 }
 
 async function insert(category, user) {
@@ -44,9 +45,10 @@ async function update(category, user) {
   category = await Joi.validate(category, categorySchema, { abortEarly: false });
   oldCategory = await getCategory(category);
   if (oldCategory == null){
+    console.log("schlecht");
     return { Status:401 };
   }
-  isUserCreator = await isCreator(category, user);
+  isUserCreator = await isCreator(oldCategory, user);
   if (!isUserCreator){
     return { Status:401 };
   }
@@ -62,7 +64,10 @@ async function getCategory(category) {
   return await Category.findById(category._id);
 }
 
+async function getAppointmentCategory(appointment) {
+  return await Category.findById(appointment.category);
+}
+
 async function isCreator(category, user) {
-  category = await getCategory(category);
   return user._id.toString() == category.creator.toString();
 }
