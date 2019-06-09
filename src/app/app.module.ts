@@ -22,6 +22,7 @@ import { InvitesDialogComponent } from './components/invites-dialog/invites-dial
 import { InviteFormDialogComponent } from './components/invite-form-dialog/invite-form-dialog.component';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import { CustomizeCategoriesComponent } from './components/customize-categories/customize-categories.component';
+import { PublicAppointmentsComponent } from './components/public-appointments/public-appointments.component';
 
 
 
@@ -41,7 +42,8 @@ import { CustomizeCategoriesComponent } from './components/customize-categories/
     InvitesDialogComponent,
     InviteFormDialogComponent,
     DeleteDialogComponent,
-    CustomizeCategoriesComponent
+    CustomizeCategoriesComponent,
+    PublicAppointmentsComponent
   ],
   imports: [
     BrowserModule,

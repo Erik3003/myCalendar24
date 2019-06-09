@@ -27,8 +27,13 @@ export class CategoryService {
   //complete
   fetchCategories(): Observable<CategoryModel[]> {
     let headers = this.createRequestHeaders();
-
     return this.http.get<CategoryModel[]>(this.ROOT_URL + "/get", { headers: headers });
+  }
+
+  //complete
+  fetchPublicCategories(): Observable<CategoryModel[]> {
+    let headers = this.createRequestHeaders();
+    return this.http.get<CategoryModel[]>(this.ROOT_URL + "/public", { headers: headers });
   }
 
   //_id

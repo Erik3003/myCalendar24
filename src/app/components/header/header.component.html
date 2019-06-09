@@ -15,7 +15,7 @@
   <span class="spacer"></span>
 
   <!--button for group appointments-->
-  <a [routerLink]="['/login']">
+  <a [routerLink]="['/public']">
     <button mat-icon-button *ngIf="isLoggedIn">
       <mat-icon>group</mat-icon>
     </button>
@@ -36,7 +36,7 @@
     <mat-icon>person</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <div mat-menu-item>{{user.username}} {{user.email}}</div>
+    <!--<div mat-menu-item>{{user.username}} {{user.email}}</div>-->
     <button mat-menu-item (click)="onUpdateCategories()">Kategorien verwalten</button>
     <button mat-menu-item (click)="onLogout()">Logout</button>
   </mat-menu>

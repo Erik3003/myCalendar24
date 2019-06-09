@@ -43,6 +43,11 @@ export class AppointmentService {
     return this.http.get<AppointmentModel[]>(this.ROOT_URL + "/get",{headers:headers});
   }
 
+  fetchPublicAppointments(): Observable<AppointmentModel[]>{   
+    let headers = this.createRequestHeader();
+    return this.http.get<AppointmentModel[]>(this.ROOT_URL + "/public",{headers:headers});
+  }
+
   //http post request for deleting an appointment of theuser
   removeApp(id:string){
     let appointment = new AppointmentModel();

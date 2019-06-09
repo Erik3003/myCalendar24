@@ -1,0 +1,67 @@
+<app-header></app-header>
+
+<div class="centerWrapper">
+  <div class="effectWrapper">
+    <h2>Öffentliche Veranstaltungen</h2>
+
+    <form [formGroup]="selectDateForm" (ngSubmit)="selectDateForm.valid && submitSearch()">
+      <div class="formElements">
+
+        <!--Input date and time-->
+        <div class="dateTimePair">
+
+          <!--Input start date-->
+          <mat-form-field class="datePicker">
+            <input matInput [matDatepicker]="startDatePicker" formControlName="date" placeholder="Startdatum"
+              (dateChange)="changeStartDate()">
+            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #startDatePicker disabled="false"></mat-datepicker>
+          </mat-form-field>
+
+          <p>bis</p>
+
+          <!--Input end date-->
+          <mat-form-field class="datePicker">
+            <input matInput [matDatepicker]="endDatePicker" formControlName="enddate" placeholder="Enddatum"
+              [value]="selectedStartDate" [min]="selectedStartDate">
+            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #endDatePicker disabled="false"></mat-datepicker>
+          </mat-form-field>
+
+          <!--Buttons-->
+          <button mat-button type="submit" class="mat-raised-button mat-primary">Suchen</button>
+        </div>
+      </div>
+    </form>
+
+
+    <!--Message of no appointments-->
+    <div class="effectWrapper" *ngIf="!hasAppointments">
+      <h3>Keine öffentlichen Veranstaltungen gefunden.</h3>
+    </div>
+
+    <!--List of public appointments-->
+    <div class="effectWrapper" *ngFor="let appointment of appointments; index as i" [id]="i">
+      <h4>{{appointment.title}}</h4>
+      <p>
+        <!--startdate-->
+        {{appointmentDate[i].startday}}.{{appointmentDate[i].startmonth}}.{{appointmentDate[i].startyear}}
+        um {{appointmentDate[i].starthours}}:{{appointmentDate[i].startminutes}} Uhr bis
+        <!--enddate-->
+        {{appointmentDate[i].endday}}.{{appointmentDate[i].endmonth}}.{{appointmentDate[i].endyear}}
+        um {{appointmentDate[i].endhours}}:{{appointmentDate[i].endminutes}} Uhr
+      </p>
+
+      <p id="descriptionHeading">Beschreibung:</p>
+      <p>{{appointment.description}}</p>
+      <div id="buttons">
+        <button mat-icon-button (click)="onAnswer(i, true)">
+          <mat-icon>check_circle_outline</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="onAnswer(i, false)">
+          <mat-icon>highlight_off</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

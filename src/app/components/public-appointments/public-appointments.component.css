@@ -1,0 +1,9 @@
+.formElements p{
+    display: inline;
+    margin: 0 10px;
+}
+
+.timePicker{
+    margin-left: 2%;
+    width: 80px; 
+}

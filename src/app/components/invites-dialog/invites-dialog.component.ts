@@ -73,18 +73,6 @@ export class InvitesDialogComponent implements OnInit {
         this.dialogRef.close();
       }
     });
-
-    console.log(index);
-
-    let div = document.getElementById(index.toString());
-    let parent = div.parentNode;
-    div.parentNode.removeChild(div);
-
-    if (!parent.hasChildNodes()) {
-      console.log(" kein element mehr");
-    } else {
-      console.log(" noch was da");
-    }
   }
 
 }
