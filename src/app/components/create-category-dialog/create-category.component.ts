@@ -1,6 +1,6 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, Inject} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CategoryModel } from 'src/models/category.model';
 import { CategoryService } from 'src/app/services/category.service';
 
@@ -16,12 +16,16 @@ export class CreateCategoryComponent implements OnInit {
 
   colors: string[];
 
+  element:string;
+
   constructor(
     private formBuilder: FormBuilder,
     private catService: CategoryService,
-    private dialogRef: MatDialogRef<CreateCategoryComponent>
+    private dialogRef: MatDialogRef<CreateCategoryComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
-    this.colors = ["red", "blue", "green", "yellow", "orange", "lightgreen", "lightblue"];
+    this.element = data.element;
+    this.colors = ["red", "blue", "green", "yellow", "orange", "lightgreen", "lightblue"];    
   }
 
   ngOnInit() {
@@ -38,14 +42,13 @@ export class CreateCategoryComponent implements OnInit {
   }
 
   //calling service to create a new category
-  onCommit(){
-    console.log(this.categoryForm.get("title").value);
-    
+  onCommit(){  
     let category = new CategoryModel();
 		category.title = this.categoryForm.get("title").value;	
 		category.color = this.categoryForm.get("color").value;
 		this.catService.createCategory(category).subscribe((data:any)=>{
       console.log(data);
+      this.catService.categoriesChanged(this.element);
       this.dialogRef.close();
 		});   
   }

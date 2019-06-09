@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { RegisterModel } from 'src/models/register.model';
-import { LoginModel } from 'src/models/login.model';
+import { UserModel } from 'src/models/user.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,17 +11,16 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   isLoggedIn: boolean = false;
-
   token: string;
+  user:UserModel;
 
   readonly ROOT_URL = 'http://localhost:3000/api/user';
 
-  registerUser(user: RegisterModel){
-    return this.http.post(this.ROOT_URL+"/register", user);
-       
+  registerUser(user: UserModel){
+    return this.http.post(this.ROOT_URL+"/register", user);      
   }
 
-  loginUser(user: LoginModel){
+  loginUser(user: UserModel){
     return this.http.post(this.ROOT_URL+"/login", user);
   }
 
@@ -41,6 +40,14 @@ export class AuthService {
   setToken(token:string){
     this.token = token;
     this.isLoggedIn = true;
+  }
+
+  getUser():UserModel{
+    return this.user
+  }
+
+  setUser(user: UserModel){
+    this.user = user;
   }
 
 }

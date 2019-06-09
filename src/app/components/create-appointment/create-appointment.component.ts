@@ -5,6 +5,8 @@ import { AppointmentService } from '../../services/appointment.service';
 import { Router } from '@angular/router';
 import { CategoryService } from 'src/app/services/category.service';
 import { CategoryModel } from 'src/models/category.model';
+import { CreateCategoryComponent } from '../create-category-dialog/create-category.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-create-appointment',
@@ -15,7 +17,7 @@ export class CreateAppointmentComponent implements OnInit {
 
   appointmentForm: FormGroup;
   appointment: AppointmentModel = new AppointmentModel();
-  categories: CategoryModel[] =[];
+  categories: CategoryModel[] = [];
   today: Date;
   selectedStartDate;
   selectedEndDate;
@@ -26,11 +28,12 @@ export class CreateAppointmentComponent implements OnInit {
     private formBuilder: FormBuilder,
     private appointmentService: AppointmentService,
     private catService: CategoryService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {
     //setting current date as html-input default value
     this.today = new Date();
-    
+
     //setting next hour as html-input default value
     let hours = this.today.getHours();
     if (hours < 23) {
@@ -48,10 +51,16 @@ export class CreateAppointmentComponent implements OnInit {
     this.selectedStartDate = this.today;
 
     //fetch categories
-    this.catService.fetchCategories().subscribe((data:any) => {
-      this.categories= data.category;
+    this.loadCategories();
+
+    //fetching if a category was added
+    this.catService.currentMessage.subscribe(message => {
+      if (message == "form changed") {
+        console.log("categories changed");
+        setTimeout(() => { this.loadCategories() }, 200);
+      }
     });
-    
+
   }
 
   //creating appointment form
@@ -69,7 +78,7 @@ export class CreateAppointmentComponent implements OnInit {
       Validators.required
       ],
       enddate: [this.today,
-        Validators.required
+      Validators.required
       ],
       endtime: ['',
         Validators.required
@@ -79,7 +88,7 @@ export class CreateAppointmentComponent implements OnInit {
       ],
       description: [' ',
       ],
-      public:[false,
+      public: [false,
       ]
     });
   }
@@ -91,9 +100,9 @@ export class CreateAppointmentComponent implements OnInit {
 
   changeEndDate() {
     this.selectedEndDate = this.appointmentForm.get('enddate').value;
-    if(this.selectedEndDate.getTime()===this.selectedStartDate.getTime()){
+    if (this.selectedEndDate.getTime() === this.selectedStartDate.getTime()) {
       this.minTime = this.selectedTime;
-    }else{
+    } else {
       this.minTime = "00:00";
     }
   }
@@ -116,11 +125,11 @@ export class CreateAppointmentComponent implements OnInit {
     //calling service to send data to server
     console.log("creating appointment...");
     console.log(this.appointment);
-    
+
     this.appointmentService.CreateNewAppointment(this.appointment).subscribe(data => {
       console.log(data);
       this.router.navigate(['/calendar']);
-    });    
+    });
   }
 
   //create isostring of date and time
@@ -130,6 +139,21 @@ export class CreateAppointmentComponent implements OnInit {
     let minutes = parseInt(time.toString().substr(3));
     newDate.setTime(date.getTime() + (((hours + 2) * 60 + minutes) * 60 * 1000));
     return newDate.toISOString();
+  }
+
+  //open dialog to create categorie
+  onCategoryCreate() {
+    this.dialog.open(CreateCategoryComponent, {
+      data: {
+        element: "form",
+      }
+    });
+  }
+
+  //load categorie and create array for choices
+  async loadCategories() {
+    const data = await this.catService.fetchCategories().toPromise();
+    this.categories = data;
   }
 
   //getter for validating form in html

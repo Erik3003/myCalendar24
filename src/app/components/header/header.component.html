@@ -1,7 +1,13 @@
 <mat-toolbar class="mat-primary">
 
   <!--heading with link to home-->
-  <a [routerLink]="['/']">
+  <a [routerLink]="['/calendar']" *ngIf="isLoggedIn">
+    <button mat-button id="heading">
+      MyCalendar
+    </button>
+  </a>
+
+  <a [routerLink]="['/login']" *ngIf="!isLoggedIn">
     <button mat-button id="heading">
       MyCalendar
     </button>
@@ -9,25 +15,32 @@
   <span class="spacer"></span>
 
   <!--button for group appointments-->
-  <a [routerLink]="['/login']">
+  <a [routerLink]="['/public']">
     <button mat-icon-button *ngIf="isLoggedIn">
       <mat-icon>group</mat-icon>
     </button>
   </a>
 
   <!--button for appointment invitations-->
-  <a [routerLink]="['/createAppointment']">
-    <button mat-icon-button *ngIf="isLoggedIn">
-      <mat-icon>message</mat-icon>
-    </button>
-  </a>
+  <button mat-icon-button *ngIf="isLoggedIn && !hasInvites" (click)="onInvitesClick()">
+    <mat-icon>message</mat-icon>
+  </button>
+
+  <!--button for appointment invitations-->
+  <button mat-icon-button *ngIf="isLoggedIn && hasInvites" (click)="onInvitesClick()" color="warn">
+    <mat-icon>message</mat-icon>
+  </button>
 
   <!--button for profile-->
-  <a [routerLink]="['/register']">
-    <button mat-icon-button *ngIf="isLoggedIn">
-      <mat-icon>person</mat-icon>
-    </button>
-  </a>
+  <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="isLoggedIn">
+    <mat-icon>person</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <!--<div mat-menu-item>{{user.username}} {{user.email}}</div>-->
+    <button mat-menu-item (click)="onUpdateCategories()">Kategorien verwalten</button>
+    <button mat-menu-item (click)="onLogout()">Logout</button>
+  </mat-menu>
+
 
   <!--button signing up-->
   <a [routerLink]="['/register']">

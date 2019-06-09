@@ -8,6 +8,7 @@
     background-color: white;
     width: 95%;
     margin: 10% 2.5%;
+    overflow: hidden;
 }
 
 #categoryButton{
@@ -15,6 +16,7 @@
     color: black;
     width:80%;
     margin: 5% 0;
+    overflow: hidden;
 }
 
 h3{  
@@ -28,8 +30,6 @@ h3{
 .checkboxes {
     display: block;
 }
-
-
 
 ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
   background-color: red !important;

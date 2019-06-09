@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule, MatIconModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule, MatDialogModule, MatOptionModule, MatSelectModule } from "@angular/material";
+import { MatToolbarModule, MatIconModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule, MatDialogModule, MatOptionModule, MatSelectModule, MatMenuModule } from "@angular/material";
 import {MAT_DATE_LOCALE} from '@angular/material';
 
 import { HeaderComponent } from './components/header/header.component';
@@ -14,11 +14,15 @@ import { LoginComponent } from './components/login/login.component';
 import { CreateAppointmentComponent } from './components/create-appointment/create-appointment.component';
 import { SelfcalendarComponent } from './components/selfcalendar/selfcalendar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { DisplayAppointmentComponent } from './components/display-appointment/display-appointment.component';
+import { DisplayAppointmentComponent } from './components/display-appointment-dialog/display-appointment.component';
 import { EditAppointmentDialogComponent } from './components/edit-appointment-dialog/edit-appointment-dialog.component';
 import { DayCalendarComponent } from './components/day-calendar/day-calendar.component';
-import { CreateCategoryComponent } from './components/create-category/create-category.component';
-import { DeleteAppointmentComponent } from './components/delete-appointment/delete-appointment.component';
+import { CreateCategoryComponent } from './components/create-category-dialog/create-category.component';
+import { InvitesDialogComponent } from './components/invites-dialog/invites-dialog.component';
+import { InviteFormDialogComponent } from './components/invite-form-dialog/invite-form-dialog.component';
+import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
+import { CustomizeCategoriesComponent } from './components/customize-categories/customize-categories.component';
+import { PublicAppointmentsComponent } from './components/public-appointments/public-appointments.component';
 
 
 
@@ -35,7 +39,11 @@ import { DeleteAppointmentComponent } from './components/delete-appointment/dele
     EditAppointmentDialogComponent,
     DayCalendarComponent,
     CreateCategoryComponent,
-    DeleteAppointmentComponent
+    InvitesDialogComponent,
+    InviteFormDialogComponent,
+    DeleteDialogComponent,
+    CustomizeCategoriesComponent,
+    PublicAppointmentsComponent
   ],
   imports: [
     BrowserModule,
@@ -52,10 +60,19 @@ import { DeleteAppointmentComponent } from './components/delete-appointment/dele
     MatNativeDateModule,
     MatDialogModule,
     MatOptionModule,
-    MatSelectModule
+    MatSelectModule,
+    MatMenuModule
   ],
   providers: [{provide: MAT_DATE_LOCALE, useValue: 'de-DE'}],
   bootstrap: [AppComponent],
-  entryComponents:[DisplayAppointmentComponent, EditAppointmentDialogComponent,CreateCategoryComponent,DeleteAppointmentComponent]
+  entryComponents:[
+    DisplayAppointmentComponent, 
+    EditAppointmentDialogComponent,
+    CreateCategoryComponent,
+    InvitesDialogComponent,
+    InviteFormDialogComponent,
+    DeleteDialogComponent,
+    CustomizeCategoriesComponent
+  ]
 })
 export class AppModule { }

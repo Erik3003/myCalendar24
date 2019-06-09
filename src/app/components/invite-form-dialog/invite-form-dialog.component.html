@@ -1,0 +1,29 @@
+<div class="effectWrapper">
+    <h2 mat-dialog-title>Freunde einladen</h2>
+    <mat-dialog-content>
+
+        <!--Error message-->
+        <div *ngIf="nameError" class="errorMessage centerWrapper">Benutzer ungültig oder bereits eingeladen!</div>
+
+        <form [formGroup]="inviteForm" (ngSubmit)="inviteForm.valid && onSubmit()">
+
+            <!--Input name-->
+            <mat-form-field>
+                <input matInput formControlName="name" placeholder="Username" />
+                <mat-hint align="end">
+                    Der Name muss 3-15 Zeichen lang sein.
+                </mat-hint>
+                <mat-error *ngIf='name.errors?.minlength && name.touched'>
+                    Der Name muss mindestes 3 Zeichen lang sein.
+                </mat-error>
+                <mat-error *ngIf='name.errors?.maxlength && name.touched'>
+                    Der Name darf maximal 15 Zeichen lang sein.
+                </mat-error>
+            </mat-form-field>
+            <br>
+            <!--Buttons-->
+            <button mat-button type="submit" class="mat-raised-button mat-primary">Versenden</button>
+            <button mat-button color="warn" (click)="onClose()">Abbrechen</button>
+        </form>
+    </mat-dialog-content>
+</div>
