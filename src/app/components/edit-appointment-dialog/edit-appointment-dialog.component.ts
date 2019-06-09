@@ -116,7 +116,11 @@ export class EditAppointmentDialogComponent implements OnInit {
     this.appointment.category = this.appointmentForm.get("category").value;
     this.appointment.date = this.calculateDate(this.appointmentForm.get('date').value, this.appointmentForm.get('time').value);
     this.appointment.enddate = this.calculateDate(this.appointmentForm.get('enddate').value, this.appointmentForm.get('endtime').value);
-    this.appointmentService.updateApp(this.appointment).subscribe(data=>console.log(data));
+    this.appointmentService.updateApp(this.appointment).subscribe(data=>{
+      console.log(data);
+      this.appointmentService.changed();
+      this.dialogRef.close();
+    });
   }
 
   //create isostring of date and time

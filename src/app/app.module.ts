@@ -18,7 +18,6 @@ import { DisplayAppointmentComponent } from './components/display-appointment-di
 import { EditAppointmentDialogComponent } from './components/edit-appointment-dialog/edit-appointment-dialog.component';
 import { DayCalendarComponent } from './components/day-calendar/day-calendar.component';
 import { CreateCategoryComponent } from './components/create-category-dialog/create-category.component';
-import { DeleteAppointmentComponent } from './components/delete-appointment/delete-appointment.component';
 import { InvitesDialogComponent } from './components/invites-dialog/invites-dialog.component';
 import { InviteFormDialogComponent } from './components/invite-form-dialog/invite-form-dialog.component';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
@@ -38,7 +37,6 @@ import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.
     EditAppointmentDialogComponent,
     DayCalendarComponent,
     CreateCategoryComponent,
-    DeleteAppointmentComponent,
     InvitesDialogComponent,
     InviteFormDialogComponent,
     DeleteDialogComponent
@@ -66,7 +64,6 @@ import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.
     DisplayAppointmentComponent, 
     EditAppointmentDialogComponent,
     CreateCategoryComponent,
-    DeleteAppointmentComponent,
     InvitesDialogComponent,
     InviteFormDialogComponent,
     DeleteDialogComponent

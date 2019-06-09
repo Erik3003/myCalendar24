@@ -5,11 +5,13 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { EditAppointmentDialogComponent } from '../edit-appointment-dialog/edit-appointment-dialog.component';
-import { AppointmentService } from 'src/app/services/appointment.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { CategoryModel } from 'src/models/category.model';
 import { InviteFormDialogComponent } from '../invite-form-dialog/invite-form-dialog.component';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
+import { AuthService } from 'src/app/services/auth.service';
+import { AppointmentModel } from 'src/models/appointment.model';
+
 
 @Component({
   selector: 'app-display-appointment',
@@ -32,13 +34,12 @@ export class DisplayAppointmentComponent implements OnInit {
   startMinutes: string;
 
   categories: CategoryModel[] = [];
-  category: CategoryModel;
+  category: CategoryModel = new CategoryModel();
 
-  appointment;
+  appointment: AppointmentModel;
 
   constructor(
-    private router: Router,
-    private appointmentService: AppointmentService,
+    private authService: AuthService,
     private catService: CategoryService,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<DisplayAppointmentComponent>,
@@ -56,20 +57,38 @@ export class DisplayAppointmentComponent implements OnInit {
       this.startDay = this.appointment.date.substr(8,2);
       this.startHours = this.appointment.date.substr(11,2);
       this.startMinutes = this.appointment.date.substr(14,2);
-
-      //get category
-      this.categories = this.catService.getCategories();
-      for(let i = 0; i < this.categories.length;i++){
-        if(this.categories[i]._id == this.appointment.category){
-          this.category = this.categories[i];
-        }
-      }
+      
+      //get category of appointment to display color
+      this.loadCategories();
      }
 
   ngOnInit() {
-    
+
   }
 
+  async loadCategories(){
+    
+    //fetching all category
+    const data = await this.catService.fetchCategories().toPromise();
+    this.categories=data;   
+    
+    //get category of given appointment
+    let found = false;
+    for(let i = 0; i < this.categories.length;i++){
+      if(this.categories[i]._id == this.appointment.category){
+        this.category = this.categories[i];
+        found = true;
+      }
+
+      //displaying category for group appointments
+      if (!found){
+        this.category.color = "gray";
+        this.category.title = "Gruppentermin"
+      }
+    }    
+  }
+
+  //open dialog with data of appointment to edit it
   onEdit(){
     this.dialogRef.close();
 
@@ -80,10 +99,9 @@ export class DisplayAppointmentComponent implements OnInit {
         categories: this.categories
 			}
 		});
-    //open new component to edit window
-
   }
 
+  //open dialog to invite a user to the appointment
   onInvite(){
     this.dialog.open(InviteFormDialogComponent, {
 			data: {
@@ -93,7 +111,7 @@ export class DisplayAppointmentComponent implements OnInit {
 		});
   }
 
-  //call appointment service delete request
+  //open dialog to delete the appointment
   onRemove(){    
     this.dialog.open(DeleteDialogComponent, {
 			data: {

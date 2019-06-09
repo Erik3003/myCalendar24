@@ -175,9 +175,6 @@ export class SelfcalendarComponent implements OnInit {
 
 		const catData = await this.catService.fetchCategories().toPromise();
 		this.categories = catData;
-		console.log("cat geladen ");
-
-		console.log("appending...");
 
 		this.appendAppointmentsToCell();
 	}
