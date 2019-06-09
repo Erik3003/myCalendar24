@@ -4,12 +4,12 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { LoginModel } from '../../../models/login.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CategoryService } from 'src/app/services/category.service';
+import { UserModel } from 'src/models/user.model';
 
 @Component({
   selector: 'app-login',
@@ -18,14 +18,13 @@ import { CategoryService } from 'src/app/services/category.service';
 })
 export class LoginComponent implements OnInit {
 
-  user: LoginModel = new LoginModel;
+  user: UserModel = new UserModel();
   loginForm: FormGroup;
   isLogginError:boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private catService: CategoryService,
     private router: Router
   ) { }
 
@@ -51,6 +50,7 @@ export class LoginComponent implements OnInit {
     this.user.password = this.loginForm.get('password').value;
     
     this.authService.loginUser(this.user).subscribe( (data:any) =>{
+      this.authService.setUser(data.User);
       this.authService.setToken(data.token);
       this.router.navigate(['/calendar']);
     },

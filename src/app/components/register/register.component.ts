@@ -4,7 +4,6 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { RegisterModel } from '../../../models/register.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { MyErrorStateMatcher } from 'src/app/class/my-error-state-matcher';
@@ -12,6 +11,7 @@ import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CategoryService } from 'src/app/services/category.service';
 import { CategoryModel } from 'src/models/category.model';
+import { UserModel } from 'src/models/user.model';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +20,7 @@ import { CategoryModel } from 'src/models/category.model';
 })
 export class RegisterComponent implements OnInit {
 
-  user: RegisterModel = new RegisterModel();
+  user: UserModel = new UserModel();
   registerForm: FormGroup;
   matcher = new MyErrorStateMatcher();
   isRegisterError: boolean;

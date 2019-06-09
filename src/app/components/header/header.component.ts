@@ -8,6 +8,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import { MatDialog } from '@angular/material';
 import { InvitesDialogComponent } from '../invites-dialog/invites-dialog.component';
 import { AppointmentService } from 'src/app/services/appointment.service';
+import { Router } from '@angular/router';
+import { CustomizeCategoriesComponent } from '../customize-categories/customize-categories.component';
+import { UserModel } from 'src/models/user.model';
 
 @Component({
   selector: 'app-header',
@@ -18,18 +21,25 @@ export class HeaderComponent implements OnInit {
 
   isLoggedIn: boolean;
   hasInvites: boolean;
+  user: UserModel;
 
   constructor(
     private authService: AuthService,
     private appointmentService: AppointmentService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {
+    this.user = new UserModel();
+    this.user.username='';
+    this.user.email='';
     this.isLoggedIn = this.authService.loggedIn();
     this.getInvites();
   }
 
   ngOnInit() {
-
+    if (this.isLoggedIn) {
+      this.user = this.authService.getUser();
+    }
   }
 
   //fetch if user has any invites
@@ -46,5 +56,16 @@ export class HeaderComponent implements OnInit {
   //open invite list
   onInvitesClick() {
     this.dialog.open(InvitesDialogComponent);
+  }
+
+  //logging out
+  onLogout() {
+    this.authService.logoutUser();
+    this.router.navigate(['/login']);
+  }
+
+  //open customize category dialog
+  onUpdateCategories() {
+    this.dialog.open(CustomizeCategoriesComponent);
   }
 }

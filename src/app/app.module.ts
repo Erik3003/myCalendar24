@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule, MatIconModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule, MatDialogModule, MatOptionModule, MatSelectModule } from "@angular/material";
+import { MatToolbarModule, MatIconModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule, MatDialogModule, MatOptionModule, MatSelectModule, MatMenuModule } from "@angular/material";
 import {MAT_DATE_LOCALE} from '@angular/material';
 
 import { HeaderComponent } from './components/header/header.component';
@@ -21,6 +21,7 @@ import { CreateCategoryComponent } from './components/create-category-dialog/cre
 import { InvitesDialogComponent } from './components/invites-dialog/invites-dialog.component';
 import { InviteFormDialogComponent } from './components/invite-form-dialog/invite-form-dialog.component';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
+import { CustomizeCategoriesComponent } from './components/customize-categories/customize-categories.component';
 
 
 
@@ -39,7 +40,8 @@ import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.
     CreateCategoryComponent,
     InvitesDialogComponent,
     InviteFormDialogComponent,
-    DeleteDialogComponent
+    DeleteDialogComponent,
+    CustomizeCategoriesComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +58,8 @@ import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.
     MatNativeDateModule,
     MatDialogModule,
     MatOptionModule,
-    MatSelectModule
+    MatSelectModule,
+    MatMenuModule
   ],
   providers: [{provide: MAT_DATE_LOCALE, useValue: 'de-DE'}],
   bootstrap: [AppComponent],
@@ -66,7 +69,8 @@ import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.
     CreateCategoryComponent,
     InvitesDialogComponent,
     InviteFormDialogComponent,
-    DeleteDialogComponent
+    DeleteDialogComponent,
+    CustomizeCategoriesComponent
   ]
 })
 export class AppModule { }

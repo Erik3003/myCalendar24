@@ -32,17 +32,16 @@ export class CategoryService {
   }
 
   //_id
-  deleteCategory() {
+  deleteCategory(category: CategoryModel) {
     let headers = this.createRequestHeaders();
-
+    console.log(category);
     return this.http.post(this.ROOT_URL + "/remove", { headers: headers });
   }
 
   //title color _id
   updateCategory(category: CategoryModel) {
     let headers = this.createRequestHeaders();
-
-    return this.http.post(this.ROOT_URL + "/remove", category, { headers: headers });
+    return this.http.post(this.ROOT_URL + "/update", category, { headers: headers });
   }
 
   createRequestHeaders(): HttpHeaders {
