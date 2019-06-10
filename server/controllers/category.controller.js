@@ -8,7 +8,8 @@ const categorySchema = Joi.object({
   creator: Joi.string().required(),
   title: Joi.string().required(),
   color: Joi.string().required(),
-  _id: Joi.string()
+  _id: Joi.string(),
+  persistance: Joi.boolean()
 })
 
 module.exports = {
@@ -32,7 +33,7 @@ async function remove(category, user) {
   if (!hasAny) {
     category = await getCategory(category);
     user = await userCtrl.getUser(user);
-    if (category != null && user != null && user._id.toString() == category.creator.toString()){
+    if (category != null && user != null && user._id.toString() == category.creator.toString() && category.persistance == false){
       return await Category.deleteOne({_id: category._id});
     }
     return { Status:401 };

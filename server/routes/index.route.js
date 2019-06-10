@@ -3,12 +3,10 @@ const appointmentRoutes = require('./appointment.route');
 const usersRoutes = require('./users.route');
 const categoryRoutes = require('./category.route');
 
+// Express-Router erhalten
 const router = express.Router();
 
-router.get('/health-check', (req, res) =>
-  res.send('OK')
-);
-
+// API-Subrouten setzen
 router.use('/appointment', appointmentRoutes);
 router.use('/user', usersRoutes);
 router.use('/category', categoryRoutes);
