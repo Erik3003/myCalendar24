@@ -39,22 +39,14 @@ async function remove(category, user) {
   var hasAny = await hasAnyAppointmentCategory(category);
   if (!hasAny) {
     // Erhalten des Category-Dokuments aus DB
+    console.log(category);
     category = await getCategory(category);
 
     // Erhalten des eingeloggten Nutzers aus DB
     user = await userCtrl.getUser(user);
 
     if (category == null) {
-      return { Status:401 };
-    }
-    if (user == null) {
-      return { Status:402 };
-    }
-    if (user._id.toString() != category.creator.toString()) {
-      return { Status:403 };
-    }
-    if (category.persistance == true) {
-      return { Status:404 };
+      return { Status:500 };
     }
 
     //Wenn Kategorie u. Nutzer existieren und der Nutzer die Kategorie erstellt hat und sie löschbar ist
