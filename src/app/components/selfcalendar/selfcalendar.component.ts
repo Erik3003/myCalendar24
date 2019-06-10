@@ -51,7 +51,6 @@ export class SelfcalendarComponent implements OnInit {
 				if(counter==1){
 					counter++;
 				}else{
-				console.log("cat changed");
 				counter++;
 
 				this.checkedCategories = this.catService.getChoosen();
@@ -64,7 +63,6 @@ export class SelfcalendarComponent implements OnInit {
 		//fetching if a appointments changed
 		this.appointmentSub = this.appointmentService.currentMessage.subscribe(message => {
 			if (message == "changed") {
-				console.log("app changed");
 				this.getAppointments();
 			}
 		});
@@ -105,8 +103,6 @@ export class SelfcalendarComponent implements OnInit {
 
 	//create empty calender for the selected month
 	initCalendar(month, year) {
-		console.log("calender erstellt");
-
 		let firstDayOfMonth = (new Date(year, month)).getDay();
 		this.daysInMonth = 32 - new Date(year, month, 32).getDate();
 
@@ -170,7 +166,6 @@ export class SelfcalendarComponent implements OnInit {
 		this.events = [];
 		const data = await this.appointmentService.fetchAppointments(this.currentMonth, this.currentYear).toPromise();
 		this.events = data;
-		console.log("apps geladen ");
 
 		const catData = await this.catService.fetchCategories().toPromise();
 		this.categories = catData;
@@ -251,7 +246,6 @@ export class SelfcalendarComponent implements OnInit {
 		this.appClicked = true;
 		let id = ele.getAttribute("id");
 		id -= 100;
-		console.log(id);
 
 		this.dialog.open(DisplayAppointmentComponent, {
 			data: {
@@ -264,7 +258,6 @@ export class SelfcalendarComponent implements OnInit {
 	cellClicked(ele) {
 		if (!this.appClicked) {
 			let id = ele.getAttribute("id");
-			console.log(id);
 			let selectedDate = new Date(this.currentYear,this.currentMonth,id);
 			this.appointmentService.setSelectedDate(selectedDate);
 			this.router.navigate(['/day'])

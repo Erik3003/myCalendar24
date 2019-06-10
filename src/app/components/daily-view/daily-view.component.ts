@@ -20,23 +20,28 @@ export class DailyViewComponent implements OnInit {
   day:number;
   month:number;
   year:number;
+  months = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
 
   constructor(
     private appointmentService: AppointmentService
   ) { 
-    this.heading = "Heute";
-    this.getAppointments();
+    
   }
 
   ngOnInit() {
+    this.heading = "Heute";
+    this.day = 10;
+    this.month = 5;
+    this.year = 2019;
+    //this.getAppointments();
     this.getDateSubscription=this.appointmentService.currentMessage.subscribe(message => {
-			if (message == "date changed") {
-				console.log("date changed");
+			if (message == "date changed") {             
         this.date = this.appointmentService.getSelectedDate();
-        this.day = this.date.getDay();
+        this.day = this.date.getDate();
         this.month = this.date.getMonth();
         this.year = this.date.getFullYear();
-        this.heading = this.day.toString();
+        this.heading = this.day.toString()+"."+this.months[this.month]+"."+this.year.toString().substr(-2);
+        this.getAppointments();
 			}
 		});
   }
@@ -49,11 +54,8 @@ export class DailyViewComponent implements OnInit {
   getAppointments() {
     //const data = await this.appointmentService.fetchDailyAppointments(10,5,2019).toPromise();
     //this.appointments = data;
-    this.appointmentService.fetchDailyAppointments(10,5,2019).subscribe(data=> console.log(data));
-    console.log(this.appointments);
+    this.appointmentService.fetchDailyAppointments(this.day,this.month,this.year).subscribe(data=> console.log(data));
     
-
-    console.log(this.appointments.length);
     //getting the date components out of the invitation data
     for (let j = 0; j < this.appointments.length; j++) {
       this.appointmentDate[j] = new CustumDateModel();

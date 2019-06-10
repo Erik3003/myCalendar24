@@ -79,12 +79,8 @@ export class AppointmentService {
   fetchPublicAppointments(dates: string[]): Observable<AppointmentModel[]> {
     //append request header
     let headers = this.createRequestHeader();
-
     let data = JSON.stringify(dates);
-    console.log(data);
-
     headers = headers.append("dateParams", data);
-
 
     return this.http.get<AppointmentModel[]>(this.ROOT_URL + "/search", { headers: headers });
   }

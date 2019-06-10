@@ -58,7 +58,6 @@ export class CreateAppointmentComponent implements OnInit {
     //fetching if a category was added
     this.catService.currentMessage.subscribe(message => {
       if (message == "form changed") {
-        console.log("categories changed");
         setTimeout(() => { this.loadCategories() }, 200);
       }
     });
@@ -121,15 +120,11 @@ export class CreateAppointmentComponent implements OnInit {
     this.appointment.description = this.appointmentForm.get('description').value;
     this.appointment.public = this.appointmentForm.get('public').value;
     this.appointment.category = this.appointmentForm.get("category").value;
-    console.log(this.appointmentForm.get('time').value);
     
     this.appointment.date = this.dateUtils.calculateDate(this.appointmentForm.get('date').value, this.appointmentForm.get('time').value);
     this.appointment.enddate = this.dateUtils.calculateDate(this.appointmentForm.get('enddate').value, this.appointmentForm.get('endtime').value);
 
     //calling service to send data to server
-    console.log("creating appointment...");
-    console.log(this.appointment);
-
     this.appointmentService.CreateNewAppointment(this.appointment).subscribe(data => {
       console.log(data);
       this.router.navigate(['/calendar']);
