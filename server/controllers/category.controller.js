@@ -1,7 +1,6 @@
 const Joi = require('joi');
 const Category = require('../models/category.model');
-const userCtrl = require("./users.controller")
-const appointmentCtrl = require("./appointment.controller")
+const userCtrl = require("./users.controller");
 
 // JOI Schema zum Verifizieren der eingehenden Categories
 const categorySchema = Joi.object({
@@ -10,7 +9,7 @@ const categorySchema = Joi.object({
   color: Joi.string().required(),
   _id: Joi.string(),
   persistance: Joi.boolean()
-})
+});
 
 module.exports = {
   insert,
@@ -37,7 +36,7 @@ async function insert(category, user) {
 // Funktion zum Löschen von Kategorien aus Datenbank
 async function remove(category, user) {
   // Überprüfen ob Kategorie immer noch benutzt wird, also Appointments zugewiesen ist
-  var hasAny = await appointmentCtrl.hasAnyAppointmentCategory(category);
+  var hasAny = await hasAnyAppointmentCategory(category);
   if (!hasAny) {
     // Erhalten des Category-Dokuments aus DB
     category = await getCategory(category);
@@ -100,4 +99,13 @@ async function getAppointmentCategory(appointment) {
 // Funktion zur überprüfung ob der Nutzer Ersteller der Kategorie ist
 async function isCreator(category, user) {
   return user._id.toString() == category.creator.toString();
+}
+
+async function hasAnyAppointmentCategory(category) {
+  var Appointment = require('../models/appointment.model');
+  var appointment = await Appointment.findOne({category:category._id});
+  if (appointment != null) {
+    return true;
+  }
+  return false;
 }
