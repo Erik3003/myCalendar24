@@ -44,6 +44,19 @@ async function remove(category, user) {
     // Erhalten des eingeloggten Nutzers aus DB
     user = await userCtrl.getUser(user);
 
+    if (category == null) {
+      return { Status:401 };
+    }
+    if (user == null) {
+      return { Status:402 };
+    }
+    if (user._id.toString() != category.creator.toString()) {
+      return { Status:403 };
+    }
+    if (category.persistance == true) {
+      return { Status:404 };
+    }
+
     //Wenn Kategorie u. Nutzer existieren und der Nutzer die Kategorie erstellt hat und sie löschbar ist
     if (category != null && user != null && user._id.toString() == category.creator.toString() && (category.persistance == null || category.persistance == false)){
       //Löschen der Kategorie aus Datenbank und Rückgabe des Erfolgs der Operation
@@ -101,9 +114,17 @@ async function isCreator(category, user) {
   return user._id.toString() == category.creator.toString();
 }
 
+// Funktion zum Prüfen ob einer Kategorie Termine zugewiesen sind.
+// Gehört eigentlich in den Appointment-Controller, musste aber zur Vermeidung von
+// Kreis-Abhängigkeiten hierher entlagert werden.
 async function hasAnyAppointmentCategory(category) {
+  // Erhalten des Termin Models
   var Appointment = require('../models/appointment.model');
+
+  // Finden eines Termins mit der Kategorie
   var appointment = await Appointment.findOne({category:category._id});
+
+  // Falls ein Termin gefunden, Rückgabe true, andernfalls false
   if (appointment != null) {
     return true;
   }
