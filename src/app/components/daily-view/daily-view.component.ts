@@ -47,14 +47,14 @@ export class DailyViewComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    
+    this.getDateSubscription.unsubscribe();
   }
 
   //fetch appointments from server
   getAppointments() {
     //const data = await this.appointmentService.fetchDailyAppointments(10,5,2019).toPromise();
     //this.appointments = data;
-    this.appointmentService.fetchDailyAppointments(this.day,this.month,this.year).subscribe(data=> console.log(data));
+    this.appointmentService.fetchDailyAppointments(this.day,this.month,this.year).subscribe((data:any)=> console.log(data));
     
     //getting the date components out of the invitation data
     for (let j = 0; j < this.appointments.length; j++) {

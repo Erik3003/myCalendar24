@@ -3,3 +3,22 @@
 	height: 100%;
 }
 
+.calendarButton{
+	float: right;
+}
+
+form{
+	float: left;
+	margin: 10px;
+}
+
+.formElement{
+	margin-right: 15px;
+	width: 200px;
+}
+
+button{
+	margin: 20px 20px 0 0;
+}
+
+

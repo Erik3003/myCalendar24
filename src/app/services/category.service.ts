@@ -67,9 +67,7 @@ export class CategoryService {
     return this.categories;
   }
 
-  setChoosen(choosen: boolean[]) {
-    console.log("aus");
-    
+  setChoosen(choosen: boolean[]) {  
       this.choosen=choosen;
       this.messageSource.next("choosen changed");
   }

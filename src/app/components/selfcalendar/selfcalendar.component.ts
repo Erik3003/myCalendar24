@@ -5,6 +5,7 @@ import { DisplayAppointmentComponent } from '../display-appointment-dialog/displ
 import { CategoryService } from 'src/app/services/category.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
 	selector: 'app-selfcalendar',
@@ -13,11 +14,30 @@ import { Router } from '@angular/router';
 })
 export class SelfcalendarComponent implements OnInit {
 
-	//names of the months for the heading
-	months = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+	//names of the months for the heading selector
+	months = [
+		{ name: "Januar", value: 0 }, 
+		{ name: "Februar", value: 1 }, 
+		{ name: "März", value: 2 }, 
+		{ name: "April", value: 3 }, 
+		{ name: "Mai", value: 4 }, 
+		{ name: "Juni", value: 5 }, 
+		{ name: "Juli", value: 6 }, 
+		{ name: "August", value: 7 }, 
+		{ name: "September", value: 8 }, 
+		{ name: "Oktober", value: 9 }, 
+		{ name: "November", value: 10 }, 
+		{ name: "Dezember", value: 11 }];
+
+	//variable for year selector
+	years:number[];
+
+	selectForm: FormGroup;
+
+	//variables for selected date
 	today: Date;
-	currentMonth:number;
-	currentYear:number;
+	currentMonth: number;
+	currentYear: number;
 	daysInMonth;
 
 	//array of appointments
@@ -25,15 +45,16 @@ export class SelfcalendarComponent implements OnInit {
 	categories = [];
 	appClicked: boolean;
 	checkedCategories: boolean[] = [];
-	categorySub:Subscription;
-	appointmentSub:Subscription;
+	categorySub: Subscription;
+	appointmentSub: Subscription;
 
 
 	constructor(
 		private appointmentService: AppointmentService,
 		private catService: CategoryService,
 		private dialog: MatDialog,
-		private router: Router
+		private router: Router,
+		private formBuilder: FormBuilder
 	) {
 
 	}
@@ -43,60 +64,66 @@ export class SelfcalendarComponent implements OnInit {
 		this.currentMonth = this.today.getMonth();
 		this.currentYear = this.today.getFullYear();
 
-		//fetching if a choosen category changed
-		let counter =0;
+		//filling array with values for selectable years
+		this.years = [];
+		for (let i = 2000; i<= 2050; i++){
+			this.years[i-2000] = i;
+		}
+
+		this.selectForm  = this.formBuilder.group({
+			year: [this.currentYear],
+			month: [this.currentMonth]
+		  });
+
+		//fetching categories if a choosen category changed
+		let counter = 0;
 		this.categorySub = this.catService.currentMessage.subscribe(message => {
 			if (message == "choosen changed") {
 				//disabling first fetch
-				if(counter==1){
+				if (counter == 1) {
 					counter++;
-				}else{
-				counter++;
+				} else {
+					counter++;
 
-				this.checkedCategories = this.catService.getChoosen();
-				this.categories = this.catService.getCategories();
-				this.getAppointments();
-			}
+					this.checkedCategories = this.catService.getChoosen();
+					this.categories = this.catService.getCategories();
+					this.getAppointments();
+				}
 			}
 		});
 
-		//fetching if a appointments changed
+		//fetching appointments if a appointment changed
 		this.appointmentSub = this.appointmentService.currentMessage.subscribe(message => {
 			if (message == "changed") {
 				this.getAppointments();
 			}
 		});
 	}
-	
-	//Unsubscribe on destroy component
-	ngOnDestroy(){
+
+	//Unsubscribe services on destroy component
+	ngOnDestroy() {
 		this.categorySub.unsubscribe();
 		this.appointmentSub.unsubscribe();
 	}
-
-	//TEST BUTTON FUNKTIONEN########################################################################################
-	appendData() {
-
-	}
-
-	loadData() {
-		
-	}
-
-	//###############################################################################################################
 
 	//loading the next month
 	nextMonth() {
 		this.currentYear = (this.currentMonth === 11) ? this.currentYear + 1 : this.currentYear;
 		this.currentMonth = (this.currentMonth + 1) % 12;
-		this.initCalendar(this.currentMonth, this.currentYear);
-		this.getAppointments();
+		this.updateMonthAndYear();
 	}
 
 	//loading previous month
 	previousMonth() {
 		this.currentYear = (this.currentMonth === 0) ? this.currentYear - 1 : this.currentYear;
 		this.currentMonth = (this.currentMonth === 0) ? 11 : this.currentMonth - 1;
+		this.updateMonthAndYear();
+	}
+	
+	//updating selection form, initilizing new calendar and loading matching events
+	updateMonthAndYear(){
+		this.selectForm.controls['month'].setValue(this.currentMonth);
+		this.selectForm.controls['year'].setValue(this.currentYear);
 		this.initCalendar(this.currentMonth, this.currentYear);
 		this.getAppointments();
 	}
@@ -213,35 +240,48 @@ export class SelfcalendarComponent implements OnInit {
 
 	//creating div element for an appointment and add it to the given cell
 	createAppointmentElement(eventIndex, dayId) {
-		let color = 'gray';
+		let found = false;
+		let color = '';
 
 		//check for category and if it is selected
 		for (let i = 0; i < this.categories.length; i++) {
-			if (this.categories[i]._id === this.events[eventIndex].category ) {
-				if(this.checkedCategories[i]){
-					color = this.categories[i].color;
-				}else{
-					return;
+			//for users own appointments
+			if (!found) {
+				if (this.categories[i]._id === this.events[eventIndex].category) {
+					if (this.checkedCategories[i]) {
+						color = this.categories[i].color;
+						found = true;
+					} else {
+						return;
+					}
 				}
 			}
 		}
-		//creating div for the appointment
-		let div = document.createElement("div");
-		div.setAttribute("id", eventIndex + 100);
-		div.style.backgroundColor = color;
-		div.style.width = "95%";
-		div.style.height = "20px";
-		div.style.margin = "1% 2.5%";
-		div.style.overflow = "hidden";
-		div.addEventListener("click", (event) => this.appointmentClicked(div));
-		let divText = document.createTextNode(this.events[eventIndex].title);
-		div.appendChild(divText);
-		//append div for appointment to cell of the day
-		let cell = document.getElementById(dayId.toString());
-		cell.appendChild(div);
+
+		if (!found && this.checkedCategories[0]) {
+			color = this.categories[0].color;
+			found = true;
+		}
+
+		if (found) {
+			//creating div for the appointment
+			let div = document.createElement("div");
+			div.setAttribute("id", eventIndex + 100);
+			div.style.backgroundColor = color;
+			div.style.width = "95%";
+			div.style.height = "20px";
+			div.style.margin = "1% 2.5%";
+			div.style.overflow = "hidden";
+			div.addEventListener("click", (event) => this.appointmentClicked(div));
+			let divText = document.createTextNode(this.events[eventIndex].title);
+			div.appendChild(divText);
+			//append div for appointment to cell of the day
+			let cell = document.getElementById(dayId.toString());
+			cell.appendChild(div);
+		}
 	}
 
-	//open information of appointment
+	//open information dialog of appointment
 	appointmentClicked(ele) {
 		this.appClicked = true;
 		let id = ele.getAttribute("id");
@@ -258,11 +298,20 @@ export class SelfcalendarComponent implements OnInit {
 	cellClicked(ele) {
 		if (!this.appClicked) {
 			let id = ele.getAttribute("id");
-			let selectedDate = new Date(this.currentYear,this.currentMonth,id);
+			let selectedDate = new Date(this.currentYear, this.currentMonth, id);
 			this.appointmentService.setSelectedDate(selectedDate);
 			this.router.navigate(['/day'])
 		} else {
 			this.appClicked = false;
 		}
+	}
+
+	selectionChanged(){
+		this.currentMonth=this.selectForm.get("month").value;
+		this.currentYear=this.selectForm.get("year").value;
+		console.log(this.currentMonth);
+		
+		this.initCalendar(this.currentMonth, this.currentYear);
+		this.getAppointments();
 	}
 }

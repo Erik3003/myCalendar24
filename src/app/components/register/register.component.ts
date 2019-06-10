@@ -23,7 +23,9 @@ export class RegisterComponent implements OnInit {
   user: UserModel = new UserModel();
   registerForm: FormGroup;
   matcher = new MyErrorStateMatcher();
+  //
   isRegisterError: boolean;
+  success: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -53,28 +55,38 @@ export class RegisterComponent implements OnInit {
     }, { validator: this.checkPassword });
   }
 
-  //getting input and calling http service for registration
+  //getting input,calling http service for registration and creating default categories
   submitRegister() {
     this.user.username = this.registerForm.get('name').value;
     this.user.email = this.registerForm.get('email').value;
     this.user.password = this.registerForm.get('password').value;
 
-    this.authService.registerUser(this.user).subscribe( (data:any) =>{
+    this.authService.registerUser(this.user).subscribe((data: any) => {
       this.authService.setToken(data.token);
-      //adding default categories
+      
+      //adding default categories for user
       let defaultCategory = new CategoryModel();
+      defaultCategory.title = "Gruppen";
+      defaultCategory.color = "yellow";
+      defaultCategory.persistance = true;
+      this.categoryService.createCategory(defaultCategory).subscribe(data => console.log(data));
       defaultCategory.title = "Privat";
       defaultCategory.color = "lightblue";
+      defaultCategory.persistance = false;
       this.categoryService.createCategory(defaultCategory).subscribe();
       defaultCategory.title = "Beruf";
       defaultCategory.color = "lightgreen";
+      defaultCategory.persistance = false;
       this.categoryService.createCategory(defaultCategory).subscribe();
 
-      this.router.navigate(['/calendar']);
+      //show success message
+      this.success = true;
+      setTimeout(() => { this.router.navigate(['/calendar']) }, 2000);
     },
-    (err: HttpErrorResponse) => {
-      this.isRegisterError = true;     
-    });
+      //show error if one occurs
+      (err: HttpErrorResponse) => {
+        this.isRegisterError = true;
+      });
   }
 
   //check if the entered passwords matches

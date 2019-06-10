@@ -1,4 +1,4 @@
-<div class="effectWrapper">
+<div class="effectWrapper md-dialog-container" >
   <h2 mat-dialog-title>Kategorien verwalten</h2>
   
   <!--Error messages-->
@@ -18,7 +18,7 @@
         </mat-form-field>
 
         <!--Input color-->
-        <mat-form-field>
+        <mat-form-field id="colorInput">
           <mat-label>Farbe</mat-label>
           <mat-select formControlName="color" value="red">
             <mat-option *ngFor="let color of colors" [value]="color">

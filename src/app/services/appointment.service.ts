@@ -32,7 +32,7 @@ export class AppointmentService {
   }
 
   //http get request for getting all appointments of the user
-  fetchAppointments(month: number, year: number, ): Observable<AppointmentModel[]> {
+  fetchAppointments(month: number, year: number ): Observable<AppointmentModel[]> {
     //create date format for header information
     let date = new Date(year, month);
     let isodate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString();

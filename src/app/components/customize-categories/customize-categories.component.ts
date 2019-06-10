@@ -35,7 +35,7 @@ export class CustomizeCategoriesComponent implements OnInit {
   async loadCategories() {
     const data = await this.catService.fetchCategories().toPromise();
     this.categories = data;
-    console.log(this.categories.length);
+    console.log(this.categories);
     for (let i = 0; i < this.categories.length; i++) {
       this.categoryForm[i] = this.formBuilder.group({
         title: [this.categories[i].title, [
@@ -54,6 +54,7 @@ export class CustomizeCategoriesComponent implements OnInit {
     let category = new CategoryModel();
     category.title = this.categoryForm[index].get("title").value;
     category.color = this.categoryForm[index].get("color").value;
+    category.persistance = this.categories[index].persistance;
 
     if (category.color == '') {
       this.colorError = true;
@@ -77,6 +78,7 @@ export class CustomizeCategoriesComponent implements OnInit {
   onDelete(index:number) {
     let category = new CategoryModel();
     category._id = this.categories[index]._id;
+    category.persistance = this.categories[index].persistance;
     this.catService.deleteCategory(category).subscribe((data: any) => {
       console.log(data);
       this.catService.categoriesChanged("sidebar");

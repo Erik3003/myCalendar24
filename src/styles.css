@@ -40,6 +40,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background-color: #FFD2D2;
   }
 
+  .success{
+    color: #4F8A10;
+    background-color: #DFF2BF;
+    margin:10px;
+    padding-top: 10px;
+    height:30px;
+    text-align: center;
+}
+
   /*buttons of calendar*/
   .fc button{
     background-color: #3F51B5;
@@ -51,6 +60,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     width:19.5%;
     height: 100%;
     margin-top:0.5%;
+  }
+
+  .calendarHeader{
+    background-color: red;
+    display: inline;
   }
   
   .calendarWrapper{
@@ -65,11 +79,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     margin-left: 40%;
   }
 
-  .calendarButton{
-    float: right;
-    margin: 1%;
-    width: 100px;
-  }
+  .md-dialog-container {
+    width: 500px;
+}
 
 
   /*resizing for smal devices*/
