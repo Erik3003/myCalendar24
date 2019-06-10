@@ -25,29 +25,48 @@ router.get('/current', getCurrent);
 async function registerUser(req, res, next) {
   // Nutzer in Datenbank hinzufügen
   let user = await usersCtrl.insert(req.body);
+
+  // Nutzer-Dokument in Objekt umwandeln
   user = user.toObject();
+
+  // Löschen einiger Attribute
   delete user.password;
   delete user.appointments;
   delete user.invites;
+
+  // req.user auf den Nutzer setzen
   req.user = user;
+
+  // Next Route ausführen
   next()
 }
 
+// Funktion zur Generierung eines Tokens
 function loginUser(req, res) {
-  let user = req.user;
-  let token = usersCtrl.generateToken(user);
+  // Token aus Nutzer-Objekt generieren
+  let token = usersCtrl.generateToken(req.user);
+
+  //Nutzer-Objekt und Token als JSON verschicken
   res.json({ user, token });
 }
 
+// Funktion zum Ausloggen
 async function logoutUser(req, res) {
+  // Löscht res.user
   req.logout();
 }
 
+// Funktion zum erhalten des Nutzernamens eines Nutzers
 async function getUsername(req, res) {
+  // Nutzer-Dokument des Nutzers erhalten
   let user = await usersCtrl.getUser(req.body);
+
+  // Nutzernamen in JSON verschicken
   res.json({ username: user.username });
 }
 
+// Funktion zum erhalten der Daten des eingeloggten Nutzers
 function getCurrent(req, res) {
+  // Schicken des Nutzer-Objekts in JSON
   res.json(req.user);
 }
