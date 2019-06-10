@@ -26,7 +26,6 @@ module.exports = {
   invite,
   invites,
   accept,
-  hasAnyAppointmentCategory,
   all,
   public,
   extractPublic,
@@ -63,52 +62,79 @@ async function insert(appointment, user) {
   
   // Referenz auf neuen Termin dem Nutzer hinzufügen
   user.appointments.push(appointment._id);
+
+  // Referenz speichern
   user.save();
+
+  // Rückgabe des hinzugefügten Termin-Dokuments
   return appointment;
 }
 
+// Funktion zum Ändern von Terminen auf DB
 async function update(appointment, user) {
+  // Ersteller ist immer eingeloggter Nutzer
   appointment.creator = user._id.toString();
+
+  // Verifizierung der Integrität des Termin-Objektes
   appointment = await Joi.validate(appointment, appointmentSchema, { abortEarly: false });
+
+  // Erhalten des zu ändernden Termins aus Datenbank
   var oldAppointment = await getAppointment(appointment);
+
+  // Erhalten der des Termin (neu) zugewiesenen Kategorie
   var category = await categoryCtrl.getAppointmentCategory(appointment);
+
+  // Erhalten des Nutzer-Dokuments des eingeloggten Nutzers
   user = await userCtrl.getUser(user);
 
+  // Abbruch wenn Termin nicht existiert
   if (appointment == null){
     return { Status:404 };
   }
 
+  // Abbruch wenn Termin nicht von Nutzer erstellt wurde
   var isUserCreator = isCreator(oldAppointment, user);
   if (!isUserCreator){
     return { Status:401 };
   }
 
+  // Abbruch wenn Kategorie nicht existiert
   if (category == null) {
     return { Status: 401 };
   }
 
+  // Abbruch wenn Kategorie nicht von Nutzer erstellt wurde
   var isUserCategoryCreator = await categoryCtrl.isCreator(category, user);
   if (!isUserCategoryCreator) {
     return { Status: 401 };
   }
 
+  // Ändern des Termins auf DB
   return await oldAppointment.replaceOne(appointment);
 }
 
+// Funktion zum Erhalten der Termine des Nutzers im gegebenen Monat
 async function extract(date, user) {
+  // Erhalten des Nutzer-Dokuments
   user = await userCtrl.getUser(user);
+
+  // Liste der Appointments des Nutzers
   var appointments = user.appointments;
 
+  // Generierung des Anfangsdatums des Monats
   var startDate = new Date(date);
   startDate.setDate(0);
   startDate.setHours(23);
   startDate.setMinutes(59);
   startDate.setSeconds(59);
   startDate.setMilliseconds(999);
+
+  // Generierung des Enddatums des Monats
   var endDate = new Date(startDate.toString());
   endDate.setMonth(startDate.getMonth() + 2);
   endDate.setDate(0);
 
+  // Datenbankabfrage
   return await Appointment.find({ _id: { $in: appointments }, date: { $lt: endDate }, enddate: { $gt: startDate } });
 }
 
@@ -202,14 +228,6 @@ function hasAppointment(appointment, user) {
 
 async function getAppointment(appointment) {
   return await Appointment.findById(appointment._id);
-}
-
-async function hasAnyAppointmentCategory(category) {
-  var appointment = await Appointment.findOne({category:category._id});
-  if (appointment != null) {
-    return true;
-  }
-  return false;
 }
 
 async function public(user) {
