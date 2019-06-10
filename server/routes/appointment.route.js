@@ -98,7 +98,7 @@ async function addAppointment(req, res) {
 
 async function getPublicLimited(req, res) {
   // Daten werden Header entnommen
-  dates = req.header('dateParams');
+  let dates = req.header('dateParams');
 
   // Daten werden in Objekt geparsed (Array)
   dates = JSON.parse(dates);
@@ -112,13 +112,13 @@ async function getPublicLimited(req, res) {
 }
 
 async function getInvites(req, res) {
-  invites = await appointmentCtrl.invites(req.user);
+  let invites = await appointmentCtrl.invites(req.user);
 
   res.json(invites);
 }
 
 async function sendInvite(req, res) {
-  invite = await appointmentCtrl.invite(req.user, req.body.appointment, req.body.target);
+  let invite = await appointmentCtrl.invite(req.user, req.body.appointment, req.body.target);
 
   if (invite.Status != null) {
     return res.status(invite.Status).send("Error code: " + invite.Status);
@@ -128,7 +128,7 @@ async function sendInvite(req, res) {
 }
 
 async function acceptInvite(req, res) {
-  invite = await appointmentCtrl.accept(req.user, req.body);
+  let invite = await appointmentCtrl.accept(req.user, req.body);
 
   if (invite.Status != null) {
     return res.status(invite.Status).send("Error code: " + invite.Status);

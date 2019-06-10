@@ -37,7 +37,7 @@ async function insert(category, user) {
 // Funktion zum Löschen von Kategorien aus Datenbank
 async function remove(category, user) {
   // Überprüfen ob Kategorie immer noch benutzt wird, also Appointments zugewiesen ist
-  hasAny = await appointmentCtrl.hasAnyAppointmentCategory(category);
+  var hasAny = await appointmentCtrl.hasAnyAppointmentCategory(category);
   if (!hasAny) {
     // Erhalten des Category-Dokuments aus DB
     category = await getCategory(category);
@@ -65,7 +65,7 @@ async function update(category, user) {
   category = await Joi.validate(category, categorySchema, { abortEarly: false });
 
   // Erhalten des zu ändernden Kategorie-Dokuments
-  oldCategory = await getCategory(category);
+  var oldCategory = await getCategory(category);
 
   // Abbruch wenn Kategorie nicht existiert
   if (oldCategory == null){
@@ -73,7 +73,7 @@ async function update(category, user) {
   }
 
   // Abbruch wenn Nutzer nicht Ersteller der Kategorie
-  isUserCreator = await isCreator(oldCategory, user);
+  var isUserCreator = await isCreator(oldCategory, user);
   if (!isUserCreator){
     return { Status:401 };
   }
