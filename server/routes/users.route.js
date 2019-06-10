@@ -43,8 +43,9 @@ async function registerUser(req, res, next) {
 
 // Funktion zur Generierung eines Tokens
 function loginUser(req, res) {
+  let user = req.user;
   // Token aus Nutzer-Objekt generieren
-  let token = usersCtrl.generateToken(req.user);
+  let token = usersCtrl.generateToken(user);
 
   //Nutzer-Objekt und Token als JSON verschicken
   res.json({ user, token });

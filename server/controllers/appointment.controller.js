@@ -33,24 +33,35 @@ module.exports = {
   extractDay
 }
 
+// Funktion zum Hinzufügen eines Termins in die DB
 async function insert(appointment, user) {
+  // Ersteller ist immer eingeloggter Nutzer
   appointment.creator = user._id.toString();
+
+  // Verifizierung des Termin-Objekts
   appointment = await Joi.validate(appointment, appointmentSchema, { abortEarly: false });
 
-  category = await categoryCtrl.getAppointmentCategory(appointment);
+  // Erhalten der dem Termin zugeordneten Kategorie
+  var category = await categoryCtrl.getAppointmentCategory(appointment);
+
+  // Erhalten des Nutzer-Dokuments
   user = await userCtrl.getUser(user);
 
+  // Abbruch wenn Kategorie nicht vorhanden
   if (category == null) {
     return { Status: 401 };
   }
 
-  isUserCategoryCreator = await categoryCtrl.isCreator(category, user);
+  // Abbrcu wenn Kategorie nicht von Nutzer erstellt wurde
+  var isUserCategoryCreator = await categoryCtrl.isCreator(category, user);
   if (!isUserCategoryCreator) {
     return { Status: 401 };
   }
 
+  // Speichern des Termin auf DB
   appointment = await new Appointment(appointment).save();
   
+  // Referenz auf neuen Termin dem Nutzer hinzufügen
   user.appointments.push(appointment._id);
   user.save();
   return appointment;
@@ -59,15 +70,15 @@ async function insert(appointment, user) {
 async function update(appointment, user) {
   appointment.creator = user._id.toString();
   appointment = await Joi.validate(appointment, appointmentSchema, { abortEarly: false });
-  oldAppointment = await getAppointment(appointment);
-  category = await categoryCtrl.getAppointmentCategory(appointment);
+  var oldAppointment = await getAppointment(appointment);
+  var category = await categoryCtrl.getAppointmentCategory(appointment);
   user = await userCtrl.getUser(user);
 
   if (appointment == null){
     return { Status:404 };
   }
 
-  isUserCreator = isCreator(oldAppointment, user);
+  var isUserCreator = isCreator(oldAppointment, user);
   if (!isUserCreator){
     return { Status:401 };
   }
@@ -76,7 +87,7 @@ async function update(appointment, user) {
     return { Status: 401 };
   }
 
-  isUserCategoryCreator = await categoryCtrl.isCreator(category, user);
+  var isUserCategoryCreator = await categoryCtrl.isCreator(category, user);
   if (!isUserCategoryCreator) {
     return { Status: 401 };
   }
@@ -86,15 +97,15 @@ async function update(appointment, user) {
 
 async function extract(date, user) {
   user = await userCtrl.getUser(user);
-  appointments = user.appointments;
+  var appointments = user.appointments;
 
-  startDate = new Date(date);
+  var startDate = new Date(date);
   startDate.setDate(0);
   startDate.setHours(23);
   startDate.setMinutes(59);
   startDate.setSeconds(59);
   startDate.setMilliseconds(999);
-  endDate = new Date(startDate.toString());
+  var endDate = new Date(startDate.toString());
   endDate.setMonth(startDate.getMonth() + 2);
   endDate.setDate(0);
 
@@ -103,14 +114,14 @@ async function extract(date, user) {
 
 async function extractDay(date, user) {
   user = await userCtrl.getUser(user);
-  appointments = user.appointments;
+  var appointments = user.appointments;
 
-  startDate = new Date(date);
+  var startDate = new Date(date);
   startDate.setHours(0);
   startDate.setMinutes(0);
   startDate.setSeconds(0);
   startDate.setMilliseconds(0);
-  endDate = new Date(startDate.toString());
+  var endDate = new Date(startDate.toString());
   startDate.setHours(23);
   startDate.setMinutes(59);
   startDate.setSeconds(59);
@@ -122,8 +133,8 @@ async function extractDay(date, user) {
 async function extractPublic(startdate, enddate, user) {
   user = await userCtrl.getUser(user);
 
-  startDate = new Date(startdate);
-  endDate = new Date(enddate);
+  var startDate = new Date(startdate);
+  var endDate = new Date(enddate);
 
   return await Appointment.find({ public: true, date: { $lte: endDate }, enddate: { $gte: startDate }, _id: { $nin: user.appointments } });
 }
@@ -135,7 +146,7 @@ async function add(appointment, user) {
   if (appointment == null || appointment.public != true) {
     return { Status: 401 };
   }
-  hasAppointmentAlready = hasAppointment(appointment, user);
+  var hasAppointmentAlready = hasAppointment(appointment, user);
   if (hasAppointmentAlready) {
     return { Status: 401 };
   }
@@ -153,9 +164,10 @@ async function remove(appointment, user) {
     return { Status:404 };
   }
 
-
-  if (!isCreator(appointment, user)) {
-    if (hasAppointment(appointment, user)) {
+  var isUserCreator = isCreator(appointment, user);
+  if (!isUserCreator) {
+    var hasUserAppointment = hasAppointment(appointment, user);
+    if (hasUserAppointment) {
       user.appointments.splice(user.appointments.indexOf(appointment._id), 1);
       await userCtrl.saveUser(user);
       return { Success: true }
@@ -168,9 +180,9 @@ async function remove(appointment, user) {
 }
 
 async function removeFromUsers(appointment) {
-  users = await userCtrl.getUsers(appointment);
+  var users = await userCtrl.getUsers(appointment);
   users.forEach(async function(user) {
-    index = user.appointments.indexOf(appointment._id);
+    let index = user.appointments.indexOf(appointment._id);
     user.appointments.splice(index, 1);
     await userCtrl.saveUser(user);
   });
@@ -193,7 +205,7 @@ async function getAppointment(appointment) {
 }
 
 async function hasAnyAppointmentCategory(category) {
-  appointment = await Appointment.findOne({category:category._id});
+  var appointment = await Appointment.findOne({category:category._id});
   if (appointment != null) {
     return true;
   }
@@ -214,7 +226,7 @@ async function invite(user, appointment, target) {
   }
 
 
-  isUserCreator = await isCreator(appointment, user);
+  var isUserCreator = await isCreator(appointment, user);
   if(isUserCreator) {
     target = await userCtrl.getUserByName(target);
 
@@ -222,12 +234,12 @@ async function invite(user, appointment, target) {
       return { Status: 400}
     }
 
-    isAlreadyInvited = isInvited(appointment, target);
+    var isAlreadyInvited = isInvited(appointment, target);
     if(isAlreadyInvited) {
       return { Status: 400 }
     }
 
-    hasAppointmentAlready = hasAppointment(appointment, target);
+    var hasAppointmentAlready = hasAppointment(appointment, target);
     if(hasAppointmentAlready) {
       return { Status: 400 }
     }
@@ -241,12 +253,12 @@ async function invite(user, appointment, target) {
 
 async function accept(user, invite) {
   user = await userCtrl.getUser(user);
-  isUserInvited = isInvited(invite, user);
-  successful = true;
+  var isUserInvited = isInvited(invite, user);
+  var successful = true;
   if(isUserInvited){
 
     if (invite.accept) {
-      appointment = await getAppointment(invite);
+      var appointment = await getAppointment(invite);
       successful = false;
       if (appointment != null) {
         user.appointments.push(invite._id);
@@ -262,12 +274,12 @@ async function accept(user, invite) {
 
 async function invites(user) {
   user = await userCtrl.getUser(user);
-  appointments = await Appointment.find({ _id: user.invites });
+  var appointments = await Appointment.find({ _id: user.invites });
   return appointments;
 }
 
 async function all(user) {
   user = await userCtrl.getUser(user);
-  appointments = await Appointment.find({ _id: user.appointments });
+  var appointments = await Appointment.find({ _id: user.appointments });
   return appointments;
 }
