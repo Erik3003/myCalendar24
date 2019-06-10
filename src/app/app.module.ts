@@ -24,8 +24,6 @@ import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.
 import { CustomizeCategoriesComponent } from './components/customize-categories/customize-categories.component';
 import { PublicAppointmentsComponent } from './components/public-appointments/public-appointments.component';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
