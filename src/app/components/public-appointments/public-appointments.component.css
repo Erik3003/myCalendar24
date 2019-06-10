@@ -1,9 +1,9 @@
 .formElements p{
-    display: inline;
-    margin: 0 10px;
+    display: inline;  
 }
 
-.timePicker{
+.datePicker{
     margin-left: 2%;
-    width: 80px; 
+    width: 120px; 
+    margin: 0 10px;
 }

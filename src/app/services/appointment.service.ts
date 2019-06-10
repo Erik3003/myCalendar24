@@ -63,6 +63,12 @@ export class AppointmentService {
     return this.http.post(this.ROOT_URL + "/update", appointment, {headers:headers});
   }
 
+  //add a public appointment to users calendar
+  addAppointment(appointment: AppointmentModel){
+    let headers = this.createRequestHeader();
+    return this.http.post(this.ROOT_URL + "/add",appointment, {headers:headers});
+  }
+
   //http post request with an invitation for an other user
   sendInvite(invite){
     let headers = this.createRequestHeader();

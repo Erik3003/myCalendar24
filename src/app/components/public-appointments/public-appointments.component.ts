@@ -13,7 +13,7 @@ export class PublicAppointmentsComponent implements OnInit {
 
   appointments: AppointmentModel[] = [];
   appointmentDate: CustumDateModel[] = [];
-  hasAppointments: boolean;
+  hasNoAppointments: boolean;
   selectDateForm: FormGroup;
   today: Date;
   selectedStartDate: Date;
@@ -61,13 +61,20 @@ export class PublicAppointmentsComponent implements OnInit {
       console.log(this.appointmentDate[j].startday);
     }
 
-    if (this.appointments.length !== 0) {
-      this.hasAppointments = true;
+    if (this.appointments.length == 0) {
+      this.hasNoAppointments = true;
     }
   }
 
   submitSearch(){
-    console.log(this.selectDateForm.get("date").value);
+    
+  }
+
+  async onAnswer(i:number){
+    let appointment = new AppointmentModel();
+    appointment._id = this.appointments[i]._id;
+    const daa = await this.appointmentService.addAppointment(appointment).toPromise();
+    this.getAppointments();
   }
 
   changeStartDate(){
