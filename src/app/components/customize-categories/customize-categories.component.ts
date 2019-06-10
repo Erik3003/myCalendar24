@@ -3,6 +3,7 @@ import { MatDialogRef } from '@angular/material';
 import { CategoryService } from 'src/app/services/category.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CategoryModel } from 'src/models/category.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-customize-categories',
@@ -16,6 +17,7 @@ export class CustomizeCategoriesComponent implements OnInit {
   colorError: boolean;
   titleMinError: boolean;
   titleMaxError: boolean;
+  hasChilds: boolean;
 
   colors: string[];
 
@@ -36,12 +38,12 @@ export class CustomizeCategoriesComponent implements OnInit {
     console.log(this.categories.length);
     for (let i = 0; i < this.categories.length; i++) {
       this.categoryForm[i] = this.formBuilder.group({
-        title: ['', [
+        title: [this.categories[i].title, [
           Validators.required,
           Validators.minLength(3),
           Validators.maxLength(15)
         ]],
-        color: ['', [
+        color: [this.categories[i].color, [
           Validators.required,
         ]]
       });
@@ -78,6 +80,10 @@ export class CustomizeCategoriesComponent implements OnInit {
     this.catService.deleteCategory(category).subscribe((data: any) => {
       console.log(data);
       this.catService.categoriesChanged("sidebar");
+      this.loadCategories();
+    },
+    (err: HttpErrorResponse)=>{
+      this.hasChilds = true;
     });
   }
 

@@ -45,6 +45,33 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background-color: #3F51B5;
   }
 
+  /*css for calender views*/
+  .side{
+    float:left;
+    width:19.5%;
+    height: 100%;
+    margin-top:0.5%;
+  }
+  
+  .calendarWrapper{
+    float: right;
+    width: 80%;
+    height: 100%;
+    background-color: whitesmoke;
+  }
+
+  .calendarHeading{
+    float: left;
+    margin-left: 40%;
+  }
+
+  .calendarButton{
+    float: right;
+    margin: 1%;
+    width: 100px;
+  }
+
+
   /*resizing for smal devices*/
   @media only screen and (max-width: 900px) {
     .centerWrapper {

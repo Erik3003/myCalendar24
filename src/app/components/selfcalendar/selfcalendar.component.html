@@ -1,28 +1,28 @@
 <app-header></app-header>
-<app-sidebar id="side"></app-sidebar>
-      <div id="calenderWrapper">
-        <div class="calenderHeader">
-          <button mat-button class="mat-raised-button mat-primary" id="next" (click)="nextMonth()">Next</button>
-          <button mat-button class="mat-raised-button mat-primary" id="previous" (click)="previousMonth()">Previous</button> 
-          <h3  id="monthAndYear">{{months[currentMonth] + " " + currentYear}}</h3>         
-            </div>
-              <table id="calendar">
-                  <thead>
-                  <tr>
-                      <th>Mo</th>
-                      <th>Di</th>
-                      <th>Mi</th>
-                      <th>Do</th>
-                      <th>Fr</th>
-                      <th>Sa</th>
-                      <th>So</th>
-                  </tr>
-                  </thead>
-      
-                  <tbody id="calendar-body">
-      
-                  </tbody>
-              </table>
-          </div>
-          <button mat-button class="mat-raised-button mat-primary" (click)="loadData()">Load</button>
-          <button mat-button class="mat-raised-button mat-primary" (click)="appendData()">Append</button> 
+<app-sidebar class="side"></app-sidebar>
+<div class="calendarWrapper">
+  <div class="calendarHeader">
+    <button class="calendarButton" mat-button class="mat-raised-button mat-primary" id="next" (click)="nextMonth()">Next</button>
+    <button class="calendarButton" mat-button class="mat-raised-button mat-primary" id="previous" (click)="previousMonth()">Previous</button>
+    <h3 id="calendarHeading">{{months[currentMonth] + " " + currentYear}}</h3>
+  </div>
+  <table id="calendar">
+    <thead>
+      <tr>
+        <th>Mo</th>
+        <th>Di</th>
+        <th>Mi</th>
+        <th>Do</th>
+        <th>Fr</th>
+        <th>Sa</th>
+        <th>So</th>
+      </tr>
+    </thead>
+
+    <tbody id="calendar-body">
+
+    </tbody>
+  </table>
+</div>
+<button mat-button class="mat-raised-button mat-primary" (click)="loadData()">Load</button>
+<button mat-button class="mat-raised-button mat-primary" (click)="appendData()">Append</button>

@@ -2,6 +2,7 @@
   <h2 mat-dialog-title>Kategorien verwalten</h2>
   
   <!--Error messages-->
+  <div *ngIf="hasChilds" class="errorMessage centerWrapper">Die Kategorie kann nicht gelöscht werden, da der Kategorie noch Termine zugeordnet sind.</div>
   <div *ngIf="titleMinError" class="errorMessage centerWrapper">Titel muss mindestes 3 Zeichen lang sein!</div>
   <div *ngIf="titleMaxError" class="errorMessage centerWrapper">Titel darf maximal 15 Zeichen lang sein!</div>
   <div *ngIf="colorError" class="errorMessage centerWrapper">Keine Farbe ausgewählt!</div>

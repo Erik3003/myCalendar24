@@ -1,17 +1,27 @@
 <app-header></app-header>
-<app-sidebar id="side"></app-sidebar>
+<app-sidebar class="side"></app-sidebar>
 
-<!--List of invites-->
-<div class="effectWrapper" *ngFor="let appointment of appointments; index as i" [id]="i">
-  <h4>{{appointment.title}}</h4>
-  <p>
-    <!--startdate-->
-    {{inviteDate[i].startday}}.{{inviteDate[i].startmonth}}.{{inviteDate[i].startyear}} 
-    um {{inviteDate[i].starthours}}:{{inviteDate[i].startminutes}} Uhr bis 
-    <!--enddate-->
-    {{inviteDate[i].endday}}.{{inviteDate[i].endmonth}}.{{inviteDate[i].endyear}} 
-    um {{inviteDate[i].endhours}}:{{inviteDate[i].endminutes}} Uhr
-  </p>
-  
-  <p id="descriptionHeading">Beschreibung:</p>
-  <p>{{appointment.description}}</p>
+<div class="calendarWrapper">
+  <!--Header-->
+  <div class="calendarHeader">
+    <button class="calendarButton" mat-button class="mat-raised-button mat-primary" id="next" (click)="nextMonth()">Next</button>
+    <button class="calendarButton" mat-button class="mat-raised-button mat-primary" id="previous" (click)="previousMonth()">Previous</button>
+    <h3 class="calendarHeading">{{heading}}</h3>
+  </div>
+
+  <!--List of invites-->
+  <div class="effectWrapper" *ngFor="let appointment of appointments; index as i" [id]="i">
+    <h4>{{appointment.title}}</h4>
+    <p>
+      <!--startdate-->
+      {{appointmentDate[i].startday}}.{{appointmentDate[i].startmonth}}.{{appointmentDate[i].startyear}}
+      um {{appointmentDate[i].starthours}}:{{appointmentDate[i].startminutes}} Uhr bis
+      <!--enddate-->
+      {{appointmentDate[i].endday}}.{{appointmentDate[i].endmonth}}.{{appointmentDate[i].endyear}}
+      um {{appointmentDate[i].endhours}}:{{appointmentDate[i].endminutes}} Uhr
+    </p>
+
+    <p id="descriptionHeading">Beschreibung:</p>
+    <p>{{appointment.description}}</p>
+  </div>
+</div>

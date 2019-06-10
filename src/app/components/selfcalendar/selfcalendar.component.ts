@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material';
 import { DisplayAppointmentComponent } from '../display-appointment-dialog/display-appointment.component';
 import { CategoryService } from 'src/app/services/category.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-selfcalendar',
@@ -15,11 +16,10 @@ export class SelfcalendarComponent implements OnInit {
 	//names of the months for the heading
 	months = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
 	today: Date;
-	currentMonth;
-	currentYear;
+	currentMonth:number;
+	currentYear:number;
 	daysInMonth;
-	//value for heading
-	monthAndYear;
+
 	//array of appointments
 	events = [];
 	categories = [];
@@ -32,18 +32,16 @@ export class SelfcalendarComponent implements OnInit {
 	constructor(
 		private appointmentService: AppointmentService,
 		private catService: CategoryService,
-		private dialog: MatDialog
+		private dialog: MatDialog,
+		private router: Router
 	) {
 
 	}
-
-	
 
 	ngOnInit() {
 		this.today = new Date();
 		this.currentMonth = this.today.getMonth();
 		this.currentYear = this.today.getFullYear();
-		this.monthAndYear = document.getElementById("monthAndYear");
 
 		//fetching if a choosen category changed
 		let counter =0;
@@ -87,10 +85,6 @@ export class SelfcalendarComponent implements OnInit {
 		
 	}
 
-	async getCategories(){
-		const data = await this.catService.fetchCategories().toPromise();
-
-	}
 	//###############################################################################################################
 
 	//loading the next month
@@ -271,6 +265,7 @@ export class SelfcalendarComponent implements OnInit {
 		if (!this.appClicked) {
 			let id = ele.getAttribute("id");
 			console.log(id);
+			this.router.navigate(['/day'])
 		} else {
 			this.appClicked = false;
 		}
