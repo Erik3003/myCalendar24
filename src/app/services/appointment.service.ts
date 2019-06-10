@@ -18,6 +18,7 @@ export class AppointmentService {
   //variables for communication of changes
   messageSource = new BehaviorSubject('default message');
   currentMessage = this.messageSource.asObservable();
+  selectedDate: Date;
 
   readonly ROOT_URL = 'http://localhost:3000/api/appointment';
 
@@ -126,11 +127,12 @@ export class AppointmentService {
     return headers;
   }
 
-  getCurrentDate(){
-
+  getSelectedDate():Date{
+    return this.selectedDate;
   }
 
-  setCurrentDate(){
-    
+  setSelectedDate(date:Date){
+    this.selectedDate = date;
+    this.messageSource.next("date changed");
   }
 }

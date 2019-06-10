@@ -265,6 +265,8 @@ export class SelfcalendarComponent implements OnInit {
 		if (!this.appClicked) {
 			let id = ele.getAttribute("id");
 			console.log(id);
+			let selectedDate = new Date(this.currentYear,this.currentMonth,id);
+			this.appointmentService.setSelectedDate(selectedDate);
 			this.router.navigate(['/day'])
 		} else {
 			this.appClicked = false;

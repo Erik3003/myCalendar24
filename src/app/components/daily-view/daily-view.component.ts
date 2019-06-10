@@ -16,6 +16,10 @@ export class DailyViewComponent implements OnInit {
   hasAppointments: boolean;
   heading:string;
   getDateSubscription: Subscription;
+  date: Date;
+  day:number;
+  month:number;
+  year:number;
 
   constructor(
     private appointmentService: AppointmentService
@@ -28,7 +32,11 @@ export class DailyViewComponent implements OnInit {
     this.getDateSubscription=this.appointmentService.currentMessage.subscribe(message => {
 			if (message == "date changed") {
 				console.log("date changed");
-				this.appointmentService.getCurrentDate();
+        this.date = this.appointmentService.getSelectedDate();
+        this.day = this.date.getDay();
+        this.month = this.date.getMonth();
+        this.year = this.date.getFullYear();
+        this.heading = this.day.toString();
 			}
 		});
   }
