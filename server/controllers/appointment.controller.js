@@ -160,9 +160,6 @@ async function extractDay(date, user) {
   startDate.setSeconds(59);
   startDate.setMilliseconds(999);
 
-  console.log("Start: " + startDate.toString() + "\nEnde: " + endDate.toString());
-  console.log(user);
-
   // Datenbankabfrage und Rückgabe
   return await Appointment.find({ _id: { $in: appointments }, date: { $lte: endDate }, enddate: { $gte: startDate } });
 }
