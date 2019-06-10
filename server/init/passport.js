@@ -7,7 +7,7 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 
 // User-Model laden
-const User = require('../models/users.model');
+const User = require('../models/user.model');
 
 // Nicht Token-basiertes Loginverfahren
 const localLogin = new LocalStrategy({ usernameField: 'username' }, (username, password, done) => {

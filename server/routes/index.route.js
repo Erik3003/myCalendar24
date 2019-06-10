@@ -1,6 +1,6 @@
 const express = require('express');
 const appointmentRoutes = require('./appointment.route');
-const usersRoutes = require('./users.route');
+const usersRoutes = require('./user.route');
 const categoryRoutes = require('./category.route');
 
 // Express-Router erhalten
