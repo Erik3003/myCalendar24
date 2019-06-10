@@ -13,6 +13,9 @@ const CategorySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'User',
     required: true
+  },
+  persistance: {
+    type: Boolean
   }
 }, {
   versionKey: false
