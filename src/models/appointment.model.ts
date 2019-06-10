@@ -1,9 +1,9 @@
 export class AppointmentModel{
-    _id: String;
-    title: String;
-    date: String;
-    enddate: String;    
-    description: String;
-    category: String;
+    _id: string;
+    title: string;
+    date: string;
+    enddate: string;    
+    description: string;
+    category: string;
     public: boolean;
 }
