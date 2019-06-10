@@ -84,7 +84,12 @@ export class SelfcalendarComponent implements OnInit {
 	}
 
 	loadData() {
-		console.log(this.events);
+		
+	}
+
+	async getCategories(){
+		const data = await this.catService.fetchCategories().toPromise();
+
 	}
 	//###############################################################################################################
 

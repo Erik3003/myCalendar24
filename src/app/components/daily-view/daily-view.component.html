@@ -2,8 +2,8 @@
 <app-sidebar id="side"></app-sidebar>
 
 <!--List of invites-->
-<div class="effectWrapper" *ngFor="let invite of invites; index as i" [id]="i">
-  <h4>{{invite.title}}</h4>
+<div class="effectWrapper" *ngFor="let appointment of appointments; index as i" [id]="i">
+  <h4>{{appointment.title}}</h4>
   <p>
     <!--startdate-->
     {{inviteDate[i].startday}}.{{inviteDate[i].startmonth}}.{{inviteDate[i].startyear}} 
@@ -14,4 +14,4 @@
   </p>
   
   <p id="descriptionHeading">Beschreibung:</p>
-  <p>{{invite.description}}</p>
+  <p>{{appointment.description}}</p>
