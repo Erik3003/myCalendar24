@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const Appointment = require('../models/appointment.model');
-const userCtrl = require("./users.controller");
+const userCtrl = require("./user.controller");
 const categoryCtrl = require("./category.controller");
 
 const appointmentSchema = Joi.object({

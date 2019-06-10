@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const Category = require('../models/category.model');
-const userCtrl = require("./users.controller");
+const userCtrl = require("./user.controller");
 
 // JOI Schema zum Verifizieren der eingehenden Categories
 const categorySchema = Joi.object({

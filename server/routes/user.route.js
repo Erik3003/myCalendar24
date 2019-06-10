@@ -1,6 +1,6 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
-const usersCtrl = require('../controllers/users.controller');
+const usersCtrl = require('../controllers/user.controller');
 const passport = require('passport');
 
 const router = express.Router();
