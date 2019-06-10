@@ -1,0 +1,17 @@
+<app-header></app-header>
+<app-sidebar id="side"></app-sidebar>
+
+<!--List of invites-->
+<div class="effectWrapper" *ngFor="let invite of invites; index as i" [id]="i">
+  <h4>{{invite.title}}</h4>
+  <p>
+    <!--startdate-->
+    {{inviteDate[i].startday}}.{{inviteDate[i].startmonth}}.{{inviteDate[i].startyear}} 
+    um {{inviteDate[i].starthours}}:{{inviteDate[i].startminutes}} Uhr bis 
+    <!--enddate-->
+    {{inviteDate[i].endday}}.{{inviteDate[i].endmonth}}.{{inviteDate[i].endyear}} 
+    um {{inviteDate[i].endhours}}:{{inviteDate[i].endminutes}} Uhr
+  </p>
+  
+  <p id="descriptionHeading">Beschreibung:</p>
+  <p>{{invite.description}}</p>
