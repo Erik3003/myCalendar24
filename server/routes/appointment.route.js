@@ -6,19 +6,32 @@ const passport = require('passport');
 const router = express.Router();
 module.exports = router;
 
+// Authentifizierung des Nutzers, Zugriff auf folgende Routen nur bei Erfolg möglich
 router.use(passport.authenticate('jwt', { session: false }));
 
+// Route zum Erstellen eines neuen Termins
 router.post('/new', asyncHandler(createAppointment));
+// Route zum Erhalten aller Termine des Nutzers im gegebenem Monat
 router.get('/get', asyncHandler(getAppointments));
+// Route zum Erhalten aller Termine des Nutzers am gegebenem Tag 
 router.get('/day', asyncHandler(getAppointmentsDay));
+// Route zum Erhalten aller Termine des Nutzers
 router.get('/all', asyncHandler(getAllAppointments));
+// Route zum Ändern eines Termins
 router.post('/update', asyncHandler(updateAppointment));
+// Route zum Entfernen eines Termins
 router.post('/remove', asyncHandler(removeAppointment));
+// Route zum Hinzufügen eines bestehenden Termins zu dem Nutzer 
 router.post('/add', asyncHandler(addAppointment));
+// Route zum Einladen eines Nutzers zu einem Termin
 router.post('/invite', asyncHandler(sendInvite));
+// Route zum akzeptieren/ablehnen einer Einladung
 router.post('/accept', asyncHandler(acceptInvite));
+// Route zum Erhalten einer Einladungen des Nutzers
 router.get('/invites', asyncHandler(getInvites));
+// Route zum Erhalten aller öffentlichen Termine
 router.get('/public', asyncHandler(getPublic));
+// Route zum Erhalten aller öffentlichen Termine zwischen den gegebenen Daten
 router.get('/search', asyncHandler(getPublicLimited));
 
 
@@ -84,7 +97,10 @@ async function addAppointment(req, res) {
 }
 
 async function getPublicLimited(req, res) {
+  // Daten werden Header entnommen
   dates = req.header('dateParams');
+
+  // Daten werden in Objekt geparsed (Array)
   dates = JSON.parse(dates);
   let appointments = await appointmentCtrl.extractPublic(dates[0], dates[1], req.user);
 
