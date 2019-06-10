@@ -40,7 +40,7 @@ export class CategoryService {
   deleteCategory(category: CategoryModel) {
     let headers = this.createRequestHeaders();
     console.log(category);
-    return this.http.post(this.ROOT_URL + "/remove", { headers: headers });
+    return this.http.post(this.ROOT_URL + "/remove", category, { headers: headers });
   }
 
   //title color _id
@@ -67,9 +67,7 @@ export class CategoryService {
     return this.categories;
   }
 
-  setChoosen(choosen: boolean[]) {
-    console.log("aus");
-    
+  setChoosen(choosen: boolean[]) {  
       this.choosen=choosen;
       this.messageSource.next("choosen changed");
   }

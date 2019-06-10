@@ -1,28 +1,58 @@
 <app-header></app-header>
-<app-sidebar id="side"></app-sidebar>
-      <div id="calenderWrapper">
-        <div class="calenderHeader">
-          <button mat-button class="mat-raised-button mat-primary" id="next" (click)="nextMonth()">Next</button>
-          <button mat-button class="mat-raised-button mat-primary" id="previous" (click)="previousMonth()">Previous</button> 
-          <h3  id="monthAndYear">{{months[currentMonth] + " " + currentYear}}</h3>         
-            </div>
-              <table id="calendar">
-                  <thead>
-                  <tr>
-                      <th>Mo</th>
-                      <th>Di</th>
-                      <th>Mi</th>
-                      <th>Do</th>
-                      <th>Fr</th>
-                      <th>Sa</th>
-                      <th>So</th>
-                  </tr>
-                  </thead>
+<app-sidebar class="side"></app-sidebar>
+<div class="calendarWrapper">
+
+  <!--Header-->
+  <div id="header">
+
+    <form [formGroup]="selectForm">
+      <!--Input for month-->
+      <mat-form-field class="formElement">
+        <mat-label>Monat</mat-label>
+        <mat-select formControlName="month" (selectionChange)="selectionChanged()">
+          <mat-option *ngFor="let month of months" [value]="month.value">
+            {{month.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
       
-                  <tbody id="calendar-body">
-      
-                  </tbody>
-              </table>
-          </div>
-          <button mat-button class="mat-raised-button mat-primary" (click)="loadData()">Load</button>
-          <button mat-button class="mat-raised-button mat-primary" (click)="appendData()">Append</button> 
+      <!--input for year-->
+      <mat-form-field class="formElement">              
+        <mat-label>Jahr</mat-label>
+        <mat-select formControlName="year" (selectionChange)="selectionChanged()">
+          <mat-option *ngFor="let year of years" [value]="year">
+            {{year}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+
+    <!--navigation buttons-->
+    <button mat-button class="mat-raised-button mat-primary calendarButton headerElements" id="previous"
+      (click)="previousMonth()">zurück</button>
+    <button mat-button class="mat-raised-button mat-primary calendarButton headerElements" id="next"
+      (click)="nextMonth()">vor</button>
+
+  </div>
+
+  <!--Calendar as a table-->
+  <table id="calendar">
+    <!--heading days-->
+    <thead>
+      <tr>
+        <th>Mo</th>
+        <th>Di</th>
+        <th>Mi</th>
+        <th>Do</th>
+        <th>Fr</th>
+        <th>Sa</th>
+        <th>So</th>
+      </tr>
+    </thead>
+
+    <!--content by script-->
+    <tbody id="calendar-body">
+
+    </tbody>
+  </table>
+</div>

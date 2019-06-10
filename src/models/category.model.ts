@@ -1,5 +1,6 @@
 export class CategoryModel{
-    title: String;
-    color: String;
-    _id: String;
+    title: string;
+    color: string;
+    _id: string;
+    persistance: boolean;
 }

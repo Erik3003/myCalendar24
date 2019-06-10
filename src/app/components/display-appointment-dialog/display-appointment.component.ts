@@ -82,8 +82,8 @@ export class DisplayAppointmentComponent implements OnInit {
 
       //displaying category for group appointments
       if (!found){
-        this.category.color = "gray";
-        this.category.title = "Gruppentermin"
+        this.category.color = this.categories[0].color;
+        this.category.title = this.categories[0].title;
       }
     }    
   }

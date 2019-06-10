@@ -7,6 +7,7 @@ import { CategoryService } from 'src/app/services/category.service';
 import { CategoryModel } from 'src/models/category.model';
 import { CreateCategoryComponent } from '../create-category-dialog/create-category.component';
 import { MatDialog } from '@angular/material';
+import { DateUtilsService } from 'src/app/services/date-utils.service';
 
 @Component({
   selector: 'app-create-appointment',
@@ -28,6 +29,7 @@ export class CreateAppointmentComponent implements OnInit {
     private formBuilder: FormBuilder,
     private appointmentService: AppointmentService,
     private catService: CategoryService,
+    private dateUtils: DateUtilsService,
     private router: Router,
     private dialog: MatDialog
   ) {
@@ -56,7 +58,6 @@ export class CreateAppointmentComponent implements OnInit {
     //fetching if a category was added
     this.catService.currentMessage.subscribe(message => {
       if (message == "form changed") {
-        console.log("categories changed");
         setTimeout(() => { this.loadCategories() }, 200);
       }
     });
@@ -119,26 +120,15 @@ export class CreateAppointmentComponent implements OnInit {
     this.appointment.description = this.appointmentForm.get('description').value;
     this.appointment.public = this.appointmentForm.get('public').value;
     this.appointment.category = this.appointmentForm.get("category").value;
-    this.appointment.date = this.calculateDate(this.appointmentForm.get('date').value, this.appointmentForm.get('time').value);
-    this.appointment.enddate = this.calculateDate(this.appointmentForm.get('enddate').value, this.appointmentForm.get('endtime').value);
+    
+    this.appointment.date = this.dateUtils.calculateDate(this.appointmentForm.get('date').value, this.appointmentForm.get('time').value);
+    this.appointment.enddate = this.dateUtils.calculateDate(this.appointmentForm.get('enddate').value, this.appointmentForm.get('endtime').value);
 
     //calling service to send data to server
-    console.log("creating appointment...");
-    console.log(this.appointment);
-
     this.appointmentService.CreateNewAppointment(this.appointment).subscribe(data => {
       console.log(data);
       this.router.navigate(['/calendar']);
     });
-  }
-
-  //create isostring of date and time
-  calculateDate(date: Date, time: Number) {
-    let newDate = new Date();
-    let hours = parseInt(time.toString().substr(0, 2));
-    let minutes = parseInt(time.toString().substr(3));
-    newDate.setTime(date.getTime() + (((hours + 2) * 60 + minutes) * 60 * 1000));
-    return newDate.toISOString();
   }
 
   //open dialog to create categorie

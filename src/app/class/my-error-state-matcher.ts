@@ -1,4 +1,8 @@
 //Class copied from https://stackoverflow.com/questions/51605737/confirm-password-validation-in-angular-6
+
+/*
+ * This error matcher checks, if the password is valid
+ */
 import { ErrorStateMatcher } from '@angular/material';
 import { FormControl, FormGroupDirective, NgForm } from '@angular/forms';
 

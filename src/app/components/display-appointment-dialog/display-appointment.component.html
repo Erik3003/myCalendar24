@@ -1,4 +1,5 @@
 <div class="effectWrapper">
+    <div *ngIf="appointment.public" class="publicMessage centerWrapper">Öffentliche Veranstaltung</div>
     <h2 mat-dialog-title>{{appointment.title}}</h2>
     <mat-dialog-content>
       <p>am  {{startDay}}.{{startMonth}}.{{startYear}} um {{startHours}}:{{startMinutes}} Uhr </p>

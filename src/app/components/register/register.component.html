@@ -3,8 +3,11 @@
 
   <!--Error message-->
   <div *ngIf="isRegisterError" class="errorMessage centerWrapper">Benutzername oder Email bereits vergeben!</div>
-  
-  <!--Form element-->
+
+  <!--success message-->
+  <div class="success" *ngIf="success">Registrierung erfolgreich</div>
+
+  <!--Form element--> 
   <div class="effectWrapper">
     <div class="formTitle">Registrieren</div>
 

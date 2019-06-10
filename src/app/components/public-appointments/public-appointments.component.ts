@@ -3,6 +3,7 @@ import { AppointmentModel } from 'src/models/appointment.model';
 import { CustumDateModel } from 'src/models/costumDate.model';
 import { AppointmentService } from 'src/app/services/appointment.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DateUtilsService } from 'src/app/services/date-utils.service';
 
 @Component({
   selector: 'app-public-appointments',
@@ -13,7 +14,8 @@ export class PublicAppointmentsComponent implements OnInit {
 
   appointments: AppointmentModel[] = [];
   appointmentDate: CustumDateModel[] = [];
-  hasAppointments: boolean;
+  searchDates: string[] = [];
+  hasNoAppointments: boolean;
   selectDateForm: FormGroup;
   today: Date;
   selectedStartDate: Date;
@@ -21,9 +23,10 @@ export class PublicAppointmentsComponent implements OnInit {
 
   constructor(
     private appointmentService: AppointmentService,
+    private dateUtils: DateUtilsService,
     private formBuilder: FormBuilder
   ) {
-    this.getAppointments(); 
+    //this.getAppointments(); 
     this.today = new Date();
     this.selectedStartDate= this.today;
   }
@@ -41,8 +44,9 @@ export class PublicAppointmentsComponent implements OnInit {
 
   //fetch invites from server
   async getAppointments() {
-    const data = await this.appointmentService.fetchPublicAppointments().toPromise();
+    const data = await this.appointmentService.fetchPublicAppointments(this.searchDates).toPromise();
     this.appointments = data;
+    console.log(this.appointments);
 
     console.log(this.appointments.length);
     //getting the date components out of the appointment data
@@ -61,13 +65,23 @@ export class PublicAppointmentsComponent implements OnInit {
       console.log(this.appointmentDate[j].startday);
     }
 
-    if (this.appointments.length !== 0) {
-      this.hasAppointments = true;
+    if (this.appointments.length == 0) {
+      this.hasNoAppointments = true;
     }
   }
 
   submitSearch(){
-    console.log(this.selectDateForm.get("date").value);
+    this.searchDates = [];
+    this.searchDates.push(this.dateUtils.calculateDate(this.selectDateForm.get('date').value, "00:00"));
+    this.searchDates.push(this.dateUtils.calculateDate(this.selectDateForm.get('enddate').value, '23:59'));
+    this.getAppointments();   
+  }
+
+  async onAnswer(i:number){
+    let appointment = new AppointmentModel();
+    appointment._id = this.appointments[i]._id;
+    const daa = await this.appointmentService.addAppointment(appointment).toPromise();
+    this.getAppointments();
   }
 
   changeStartDate(){
