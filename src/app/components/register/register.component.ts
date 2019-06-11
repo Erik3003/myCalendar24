@@ -1,6 +1,7 @@
 /*
  * This component displays the register form.
- * It consists functions for validating the users input and sends valid input to the authentification service.
+ * It consists functions for validating the users input and sends valid input 
+ * to the authentification service.
  */
 
 import { Component, OnInit } from '@angular/core';
@@ -20,10 +21,16 @@ import { UserModel } from 'src/models/user.model';
 })
 export class RegisterComponent implements OnInit {
 
+  //object with values of the input
   user: UserModel = new UserModel();
+
+  //form for input values
   registerForm: FormGroup;
+
+  //error matcher for checking if the entered passwords are the same
   matcher = new MyErrorStateMatcher();
-  //
+
+  //boolean for displaying messages
   isRegisterError: boolean;
   success: boolean;
 
@@ -34,7 +41,7 @@ export class RegisterComponent implements OnInit {
     private router: Router
   ) { }
 
-  //creating register form with validators
+  //creating register form with validators for username, email and password
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
       name: ['', [
@@ -55,7 +62,8 @@ export class RegisterComponent implements OnInit {
     }, { validator: this.checkPassword });
   }
 
-  //getting input,calling http service for registration and creating default categories
+  /*getting input,calling authentification service for registration and creating 
+    default categories if registration is successful.*/
   submitRegister() {
     this.user.username = this.registerForm.get('name').value;
     this.user.email = this.registerForm.get('email').value;
@@ -63,8 +71,9 @@ export class RegisterComponent implements OnInit {
 
     this.authService.registerUser(this.user).subscribe((data: any) => {
       this.authService.setToken(data.token);
-      
-      //adding default categories for user
+
+      /*adding default categories for user. The first categorie ist for group appointments
+        and cant be deleted by the user.*/
       let defaultCategory = new CategoryModel();
       defaultCategory.title = "Gruppen";
       defaultCategory.color = "yellow";
@@ -79,7 +88,7 @@ export class RegisterComponent implements OnInit {
       defaultCategory.persistance = false;
       this.categoryService.createCategory(defaultCategory).subscribe();
 
-      //show success message
+      //show success message for 2 seconds
       this.success = true;
       setTimeout(() => { this.router.navigate(['/calendar']) }, 2000);
     },

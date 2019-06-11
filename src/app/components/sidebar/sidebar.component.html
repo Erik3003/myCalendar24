@@ -1,11 +1,19 @@
+<!--component displaying the sidebar on the left with selected categories an buttons for creating 
+    appointments or categories-->
 <div id="sideWrapper">
-    <button mat-button id="terminButton" routerLink='/createAppointment'>Termin erstellen</button>
-    <hr>
-    <!--list of available categories-->
-    <div id="categories">
-      <h3>Kategorien:</h3>
-      <div id="checkboxesWrapper"></div>
-      <mat-checkbox class="checkboxes" *ngFor="let category of categories; index as i" [checked]="checked[i]" (change)="onChange(i)">{{category.title}}</mat-checkbox>
-      <button mat-button id="categoryButton" (click)="onCreateCategory()">Kategorie erstellen</button>
-    </div>
+
+  <!--button for creating an appointment-->
+  <button mat-button id="terminButton" routerLink='/createAppointment'>Termin erstellen</button>
+  <hr>
+
+  <!--list of available categories with checkboxes-->
+  <div id="categories">
+    <h3>Kategorien:</h3>
+    <div id="checkboxesWrapper"></div>
+    <mat-checkbox class="checkboxes" *ngFor="let category of categories; index as i" [checked]="checked[i]"
+      (change)="onChange(i)">{{category.title}}</mat-checkbox>
+
+    <!--button for creating acategory-->
+    <button mat-button id="categoryButton" (click)="onCreateCategory()">Kategorie erstellen</button>
+  </div>
 </div>

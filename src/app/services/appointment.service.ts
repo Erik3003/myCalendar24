@@ -32,7 +32,7 @@ export class AppointmentService {
   }
 
   //http get request for getting all appointments of the user
-  fetchAppointments(month: number, year: number ): Observable<AppointmentModel[]> {
+  fetchAppointments(month: number, year: number): Observable<AppointmentModel[]> {
     //create date format for header information
     let date = new Date(year, month);
     let isodate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString();
@@ -50,8 +50,6 @@ export class AppointmentService {
     let date = new Date(year, month, day);
     let isodate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString();
 
-    console.log(isodate);
-    
     //append request header
     let headers = this.createRequestHeader();
     headers = headers.append("dateParams", isodate);
@@ -116,18 +114,19 @@ export class AppointmentService {
     this.messageSource.next("changed");
   }
 
-  //create request header with authorization token of the user
+  //create request header with authorization token of the user stored in the auth service
   createRequestHeader(): HttpHeaders {
     let headers = new HttpHeaders();
     headers = headers.append("Authorization", "bearer " + this.authService.getToken());
     return headers;
   }
 
-  getSelectedDate():Date{
+  //get and set selected date for updating the month calendar
+  getSelectedDate(): Date {
     return this.selectedDate;
   }
 
-  setSelectedDate(date:Date){
+  setSelectedDate(date: Date) {
     this.selectedDate = date;
     this.messageSource.next("date changed");
   }

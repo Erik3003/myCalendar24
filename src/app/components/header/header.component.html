@@ -1,3 +1,4 @@
+<!--Component displaying the header as a angular material toolbar with navigation options-->
 <mat-toolbar class="mat-primary">
 
   <!--heading with link to home-->
@@ -7,6 +8,7 @@
     </button>
   </a>
 
+  <!--button with link to login if not logged in-->
   <a [routerLink]="['/login']" *ngIf="!isLoggedIn">
     <button mat-button id="heading">
       MyCalendar
@@ -14,42 +16,43 @@
   </a>
   <span class="spacer"></span>
 
-  <!--button for group appointments-->
+  <!--button with link for public appointments if logged in-->
   <a [routerLink]="['/public']">
     <button mat-icon-button *ngIf="isLoggedIn">
       <mat-icon>group</mat-icon>
     </button>
   </a>
 
-  <!--button for appointment invitations-->
+  <!--button with link for appointment invitations without notification-->
   <button mat-icon-button *ngIf="isLoggedIn && !hasInvites" (click)="onInvitesClick()">
     <mat-icon>message</mat-icon>
   </button>
 
-  <!--button for appointment invitations-->
+  <!--button with link for appointment invitations with colored notification-->
   <button mat-icon-button *ngIf="isLoggedIn && hasInvites" (click)="onInvitesClick()" color="warn">
     <mat-icon>message</mat-icon>
   </button>
 
-  <!--button for profile-->
+  <!--button for options-->
   <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="isLoggedIn">
     <mat-icon>person</mat-icon>
   </button>
+
+  <!--menu for updating categories or log out-->
   <mat-menu #menu="matMenu">
     <!--<div mat-menu-item>{{user.username}} {{user.email}}</div>-->
     <button mat-menu-item (click)="onUpdateCategories()">Kategorien verwalten</button>
     <button mat-menu-item (click)="onLogout()">Logout</button>
   </mat-menu>
 
-
-  <!--button signing up-->
+  <!--button with link to sign up page if not logged in-->
   <a [routerLink]="['/register']">
     <button mat-button *ngIf="!isLoggedIn">
       Registrieren
     </button>
   </a>
 
-  <!--button for logging in-->
+  <!--button with link to log in page-->
   <a [routerLink]="['/login']">
     <button mat-button *ngIf="!isLoggedIn">
       Einloggen

@@ -1,12 +1,13 @@
+<!--component for displaying the month calendar.-->
 <app-header></app-header>
 <app-sidebar class="side"></app-sidebar>
 <div class="calendarWrapper">
 
-  <!--Header-->
+  <!--Header with date picker and navigation buttons-->
   <div id="header">
 
     <form [formGroup]="selectForm">
-      <!--Input for month-->
+      <!--Date picker for month-->
       <mat-form-field class="formElement">
         <mat-label>Monat</mat-label>
         <mat-select formControlName="month" (selectionChange)="selectionChanged()">
@@ -15,9 +16,9 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      
-      <!--input for year-->
-      <mat-form-field class="formElement">              
+
+      <!--date picker for year-->
+      <mat-form-field class="formElement">
         <mat-label>Jahr</mat-label>
         <mat-select formControlName="year" (selectionChange)="selectionChanged()">
           <mat-option *ngFor="let year of years" [value]="year">
@@ -27,7 +28,7 @@
       </mat-form-field>
     </form>
 
-    <!--navigation buttons-->
+    <!--navigation buttons to previous or next month-->
     <button mat-button class="mat-raised-button mat-primary calendarButton headerElements" id="previous"
       (click)="previousMonth()">zurück</button>
     <button mat-button class="mat-raised-button mat-primary calendarButton headerElements" id="next"
@@ -35,9 +36,9 @@
 
   </div>
 
-  <!--Calendar as a table-->
+  <!--Calendar displayed as a table-->
   <table id="calendar">
-    <!--heading days-->
+    <!--heading with names of days-->
     <thead>
       <tr>
         <th>Mo</th>
@@ -50,7 +51,7 @@
       </tr>
     </thead>
 
-    <!--content by script-->
+    <!--content dynamicly created by script-->
     <tbody id="calendar-body">
 
     </tbody>

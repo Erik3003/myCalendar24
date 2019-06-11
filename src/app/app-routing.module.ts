@@ -8,14 +8,15 @@ import { SelfcalendarComponent } from './components/selfcalendar/selfcalendar.co
 import { PublicAppointmentsComponent } from './components/public-appointments/public-appointments.component';
 import { DailyViewComponent } from './components/daily-view/daily-view.component';
 
+//routes for navigating throu the components
 const routes: Routes = [
-  {path:'', component: LoginComponent},
-  {path:'register', component: RegisterComponent},
-  {path:'login', component: LoginComponent},
-  {path:'createAppointment', component: CreateAppointmentComponent},
-  {path:'calendar', component: SelfcalendarComponent},
-  {path:'public', component: PublicAppointmentsComponent},
-  {path:'day', component: DailyViewComponent}
+  { path: '', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'createAppointment', component: CreateAppointmentComponent },
+  { path: 'calendar', component: SelfcalendarComponent },
+  { path: 'public', component: PublicAppointmentsComponent },
+  { path: 'day', component: DailyViewComponent }
 ];
 
 @NgModule({

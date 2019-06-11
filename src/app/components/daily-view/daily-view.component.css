@@ -1,0 +1,7 @@
+.calendarHeader{
+    display: inline;
+}
+
+.calendarButton .calendarHeading{
+    float: left;
+}

@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AppointmentService } from 'src/app/services/appointment.service';
+import { AppointmentModel } from 'src/models/appointment.model';
+import { CategoryModel } from 'src/models/category.model';
 
 
 @Component({
@@ -12,19 +14,24 @@ import { AppointmentService } from 'src/app/services/appointment.service';
 })
 export class EditAppointmentDialogComponent implements OnInit {
 
+  //form for the appointment values
   appointmentForm: FormGroup;
-  appointment;
-  category;
-  categories = [];
 
-  //variables to display the date in a customized format
-  startDate:Date;
-  startTime:Date;
-  endDate;
-  endTime;
+  //the selected appointment
+  appointment: AppointmentModel;
 
-  //variable for date validation
-  minTime;
+  //category of the appointment
+  category: CategoryModel;
+
+  //all categories of the user to display the in the selector
+  categories: CategoryModel[] = [];
+
+  //variables for setting validation values 
+  startDate: Date;
+  startTime: string;
+  endDate: Date;
+  endTime: string;
+  minTime: string;
 
   constructor(
     private router: Router,
@@ -34,31 +41,32 @@ export class EditAppointmentDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<EditAppointmentDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    //get data of the appointment to display them in form
+    //get data of the appointment to display it in form
     this.appointment = data.event;
     this.category = data.category;
     this.categories = data.categories;
 
+    //set date values in proper format to load them into the form
     this.startDate = new Date(this.appointment.date);
     this.endDate = new Date(this.appointment.enddate);
-    this.startDate.setTime(this.startDate.getTime() - (2*60*60*1000));
-    this.endDate.setTime(this.endDate.getTime() - (2*60*60*1000));
+    this.startDate.setTime(this.startDate.getTime() - (2 * 60 * 60 * 1000));
+    this.endDate.setTime(this.endDate.getTime() - (2 * 60 * 60 * 1000));
     this.startDate.setHours(0);
     this.startDate.setMinutes(0);
     this.endDate.setHours(0);
     this.endDate.setMinutes(0);
 
-
+    //set validation values (end date cant be before start date)
     this.startTime = this.appointment.date.substr(11, 5);
     this.endTime = this.appointment.enddate.substr(11, 5);
-    if(this.startDate.getTime == this.endDate.getTime()){
-      console.log("gleicher tag");     
+    if (this.startDate.getTime() == this.endDate.getTime()) {
       this.minTime = this.startTime;
-    }else{
+    } else {
       this.minTime = "00:00";
     }
   }
-  //creating form with given values of the appointment
+
+  //creating form with stored values of the appointment
   ngOnInit() {
     this.appointmentForm = this.formBuilder.group({
       title: [this.appointment.title, [
@@ -79,11 +87,11 @@ export class EditAppointmentDialogComponent implements OnInit {
       Validators.required
       ],
       category: [this.category._id,
-        Validators.required
+      Validators.required
       ],
       description: [this.appointment.description,
       ],
-      public: [false,
+      public: [this.appointment.public,
       ]
     });
   }
@@ -93,6 +101,7 @@ export class EditAppointmentDialogComponent implements OnInit {
     this.startDate = this.appointmentForm.get('date').value;
   }
 
+  //updating values if input is changed for validating end date >= start date
   changeEndDate() {
     this.startDate = this.appointmentForm.get('date').value;
     this.endDate = this.appointmentForm.get('enddate').value;
@@ -103,6 +112,7 @@ export class EditAppointmentDialogComponent implements OnInit {
     }
   }
 
+  //updating values if input is changed for validating end date >= start date
   changeTime() {
     this.startTime = this.appointmentForm.get('time').value;
     this.minTime = this.startTime;
@@ -116,7 +126,7 @@ export class EditAppointmentDialogComponent implements OnInit {
     this.appointment.category = this.appointmentForm.get("category").value;
     this.appointment.date = this.calculateDate(this.appointmentForm.get('date').value, this.appointmentForm.get('time').value);
     this.appointment.enddate = this.calculateDate(this.appointmentForm.get('enddate').value, this.appointmentForm.get('endtime').value);
-    this.appointmentService.updateApp(this.appointment).subscribe(data=>{
+    this.appointmentService.updateApp(this.appointment).subscribe(data => {
       console.log(data);
       this.appointmentService.changed();
       this.dialogRef.close();
