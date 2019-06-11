@@ -26,7 +26,6 @@ import { InviteFormDialogComponent } from './components/invite-form-dialog/invit
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import { CustomizeCategoriesComponent } from './components/customize-categories/customize-categories.component';
 import { PublicAppointmentsComponent } from './components/public-appointments/public-appointments.component';
-import { DailyViewComponent } from './components/daily-view/daily-view.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +44,6 @@ import { DailyViewComponent } from './components/daily-view/daily-view.component
     DeleteDialogComponent,
     CustomizeCategoriesComponent,
     PublicAppointmentsComponent,
-    DailyViewComponent
   ],
   imports: [
     BrowserModule,

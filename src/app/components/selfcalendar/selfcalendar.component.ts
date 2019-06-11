@@ -315,9 +315,6 @@ export class SelfcalendarComponent implements OnInit {
 	cellClicked(ele) {
 		if (!this.appClicked) {
 			let id = ele.getAttribute("id");
-			let selectedDate = new Date(this.currentYear, this.currentMonth, id);
-			this.appointmentService.setSelectedDate(selectedDate);
-			this.router.navigate(['/day'])
 		} else {
 			this.appClicked = false;
 		}
