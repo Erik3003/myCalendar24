@@ -15,8 +15,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'createAppointment', component: CreateAppointmentComponent },
   { path: 'calendar', component: SelfcalendarComponent },
-  { path: 'public', component: PublicAppointmentsComponent },
-  { path: 'day', component: DailyViewComponent }
+  { path: 'public', component: PublicAppointmentsComponent }
 ];
 
 @NgModule({

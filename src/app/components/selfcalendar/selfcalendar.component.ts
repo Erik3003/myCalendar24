@@ -182,7 +182,8 @@ export class SelfcalendarComponent implements OnInit {
 
 					//adding style for todays date
 					if (date === this.today.getDate() && year === this.today.getFullYear() && month === this.today.getMonth()) {
-						cell.style.backgroundColor = "lightblue";
+						cell.style.backgroundColor = "lightyellow";
+						cell.style.borderColor = "red";
 					}
 
 					//style of cell
