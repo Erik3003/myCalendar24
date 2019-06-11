@@ -1,3 +1,7 @@
+/*
+ * Importing used components and Angular Materials for designing.
+ */
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -6,7 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule, MatIconModule, MatButtonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule, MatDialogModule, MatOptionModule, MatSelectModule, MatMenuModule } from "@angular/material";
-import {MAT_DATE_LOCALE} from '@angular/material';
+import { MAT_DATE_LOCALE } from '@angular/material';
 
 import { HeaderComponent } from './components/header/header.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -63,10 +67,10 @@ import { DailyViewComponent } from './components/daily-view/daily-view.component
     MatSelectModule,
     MatMenuModule
   ],
-  providers: [{provide: MAT_DATE_LOCALE, useValue: 'de-DE'}],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'de-DE' }],
   bootstrap: [AppComponent],
-  entryComponents:[
-    DisplayAppointmentComponent, 
+  entryComponents: [
+    DisplayAppointmentComponent,
     EditAppointmentDialogComponent,
     CreateCategoryComponent,
     InvitesDialogComponent,

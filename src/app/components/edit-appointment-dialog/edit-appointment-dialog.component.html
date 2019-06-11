@@ -1,8 +1,11 @@
+<!--Dialog component for editing an appointment with bindings to the selected values-->
 <div class="effectWrapper">
   <h2 mat-dialog-title>{{appointment.title}}</h2>
 
   <mat-dialog-content>
+    <!--creating form for all values with its bindings, validation and hints-->
     <form [formGroup]="appointmentForm" (ngSubmit)="appointmentForm.valid && submitAppointment()">
+
       <div class="formElement">
         <!--Input title-->
         <mat-form-field>
@@ -78,10 +81,11 @@
           Diese Option macht den Termin für <b>alle</b> Nutzer der Anwendung sichbar.
         </mat-hint>
 
-        <!--Buttons-->
+        <!--submit button-->
         <button mat-button type="submit" class="mat-raised-button mat-primary">Speichern</button>
       </div>
     </form>
+    <!--abort button-->
     <div class="formElement">
       <button mat-button (click)="onCancel()" class="divider">Abbrechen</button>
     </div>

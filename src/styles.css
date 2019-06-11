@@ -32,7 +32,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   .divider {
     margin-top: 10px !important; 
   }
-
+  
+  /*error and success messages */
   .errorMessage {
     width: 90%;
     text-align: center;
@@ -61,22 +62,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     height: 100%;
     margin-top:0.5%;
   }
-
-  .calendarHeader{
-    background-color: red;
-    display: inline;
-  }
   
   .calendarWrapper{
     float: right;
     width: 80%;
     height: 100%;
     background-color: whitesmoke;
-  }
-
-  .calendarHeading{
-    float: left;
-    margin-left: 40%;
   }
 
   .md-dialog-container {

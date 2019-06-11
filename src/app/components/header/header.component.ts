@@ -1,5 +1,7 @@
 /*
- * The header component uses the authentification service to get information, if the user is logged in.
+ * The header component represents the angular material bar on the top. It consists
+ * of the navigation links for the page.
+ * It uses the authentification service to get information, if the user is logged in.
  * This information is needed to display or hide buttons for navigation.
  */
 
@@ -19,8 +21,11 @@ import { UserModel } from 'src/models/user.model';
 })
 export class HeaderComponent implements OnInit {
 
+  //booleans to show or hide html elements
   isLoggedIn: boolean;
   hasInvites: boolean;
+
+  //variable with user information
   user: UserModel;
 
   constructor(
@@ -29,10 +34,10 @@ export class HeaderComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router
   ) {
+    //check in authentication service if the user is logged in
     this.user = new UserModel();
-    this.user.username='';
-    this.user.email='';
     this.isLoggedIn = this.authService.loggedIn();
+    //check if the user has invites
     this.getInvites();
   }
 
@@ -42,7 +47,7 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  //fetch if user has any invites
+  //fetch if user has any invites to display a colored button in the header
   async getInvites() {
     if (this.isLoggedIn) {
       const data = await this.appointmentService.fetchInvites().toPromise();
@@ -53,12 +58,12 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  //open invite list
+  //open dialog with a list of invitations
   onInvitesClick() {
     this.dialog.open(InvitesDialogComponent);
   }
 
-  //logging out
+  //logging out and route to login
   onLogout() {
     this.authService.logoutUser();
     this.router.navigate(['/login']);

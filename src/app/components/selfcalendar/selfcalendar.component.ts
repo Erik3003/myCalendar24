@@ -1,3 +1,9 @@
+/*
+ * This component displays the calendar with a month view. It created a table with
+ * one cell for each day of the month an adds the users appointments to the right cells
+ * after calling the appointment service. 
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from 'src/app/services/appointment.service';
 import { MatDialog } from '@angular/material';
@@ -6,6 +12,7 @@ import { CategoryService } from 'src/app/services/category.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AppointmentModel } from 'src/models/appointment.model';
 
 @Component({
 	selector: 'app-selfcalendar',
@@ -16,42 +23,49 @@ export class SelfcalendarComponent implements OnInit {
 
 	//names of the months for the heading selector
 	months = [
-		{ name: "Januar", value: 0 }, 
-		{ name: "Februar", value: 1 }, 
-		{ name: "März", value: 2 }, 
-		{ name: "April", value: 3 }, 
-		{ name: "Mai", value: 4 }, 
-		{ name: "Juni", value: 5 }, 
-		{ name: "Juli", value: 6 }, 
-		{ name: "August", value: 7 }, 
-		{ name: "September", value: 8 }, 
-		{ name: "Oktober", value: 9 }, 
-		{ name: "November", value: 10 }, 
+		{ name: "Januar", value: 0 },
+		{ name: "Februar", value: 1 },
+		{ name: "März", value: 2 },
+		{ name: "April", value: 3 },
+		{ name: "Mai", value: 4 },
+		{ name: "Juni", value: 5 },
+		{ name: "Juli", value: 6 },
+		{ name: "August", value: 7 },
+		{ name: "September", value: 8 },
+		{ name: "Oktober", value: 9 },
+		{ name: "November", value: 10 },
 		{ name: "Dezember", value: 11 }];
 
 	//variable for year selector
-	years:number[];
+	years: number[];
 
+	//form for selected month and year
 	selectForm: FormGroup;
 
-	//variables for selected date
+	//variables for the selected date
 	today: Date;
 	currentMonth: number;
 	currentYear: number;
 	daysInMonth;
 
-	//array of appointments
-	events = [];
+	//array of appointments and categories to display them in the calendar cells
+	appointments: AppointmentModel[] = [];
 	categories = [];
+
+	//boolean for disabling the onclick of a day if an appointment is clicked
 	appClicked: boolean;
+
+	//an array with one boolean for each categorie to display or hide categories
 	checkedCategories: boolean[] = [];
+
+	//subscribtions to category and appointment service to get messegas about changes
 	categorySub: Subscription;
 	appointmentSub: Subscription;
 
 
 	constructor(
 		private appointmentService: AppointmentService,
-		private catService: CategoryService,
+		private categoryService: CategoryService,
 		private dialog: MatDialog,
 		private router: Router,
 		private formBuilder: FormBuilder
@@ -60,39 +74,40 @@ export class SelfcalendarComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		//setting calendar to current date
 		this.today = new Date();
 		this.currentMonth = this.today.getMonth();
 		this.currentYear = this.today.getFullYear();
 
 		//filling array with values for selectable years
 		this.years = [];
-		for (let i = 2000; i<= 2050; i++){
-			this.years[i-2000] = i;
+		for (let i = 2000; i <= 2050; i++) {
+			this.years[i - 2000] = i;
 		}
 
-		this.selectForm  = this.formBuilder.group({
+		//initilizing form for month and year selection
+		this.selectForm = this.formBuilder.group({
 			year: [this.currentYear],
 			month: [this.currentMonth]
-		  });
+		});
 
-		//fetching categories if a choosen category changed
+		//fetching categories if a category has been changed to hide or show
 		let counter = 0;
-		this.categorySub = this.catService.currentMessage.subscribe(message => {
+		this.categorySub = this.categoryService.currentMessage.subscribe(message => {
 			if (message == "choosen changed") {
-				//disabling first fetch
+				//disabling first fetch because of a double fetch at the beginning
 				if (counter == 1) {
 					counter++;
 				} else {
 					counter++;
-
-					this.checkedCategories = this.catService.getChoosen();
-					this.categories = this.catService.getCategories();
+					this.checkedCategories = this.categoryService.getChoosen();
+					this.categories = this.categoryService.getCategories();
 					this.getAppointments();
 				}
 			}
 		});
 
-		//fetching appointments if a appointment changed
+		//fetching appointments if an appointment changed
 		this.appointmentSub = this.appointmentService.currentMessage.subscribe(message => {
 			if (message == "changed") {
 				this.getAppointments();
@@ -119,9 +134,9 @@ export class SelfcalendarComponent implements OnInit {
 		this.currentMonth = (this.currentMonth === 0) ? 11 : this.currentMonth - 1;
 		this.updateMonthAndYear();
 	}
-	
+
 	//updating selection form, initilizing new calendar and loading matching events
-	updateMonthAndYear(){
+	updateMonthAndYear() {
 		this.selectForm.controls['month'].setValue(this.currentMonth);
 		this.selectForm.controls['year'].setValue(this.currentYear);
 		this.initCalendar(this.currentMonth, this.currentYear);
@@ -187,14 +202,15 @@ export class SelfcalendarComponent implements OnInit {
 		}
 	}
 
-	//requesting service for events 
+	/*calling appointment service for fetching appointments of the selected month.
+	  calling the category service for fetching users categories.*/
 	async getAppointments() {
 		this.initCalendar(this.currentMonth, this.currentYear);
-		this.events = [];
+		this.appointments = [];
 		const data = await this.appointmentService.fetchAppointments(this.currentMonth, this.currentYear).toPromise();
-		this.events = data;
+		this.appointments = data;
 
-		const catData = await this.catService.fetchCategories().toPromise();
+		const catData = await this.categoryService.fetchCategories().toPromise();
 		this.categories = catData;
 
 		this.appendAppointmentsToCell();
@@ -203,18 +219,18 @@ export class SelfcalendarComponent implements OnInit {
 	//calculating which events belong to which cell
 	appendAppointmentsToCell() {
 		//iterating through all appointments
-		for (let i = 0; i < this.events.length; i++) {
+		for (let i = 0; i < this.appointments.length; i++) {
 			//integer number of date components
-			let dayStart = parseInt(this.events[i].date.substr(8, 2));
-			let monthStart = parseInt(this.events[i].date.substr(5, 2));
-			let yaerStart = parseInt(this.events[i].date.substr(0, 4));
-			let dayEnd = parseInt(this.events[i].enddate.substr(8, 2));
-			let monthEnd = parseInt(this.events[i].enddate.substr(5, 2));
-			let yearEnd = parseInt(this.events[i].enddate.substr(0, 4));
+			let dayStart = parseInt(this.appointments[i].date.substr(8, 2));
+			let monthStart = parseInt(this.appointments[i].date.substr(5, 2));
+			let yaerStart = parseInt(this.appointments[i].date.substr(0, 4));
+			let dayEnd = parseInt(this.appointments[i].enddate.substr(8, 2));
+			let monthEnd = parseInt(this.appointments[i].enddate.substr(5, 2));
+			let yearEnd = parseInt(this.appointments[i].enddate.substr(0, 4));
 
-			//start and end date
-			let startDate = new Date(this.events[i].date);
-			let endDate = new Date(this.events[i].enddate);
+			//get start and end date
+			let startDate = new Date(this.appointments[i].date);
+			let endDate = new Date(this.appointments[i].enddate);
 
 			//appointment only at one day
 			if (startDate.getTime() === endDate.getTime()) {
@@ -243,11 +259,11 @@ export class SelfcalendarComponent implements OnInit {
 		let found = false;
 		let color = '';
 
-		//check for category and if it is selected
+		//check for category and if it is selected in sidebar
 		for (let i = 0; i < this.categories.length; i++) {
-			//for users own appointments
+			//for appointments which the user created
 			if (!found) {
-				if (this.categories[i]._id === this.events[eventIndex].category) {
+				if (this.categories[i]._id === this.appointments[eventIndex].category) {
 					if (this.checkedCategories[i]) {
 						color = this.categories[i].color;
 						found = true;
@@ -258,13 +274,14 @@ export class SelfcalendarComponent implements OnInit {
 			}
 		}
 
+		//for appointments of other users (groupappointments)
 		if (!found && this.checkedCategories[0]) {
 			color = this.categories[0].color;
 			found = true;
 		}
 
+		//creating div for the appointment at this day
 		if (found) {
-			//creating div for the appointment
 			let div = document.createElement("div");
 			div.setAttribute("id", eventIndex + 100);
 			div.style.backgroundColor = color;
@@ -273,7 +290,7 @@ export class SelfcalendarComponent implements OnInit {
 			div.style.margin = "1% 2.5%";
 			div.style.overflow = "hidden";
 			div.addEventListener("click", (event) => this.appointmentClicked(div));
-			let divText = document.createTextNode(this.events[eventIndex].title);
+			let divText = document.createTextNode(this.appointments[eventIndex].title);
 			div.appendChild(divText);
 			//append div for appointment to cell of the day
 			let cell = document.getElementById(dayId.toString());
@@ -281,7 +298,7 @@ export class SelfcalendarComponent implements OnInit {
 		}
 	}
 
-	//open information dialog of appointment
+	//open information dialog of appointment after clicking on it
 	appointmentClicked(ele) {
 		this.appClicked = true;
 		let id = ele.getAttribute("id");
@@ -289,12 +306,12 @@ export class SelfcalendarComponent implements OnInit {
 
 		this.dialog.open(DisplayAppointmentComponent, {
 			data: {
-				event: this.events[id],
+				event: this.appointments[id],
 			}
 		});
 	}
 
-	//Open daily view
+	//Open daily view component after clicking on a calendar cell
 	cellClicked(ele) {
 		if (!this.appClicked) {
 			let id = ele.getAttribute("id");
@@ -306,11 +323,10 @@ export class SelfcalendarComponent implements OnInit {
 		}
 	}
 
-	selectionChanged(){
-		this.currentMonth=this.selectForm.get("month").value;
-		this.currentYear=this.selectForm.get("year").value;
-		console.log(this.currentMonth);
-		
+	//load new calendar and appointments for the selected month and year
+	selectionChanged() {
+		this.currentMonth = this.selectForm.get("month").value;
+		this.currentYear = this.selectForm.get("year").value;
 		this.initCalendar(this.currentMonth, this.currentYear);
 		this.getAppointments();
 	}

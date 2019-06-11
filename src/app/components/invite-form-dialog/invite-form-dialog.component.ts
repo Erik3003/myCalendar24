@@ -1,6 +1,6 @@
 /*
  *This component represents a dialog with a form to invite a user to an 
- *appointment. 
+ *appointment by entering its username. 
  */
 
 import { Component, OnInit, Inject } from '@angular/core';
@@ -16,8 +16,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class InviteFormDialogComponent implements OnInit {
 
+  //form for entering username
   inviteForm: FormGroup;
-  userID: string;
+
+  //id of the selected appointment
+  appointmentID: string;
+
+  //boolean for displaying error message
   nameError: boolean;
 
   constructor(
@@ -26,10 +31,11 @@ export class InviteFormDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<InviteFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.userID = data.appId;
+    //fetching id of appointment from opening window
+    this.appointmentID = data.appId;
   }
 
-  //create form
+  //create form for entering username of invited user
   ngOnInit() {
     this.inviteForm = this.formBuilder.group({
       name: ['', [
@@ -40,29 +46,31 @@ export class InviteFormDialogComponent implements OnInit {
     });
   }
 
-  //sending invite to server
+  /*calling appointment service for sending invitation to the selected user 
+    or display an error message.*/
   onSubmit() {
     let invite = {
-      appointment: { _id: this.userID },
+      appointment: { _id: this.appointmentID },
       target: { username: this.inviteForm.get("name").value }
     };
 
-    //errorhandling#################################################
     this.appointmentService.sendInvite(invite).subscribe(data => {
       this.onClose();
     },
       (err: HttpErrorResponse) => {
-        if(err.status == 400){
-          this.nameError=true;         
+        if (err.status == 400) {
+          this.nameError = true;
         }
       });
-    
+
   }
 
+  //closing the dialog on clicking abort
   onClose() {
     this.dialogRef.close();
   }
 
+  //getter for form validation
   get name() {
     return this.inviteForm.get("name");
   }

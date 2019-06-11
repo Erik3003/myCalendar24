@@ -1,5 +1,6 @@
 /*
- * This component displays the details of an appointment after clicking on it.
+ * This component displays the details of an appointment in a dialog after clicking on it.
+ * It offers the opportunity to edit and delete appointments or to invite other users.
  */
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
@@ -11,6 +12,7 @@ import { InviteFormDialogComponent } from '../invite-form-dialog/invite-form-dia
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { AppointmentModel } from 'src/models/appointment.model';
+import { CustumDateModel } from 'src/models/costumDate.model';
 
 
 @Component({
@@ -20,22 +22,15 @@ import { AppointmentModel } from 'src/models/appointment.model';
 })
 export class DisplayAppointmentComponent implements OnInit {
 
-  //variables to display the date in a customized format
-  endYear: string;
-  endMonth: string;
-  endDay: string;
-  endHours: string;
-  endMinutes: string;
+  //variable to display the date in a customized format
+  appointmentDate: CustumDateModel;
 
-  startYear: string;
-  startMonth: string;
-  startDay: string;
-  startHours: string;
-  startMinutes: string;
-
+  /*variable for all categories of the user to get its color with
+    the foreign key id stored in the appointment.*/
   categories: CategoryModel[] = [];
   category: CategoryModel = new CategoryModel();
 
+  //displayed appointment
   appointment: AppointmentModel;
 
   constructor(
@@ -43,81 +38,86 @@ export class DisplayAppointmentComponent implements OnInit {
     private catService: CategoryService,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<DisplayAppointmentComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:any
-    ) {
-      this.appointment = data.event;
-      //getting the date components out of the appointment data
-      this.endYear = this.appointment.enddate.substr(0,4);
-      this.endMonth = this.appointment.enddate.substr(5,2);
-      this.endDay = this.appointment.enddate.substr(8,2);
-      this.endHours = this.appointment.enddate.substr(11,2);
-      this.endMinutes = this.appointment.enddate.substr(14,2);
-      this.startYear = this.appointment.date.substr(0,4);
-      this.startMonth = this.appointment.date.substr(5,2);
-      this.startDay = this.appointment.date.substr(8,2);
-      this.startHours = this.appointment.date.substr(11,2);
-      this.startMinutes = this.appointment.date.substr(14,2);
-      
-      //get category of appointment to display color
-      this.loadCategories();
-     }
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    //getting displayed appointment from calling selfcalendar component
+    this.appointment = data.event;
+
+    //getting the date components out of the appointment data
+    this.appointmentDate = new CustumDateModel();
+    this.appointmentDate.endyear = this.appointment.enddate.substr(0, 4);
+    this.appointmentDate.endmonth = this.appointment.enddate.substr(5, 2);
+    this.appointmentDate.endday = this.appointment.enddate.substr(8, 2);
+    this.appointmentDate.endhours = this.appointment.enddate.substr(11, 2);
+    this.appointmentDate.endminutes = this.appointment.enddate.substr(14, 2);
+    this.appointmentDate.startyear = this.appointment.date.substr(0, 4);
+    this.appointmentDate.startmonth = this.appointment.date.substr(5, 2);
+    this.appointmentDate.startday = this.appointment.date.substr(8, 2);
+    this.appointmentDate.starthours = this.appointment.date.substr(11, 2);
+    this.appointmentDate.startminutes = this.appointment.date.substr(14, 2);
+
+    //get category of appointment to display its color
+    this.loadCategories();
+  }
 
   ngOnInit() {
 
   }
 
-  async loadCategories(){
-    
+  /*call category service for fetching all categories of the user to display
+    its color*/
+  async loadCategories() {
+
     //fetching all category
     const data = await this.catService.fetchCategories().toPromise();
-    this.categories=data;   
-    
+    this.categories = data;
+
     //get category of given appointment
     let found = false;
-    for(let i = 0; i < this.categories.length;i++){
-      if(this.categories[i]._id == this.appointment.category){
+    for (let i = 0; i < this.categories.length; i++) {
+      if (this.categories[i]._id == this.appointment.category) {
         this.category = this.categories[i];
         found = true;
       }
 
       //displaying category for group appointments
-      if (!found){
+      if (!found) {
         this.category.color = this.categories[0].color;
         this.category.title = this.categories[0].title;
       }
-    }    
+    }
   }
 
   //open dialog with data of appointment to edit it
-  onEdit(){
+  onEdit() {
     this.dialogRef.close();
 
     this.dialog.open(EditAppointmentDialogComponent, {
-			data: {
+      data: {
         event: this.appointment,
         category: this.category,
         categories: this.categories
-			}
-		});
+      }
+    });
   }
 
   //open dialog to invite a user to the appointment
-  onInvite(){
+  onInvite() {
     this.dialog.open(InviteFormDialogComponent, {
-			data: {
-				appId: this.appointment._id,
+      data: {
+        appId: this.appointment._id,
       },
       width: "300px",
-		});
+    });
   }
 
   //open dialog to delete the appointment
-  onRemove(){    
+  onRemove() {
     this.dialog.open(DeleteDialogComponent, {
-			data: {
+      data: {
         appId: this.appointment._id,
         dialog: this.dialogRef,
-			}
-		});
+      }
+    });
   }
 }

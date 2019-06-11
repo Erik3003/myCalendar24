@@ -1,27 +1,35 @@
+<!--dialog component for displaying the information of a selected appointment-->
 <div class="effectWrapper">
-    <div *ngIf="appointment.public" class="publicMessage centerWrapper">Öffentliche Veranstaltung</div>
-    <h2 mat-dialog-title>{{appointment.title}}</h2>
-    <mat-dialog-content>
-      <p>am  {{startDay}}.{{startMonth}}.{{startYear}} um {{startHours}}:{{startMinutes}} Uhr </p>
-      <p>bis {{endDay}}.{{endMonth}}.{{endYear}} um {{endHours}}:{{endMinutes}} Uhr </p>
-      <h4>Beschreibung:</h4>
-      <p>{{appointment.description}}</p>
-      <h4>Kategorie:</h4><br>
-      <div id="kategorieColor" [ngStyle]="{'background-color': category.color}"></div>
-      <div>
-        {{category.title}}
-      </div>  
-    </mat-dialog-content>
 
-    <div id="buttons">
-      <button mat-icon-button (click)="onEdit()">
-          <mat-icon>edit</mat-icon>
-      </button>
-      <button mat-icon-button (click)="onInvite()">
-          <mat-icon>email</mat-icon>
-      </button>
-      <button mat-icon-button color="warn" (click)="onRemove()">
-          <mat-icon>delete</mat-icon>
-      </button>
+  <!--show info if the message is public-->
+  <div *ngIf="appointment.public" class="publicMessage centerWrapper">Öffentliche Veranstaltung</div>
+
+  <!--bindings to the selected values of the appointment-->
+  <h2 mat-dialog-title>{{appointment.title}}</h2>
+  <mat-dialog-content>
+    <p>am {{appointmentDate.startday}}.{{appointmentDate.startmonth}}.{{appointmentDate.startyear}}
+      um {{appointmentDate.starthours}}:{{appointmentDate.startminutes}} Uhr </p>
+    <p>bis {{appointmentDate.endday}}.{{appointmentDate.endmonth}}.{{appointmentDate.endyear}}
+      um {{appointmentDate.endhours}}:{{appointmentDate.endminutes}} Uhr </p>
+    <h4>Beschreibung:</h4>
+    <p>{{appointment.description}}</p>
+    <h4>Kategorie:</h4><br>
+    <div id="kategorieColor" [ngStyle]="{'background-color': category.color}"></div>
+    <div>
+      {{category.title}}
     </div>
+  </mat-dialog-content>
+
+  <!--buttons for editing and deleting appointment or invite other users-->
+  <div id="buttons">
+    <button mat-icon-button (click)="onEdit()">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button (click)="onInvite()">
+      <mat-icon>email</mat-icon>
+    </button>
+    <button mat-icon-button color="warn" (click)="onRemove()">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
 </div>

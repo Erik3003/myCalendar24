@@ -1,3 +1,7 @@
+/*
+ * Service for getting input of the forms into ISOSting format for 
+ * sending request in a correct format.
+ */
 import { Injectable } from '@angular/core';
 
 @Injectable({

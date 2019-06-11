@@ -1,16 +1,17 @@
+<!--This component displays the login screen consisting of a form for username and password-->
 <app-header></app-header>
 <div class="centerWrapper">
 
   <!--Error message-->
   <div *ngIf="isLogginError" class="errorMessage centerWrapper">Benutzername oder Passwort falsch!</div>
 
-  <!--Form element-->
+  <!--Form element for entering username and password with validation-->
   <div class="effectWrapper">
     <div class="formTitle">Einloggen</div>
     <form [formGroup]="loginForm" (ngSubmit)="loginForm.valid && submitLogin()">
       <div class="formElement">
 
-        <!--Input email-->
+        <!--Input username-->
         <mat-form-field>
           <input id="name" matInput formControlName="name" placeholder="Ihren Namen eingeben" />
           <mat-error *ngIf='name.errors?.minlength && name.touched'>

@@ -1,3 +1,4 @@
+<!--dialog with a form for inviting a user to an appointment by entering its username-->
 <div class="effectWrapper">
     <h2 mat-dialog-title>Freunde einladen</h2>
     <mat-dialog-content>
@@ -5,9 +6,10 @@
         <!--Error message-->
         <div *ngIf="nameError" class="errorMessage centerWrapper">Benutzer ungültig oder bereits eingeladen!</div>
 
+        <!--form element for entering username-->
         <form [formGroup]="inviteForm" (ngSubmit)="inviteForm.valid && onSubmit()">
 
-            <!--Input name-->
+            <!--Input username with validation and hint-->
             <mat-form-field>
                 <input matInput formControlName="name" placeholder="Username" />
                 <mat-hint align="end">
@@ -21,7 +23,8 @@
                 </mat-error>
             </mat-form-field>
             <br>
-            <!--Buttons-->
+
+            <!--Buttons for submitting or abort-->
             <button mat-button type="submit" class="mat-raised-button mat-primary">Versenden</button>
             <button mat-button color="warn" (click)="onClose()">Abbrechen</button>
         </form>

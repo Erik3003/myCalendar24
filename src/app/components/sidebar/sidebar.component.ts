@@ -1,9 +1,14 @@
+/*
+ * Component for displaying the sidebar on the left side. It contains a button for
+ * creating a new appointment, a list of checkboxes to select which categories 
+ * should be displayed in the calendar and a button for creating a new category.
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { CategoryService } from 'src/app/services/category.service';
 import { CategoryModel } from 'src/models/category.model';
 import { CreateCategoryComponent } from '../create-category-dialog/create-category.component';
 import { MatDialog } from '@angular/material';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -13,46 +18,50 @@ import { Subscription } from 'rxjs';
 })
 export class SidebarComponent implements OnInit {
 
+  //array with all categories f the user to display them as checkboxes
   categories: CategoryModel[] = [];
-  categorie: CategoryModel;
+
+  //array of booleans for each category to store if they are checked or not
   checked: boolean[] = [];
-  sub:Subscription;
+
+  //subscribtion for the category service to get changes
+  categorySubscription: Subscription;
 
   constructor(
-    private catService: CategoryService,
+    private categoryService: CategoryService,
     private dialog: MatDialog,
   ) {
     this.loadCategories();
-    this.categorie = new CategoryModel();   
   }
 
-  ngOnDestroy(){
-    this.sub.unsubscribe();
+  //unsubscribe if the component is destroyed
+  ngOnDestroy() {
+    this.categorySubscription.unsubscribe();
   }
 
   ngOnInit() {
-  //fetching if a choosen category changed
-    this.sub = this.catService.currentMessage.subscribe(message => {
+    //check if a selection of a category has changed to get the new categories and display them
+    this.categorySubscription = this.categoryService.currentMessage.subscribe(message => {
       if (message == "sidebar changed") {
-        console.log("categories changed");
         setTimeout(() => { this.loadCategories() }, 200);
       }
     });
   }
 
-  //load categorie and create array for choices
+  /*load categorie and create array for selection of each category. set the selection in
+    the category service.*/
   async loadCategories() {
-    const data = await this.catService.fetchCategories().toPromise();
+    const data = await this.categoryService.fetchCategories().toPromise();
     this.categories = data;
 
     for (let i = 0; i < this.categories.length; i++) {
       this.checked[i] = true;
     }
 
-    this.catService.setChoosen(this.checked);
+    this.categoryService.setChoosen(this.checked);
   }
 
-  //open dialog to create new category
+  //open dialog to create a new category
   onCreateCategory() {
     this.dialog.open(CreateCategoryComponent, {
       data: {
@@ -61,9 +70,9 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  //update if a checkbox changed
+  //update service if a checkbox changed
   onChange(index: number) {
     this.checked[index] = !this.checked[index];
-    this.catService.setChoosen(this.checked);
+    this.categoryService.setChoosen(this.checked);
   }
 }

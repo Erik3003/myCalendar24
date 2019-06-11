@@ -1,26 +1,30 @@
+<!--dialog component to display a list of users unanswered invitations-->
 <div class="effectWrapper">
   <h2 mat-dialog-title>Einladungen:</h2>
   <mat-dialog-content>
 
-    <!--Message of no invites-->
+    <!--Message of no invitations-->
     <div class="effectWrapper" *ngIf="!hasInvites">
       <h3>Sie haben keine unbeantworteten Einladungen.</h3>
     </div>
 
-    <!--List of invites-->
+    <!--List of invitations-->
     <div class="effectWrapper" *ngFor="let invite of invites; index as i" [id]="i">
       <h4>{{invite.title}}</h4>
       <p>
-        <!--startdate-->
+        <!--startdate of appointment-->
         {{inviteDate[i].startday}}.{{inviteDate[i].startmonth}}.{{inviteDate[i].startyear}} 
         um {{inviteDate[i].starthours}}:{{inviteDate[i].startminutes}} Uhr bis 
-        <!--enddate-->
+        <!--enddate of appointment-->
         {{inviteDate[i].endday}}.{{inviteDate[i].endmonth}}.{{inviteDate[i].endyear}} 
         um {{inviteDate[i].endhours}}:{{inviteDate[i].endminutes}} Uhr
       </p>
       
+      <!--description of appointment-->
       <p id="descriptionHeading">Beschreibung:</p>
       <p>{{invite.description}}</p>
+
+      <!--buttons for accepting or deleting invitation-->
       <div id="buttons">
         <button mat-icon-button (click)="onAnswer(i, true)">
             <mat-icon>check_circle_outline</mat-icon>

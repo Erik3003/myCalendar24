@@ -1,20 +1,22 @@
-<div class="effectWrapper md-dialog-container" >
+<div class="effectWrapper md-dialog-container">
   <h2 mat-dialog-title>Kategorien verwalten</h2>
-  
+
   <!--Error messages-->
-  <div *ngIf="hasChilds" class="errorMessage centerWrapper">Die Kategorie kann nicht gelöscht werden, da der Kategorie noch Termine zugeordnet sind.</div>
+  <div *ngIf="hasChilds" class="errorMessage centerWrapper">Die Kategorie kann nicht gelöscht werden, da der Kategorie
+    noch Termine zugeordnet sind.</div>
   <div *ngIf="titleMinError" class="errorMessage centerWrapper">Titel muss mindestes 3 Zeichen lang sein!</div>
   <div *ngIf="titleMaxError" class="errorMessage centerWrapper">Titel darf maximal 15 Zeichen lang sein!</div>
   <div *ngIf="colorError" class="errorMessage centerWrapper">Keine Farbe ausgewählt!</div>
 
   <mat-dialog-content>
+    <!--Form for creating a category-->
     <div *ngFor="let category of categories; index as i" id="content">
       <form [formGroup]="categoryForm[i]" (ngSubmit)="categoryForm.valid && onSubmit(i)">
 
         <!--Input name-->
         <mat-form-field>
-          <input matInput formControlName="title" placeholder="Kategoriename" [value]="category.title"/>
-          
+          <input matInput formControlName="title" placeholder="Kategoriename" [value]="category.title" />
+
         </mat-form-field>
 
         <!--Input color-->
@@ -28,14 +30,13 @@
         </mat-form-field>
 
         <!--Buttons-->
-      
-          <button mat-icon-button type="submit" class="mat-primary" (click)="onSubmit(i)">
-              <mat-icon>check_circle_outline</mat-icon>
-          </button>
-          <button mat-button color="warn" (click)="onDelete(i)">
-              <mat-icon>delete</mat-icon>
-          </button>
-        
+        <button mat-icon-button type="submit" class="mat-primary" (click)="onSubmit(i)">
+          <mat-icon>check_circle_outline</mat-icon>
+        </button>
+        <button mat-button color="warn" (click)="onDelete(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+
       </form>
     </div>
   </mat-dialog-content>

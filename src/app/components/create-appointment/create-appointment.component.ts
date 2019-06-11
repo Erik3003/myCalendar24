@@ -16,9 +16,14 @@ import { DateUtilsService } from 'src/app/services/date-utils.service';
 })
 export class CreateAppointmentComponent implements OnInit {
 
+  //form for entering appointment information
   appointmentForm: FormGroup;
   appointment: AppointmentModel = new AppointmentModel();
+
+  //variable for available categories
   categories: CategoryModel[] = [];
+
+  //variables for date selection
   today: Date;
   selectedStartDate;
   selectedEndDate;
@@ -108,6 +113,7 @@ export class CreateAppointmentComponent implements OnInit {
     }
   }
 
+  //setting mintime for endtime
   changeTime() {
     this.selectedTime = this.appointmentForm.get('time').value;
     this.minTime = this.selectedTime;
@@ -120,7 +126,7 @@ export class CreateAppointmentComponent implements OnInit {
     this.appointment.description = this.appointmentForm.get('description').value;
     this.appointment.public = this.appointmentForm.get('public').value;
     this.appointment.category = this.appointmentForm.get("category").value;
-    
+
     this.appointment.date = this.dateUtils.calculateDate(this.appointmentForm.get('date').value, this.appointmentForm.get('time').value);
     this.appointment.enddate = this.dateUtils.calculateDate(this.appointmentForm.get('enddate').value, this.appointmentForm.get('endtime').value);
 
