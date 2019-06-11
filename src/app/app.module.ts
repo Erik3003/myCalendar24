@@ -20,7 +20,6 @@ import { SelfcalendarComponent } from './components/selfcalendar/selfcalendar.co
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { DisplayAppointmentComponent } from './components/display-appointment-dialog/display-appointment.component';
 import { EditAppointmentDialogComponent } from './components/edit-appointment-dialog/edit-appointment-dialog.component';
-import { DayCalendarComponent } from './components/day-calendar/day-calendar.component';
 import { CreateCategoryComponent } from './components/create-category-dialog/create-category.component';
 import { InvitesDialogComponent } from './components/invites-dialog/invites-dialog.component';
 import { InviteFormDialogComponent } from './components/invite-form-dialog/invite-form-dialog.component';
@@ -40,7 +39,6 @@ import { DailyViewComponent } from './components/daily-view/daily-view.component
     SidebarComponent,
     DisplayAppointmentComponent,
     EditAppointmentDialogComponent,
-    DayCalendarComponent,
     CreateCategoryComponent,
     InvitesDialogComponent,
     InviteFormDialogComponent,

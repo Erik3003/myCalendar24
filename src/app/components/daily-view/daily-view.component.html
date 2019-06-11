@@ -11,7 +11,7 @@
   </div>
 
   <!--List of invites-->
-  <div class="effectWrapper" *ngFor="let appointment of appointments; index as i" [id]="i">
+  <div class="effectWrapper" *ngFor="let appointment of dayAppointments; index as i" [id]="i" (click)="onClick(i)">
     <h4>{{appointment.title}}</h4>
     <p>
       <!--startdate-->
@@ -24,5 +24,6 @@
 
     <p id="descriptionHeading">Beschreibung:</p>
     <p>{{appointment.description}}</p>
+
   </div>
 </div>

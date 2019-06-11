@@ -4,13 +4,11 @@
  */
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
-import { Router } from '@angular/router';
 import { EditAppointmentDialogComponent } from '../edit-appointment-dialog/edit-appointment-dialog.component';
 import { CategoryService } from 'src/app/services/category.service';
 import { CategoryModel } from 'src/models/category.model';
 import { InviteFormDialogComponent } from '../invite-form-dialog/invite-form-dialog.component';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
-import { AuthService } from 'src/app/services/auth.service';
 import { AppointmentModel } from 'src/models/appointment.model';
 import { CustumDateModel } from 'src/models/costumDate.model';
 import { DateUtilsService } from 'src/app/services/date-utils.service';
@@ -37,7 +35,6 @@ export class DisplayAppointmentComponent implements OnInit {
   owner: boolean;
 
   constructor(
-    private authService: AuthService,
     private catService: CategoryService,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<DisplayAppointmentComponent>,
