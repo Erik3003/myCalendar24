@@ -55,6 +55,7 @@ export class LoginComponent implements OnInit {
     this.user.password = this.loginForm.get('password').value;
 
     this.authService.loginUser(this.user).subscribe((data: any) => {
+      
       this.authService.setUser(data.User);
       this.authService.setToken(data.token);
       this.router.navigate(['/calendar']);

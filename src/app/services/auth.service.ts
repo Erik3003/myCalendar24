@@ -52,6 +52,7 @@ export class AuthService {
   //setting token for authorizationafter loggin in
   setToken(token: string) {
     this.token = token;
+    this.isLoggedIn= true;
   }
 
   //get token for appending it to the resonse header of in the services

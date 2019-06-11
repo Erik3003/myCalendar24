@@ -10,6 +10,7 @@ import { AppointmentModel } from 'src/models/appointment.model';
 import { InviteAnswerModel } from 'src/models/inviteAnswer.model';
 import { MatDialogRef } from '@angular/material';
 import { CustumDateModel } from 'src/models/costumDate.model';
+import { DateUtilsService } from 'src/app/services/date-utils.service';
 
 @Component({
   selector: 'app-invites-dialog',
@@ -30,10 +31,10 @@ export class InvitesDialogComponent implements OnInit {
   //object with the response to the invitation
   inviteAnswer: InviteAnswerModel;
 
-
   constructor(
     private appointmentService: AppointmentService,
-    private dialogRef: MatDialogRef<InvitesDialogComponent>
+    private dialogRef: MatDialogRef<InvitesDialogComponent>,
+    private dateUtils: DateUtilsService
   ) {
     //loading users invitations
     this.inviteAnswer = new InviteAnswerModel();
@@ -52,16 +53,7 @@ export class InvitesDialogComponent implements OnInit {
       a customized format.*/
     for (let j = 0; j < this.invites.length; j++) {
       this.inviteDate[j] = new CustumDateModel();
-      this.inviteDate[j].endyear = this.invites[j].enddate.substr(0, 4);
-      this.inviteDate[j].endmonth = this.invites[j].enddate.substr(5, 2);
-      this.inviteDate[j].endday = this.invites[j].enddate.substr(8, 2);
-      this.inviteDate[j].endhours = this.invites[j].enddate.substr(11, 2);
-      this.inviteDate[j].endminutes = this.invites[j].enddate.substr(14, 2);
-      this.inviteDate[j].startyear = this.invites[j].date.substr(0, 4);
-      this.inviteDate[j].startmonth = this.invites[j].date.substr(5, 2);
-      this.inviteDate[j].startday = this.invites[j].date.substr(8, 2);
-      this.inviteDate[j].starthours = this.invites[j].date.substr(11, 2);
-      this.inviteDate[j].startminutes = this.invites[j].date.substr(14, 2);
+      this.inviteDate[j] = this.dateUtils.getCustomFormat(this.invites[j].date,this.invites[j].enddate);
     }
 
     //checking if the user has no invitations to display message
@@ -78,9 +70,9 @@ export class InvitesDialogComponent implements OnInit {
     this.appointmentService.answerInvite(this.inviteAnswer).subscribe(data => {
       if (answer) {
         this.appointmentService.changed();
-        this.dialogRef.close();
       }
     });
+    setTimeout(()=>{this.getInvites(),200});
   }
 
 }

@@ -72,16 +72,7 @@ export class PublicAppointmentsComponent implements OnInit {
     //getting the date components out of the appointment data
     for (let j = 0; j < this.appointments.length; j++) {
       this.appointmentDate[j] = new CustumDateModel();
-      this.appointmentDate[j].endyear = this.appointments[j].enddate.substr(0, 4);
-      this.appointmentDate[j].endmonth = this.appointments[j].enddate.substr(5, 2);
-      this.appointmentDate[j].endday = this.appointments[j].enddate.substr(8, 2);
-      this.appointmentDate[j].endhours = this.appointments[j].enddate.substr(11, 2);
-      this.appointmentDate[j].endminutes = this.appointments[j].enddate.substr(14, 2);
-      this.appointmentDate[j].startyear = this.appointments[j].date.substr(0, 4);
-      this.appointmentDate[j].startmonth = this.appointments[j].date.substr(5, 2);
-      this.appointmentDate[j].startday = this.appointments[j].date.substr(8, 2);
-      this.appointmentDate[j].starthours = this.appointments[j].date.substr(11, 2);
-      this.appointmentDate[j].startminutes = this.appointments[j].date.substr(14, 2);
+      this.appointmentDate[j] = this.dateUtils.getCustomFormat(this.appointments[j].date, this.appointments[j].enddate)
     }
 
     //show no appointments message

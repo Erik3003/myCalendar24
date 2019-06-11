@@ -24,6 +24,7 @@ export class CustomizeCategoriesComponent implements OnInit {
   titleMinError: boolean;
   titleMaxError: boolean;
   hasChilds: boolean;
+  success: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -95,6 +96,8 @@ export class CustomizeCategoriesComponent implements OnInit {
     this.catService.deleteCategory(category).subscribe((data: any) => {
       this.catService.categoriesChanged("sidebar");
       this.loadCategories();
+      this.success = true;
+      setTimeout(()=> {this.success= false;},3000);
     },
       (err: HttpErrorResponse) => {
         this.hasChilds = true;

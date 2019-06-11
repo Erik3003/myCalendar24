@@ -7,6 +7,7 @@
   <div *ngIf="titleMinError" class="errorMessage centerWrapper">Titel muss mindestes 3 Zeichen lang sein!</div>
   <div *ngIf="titleMaxError" class="errorMessage centerWrapper">Titel darf maximal 15 Zeichen lang sein!</div>
   <div *ngIf="colorError" class="errorMessage centerWrapper">Keine Farbe ausgewählt!</div>
+  <div *ngIf="success" class="success centerWrapper">Kategorie erfolgreich gelöscht!</div>
 
   <mat-dialog-content>
     <!--Form for creating a category-->
@@ -16,7 +17,6 @@
         <!--Input name-->
         <mat-form-field>
           <input matInput formControlName="title" placeholder="Kategoriename" [value]="category.title" />
-
         </mat-form-field>
 
         <!--Input color-->

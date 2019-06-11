@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit {
     this.user = new UserModel();
     this.isLoggedIn = this.authService.loggedIn();
     //check if the user has invites
-    this.getInvites();
+    this.getInvites();     
   }
 
   ngOnInit() {
@@ -60,7 +60,7 @@ export class HeaderComponent implements OnInit {
 
   //open dialog with a list of invitations
   onInvitesClick() {
-    this.dialog.open(InvitesDialogComponent);
+    this.dialog.open(InvitesDialogComponent, {width:"450px"});
   }
 
   //logging out and route to login

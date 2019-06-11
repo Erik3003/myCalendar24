@@ -22,10 +22,10 @@
 
   <!--buttons for editing and deleting appointment or invite other users-->
   <div id="buttons">
-    <button mat-icon-button (click)="onEdit()">
+    <button mat-icon-button *ngIf="owner" (click)="onEdit()">
       <mat-icon>edit</mat-icon>
     </button>
-    <button mat-icon-button (click)="onInvite()">
+    <button mat-icon-button *ngIf="owner" (click)="onInvite()">
       <mat-icon>email</mat-icon>
     </button>
     <button mat-icon-button color="warn" (click)="onRemove()">
