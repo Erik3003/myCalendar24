@@ -102,6 +102,7 @@ export class CreateAppointmentComponent implements OnInit {
   //updating values if input is changed for validating end date >= start date
   changeStartDate() {
     this.selectedStartDate = this.appointmentForm.get('date').value;
+    this.selectedEndDate = this.appointmentForm.get('enddate').value;
   }
 
   changeEndDate() {
